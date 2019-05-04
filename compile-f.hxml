@@ -1,0 +1,5 @@
+#				_-_-_-_-_-_-      SWF COMPILE      -_-_-_-_-_
+--next
+-cp src
+-main Core
+-swf bin\flash\core.swf

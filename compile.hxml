@@ -4,10 +4,10 @@
 -java bin\java
 
 #				_-_-_-_-_-_-      SWF COMPILE      -_-_-_-_-_
---next
--cp src
--main Core
--swf bin\flash\core.swf
+# --next
+# -cp src
+# -main Core
+# -swf bin\flash\core.swf
 
 --next
 -cp src
@@ -15,10 +15,10 @@
 -swf-version 31
 -swf bin\flash\core.swc
 
---next
--cp src
--main Core
--as3 bin\flash\src
+# --next
+# -cp src
+# -main Core
+# -as3 bin\flash\src
 
 
 #				_-_-_-_-_-_-      RUN      -_-_-_-_-_

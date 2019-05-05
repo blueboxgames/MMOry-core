@@ -50,7 +50,7 @@ haxe compile.hxml
 
 :: Move to usage address
 :::echo f | xcopy /f /y bin\flash\Core.swf C:\SmartFoxServer_2X\SFS2X-5000\www\swfcores\core-%NEWNAME%.swf
-echo f | xcopy /f /y bin\flash\Core.swc C:\_projects\towers-projects\towers-client\fd-project\libs\core.swc
+echo f | xcopy /f /y bin\flash\Core.swc C:\_projects\mmories\mmory-client\libs\core.swc
 ::C:\_softwares\server\pscp.exe -pw *** bin\flash\Core.swf root@130.185.74.249:/usr/share/nginx/html/cores/core-%NEWNAME%.swf
 
 echo f | xcopy /f /y bin\java\Core.jar C:\SmartFoxServer_2X\SFS2X-5000\extensions\__lib__\core.jar

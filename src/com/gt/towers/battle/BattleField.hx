@@ -4,7 +4,6 @@ import com.gt.towers.battle.fieldes.FieldData;
 import com.gt.towers.battle.tilemap.TileMap;
 import com.gt.towers.battle.units.Card;
 import com.gt.towers.socials.Challenge;
-import com.gt.towers.utils.lists.FloatList;
 import com.gt.towers.utils.lists.IntList;
 import com.gt.towers.utils.maps.IntBulletMap;
 import com.gt.towers.utils.maps.IntCardMap;
@@ -33,9 +32,9 @@ class BattleField
 	static public var CAMERA_ANGLE:Float = 0.766;// sin of 50 angle
 	static public var DEBUG_MODE:Bool = false;
 	static public var DELTA_TIME:Int = 25;
+	static public var ELIXIR_SPEED:Float = 0.00033;
 	
 	public var state:Int = 0;
-	public var elixirBar:FloatList;
 	public var singleMode:Bool;
 	public var friendlyMode:Int;
 	public var field:FieldData;
@@ -50,10 +49,12 @@ class BattleField
 	public var deltaTime:Int = 25;
 	public var side:Int = 0;
 	public var spellId:Int = 1000000;
-	public var elixirSpeeds:FloatList = new  FloatList();
 	public var games:Array<Game>;
 	public var numSummonedUnits:Int;
 	public var pauseTime:Float;
+	public var elixirBar:Array<Float>;
+	public var normalElixirSpeeds:Array<Float>;
+	public var finalElixirSpeeds:Array<Float>;
 	var garbage:IntList;
 	var resetTime:Float = -1;
 #if java 
@@ -73,17 +74,18 @@ class BattleField
 		this.singleMode = game_1.player.cards.keys().length == 0;
 		this.friendlyMode = friendlyMode;
 		this.extraTime = hasExtraTime ? field.times.get(3) : 0;
-		//trace("this.startAt:" + this.startAt + " now:" + this.now + " this.resetTime:" + this.resetTime);
 		
-		garbage = new IntList();
-		units = new IntUnitMap();
-		bullets = new IntBulletMap();
-		elixirSpeeds.push(1);
-		elixirSpeeds.push(1);
+		this.garbage = new IntList();
+		this.units = new IntUnitMap();
+		this.bullets = new IntBulletMap();
+		this.normalElixirSpeeds = new Array<Float>();
+		this.finalElixirSpeeds = new Array<Float>();
+		this.normalElixirSpeeds[0]	= this.normalElixirSpeeds[1]	= ELIXIR_SPEED * Challenge.getElixirSpeed(this.field.mode, false);
+		this.finalElixirSpeeds[0]	= this.finalElixirSpeeds[1]		= ELIXIR_SPEED * Challenge.getElixirSpeed(this.field.mode, true);
 		
-		games = new Array<Game>();
-		games[0] = game_0;
-		games[1] = game_1;
+		this.games = new Array<Game>();
+		this.games[0] = game_0;
+		this.games[1] = game_1;
 		#if java
 		
 		if( singleMode )
@@ -93,15 +95,15 @@ class BattleField
 				winRate = 21474836;
 			arena = game_0.player.get_arena(0);
 			if( winRate > 2 )
-				difficulty = arena + winRate - 2;
+				this.difficulty = arena + winRate - 2;
 			else if( winRate < -2 )
-				difficulty = arena + winRate + 2;
+				this.difficulty = arena + winRate + 2;
 			else
-				difficulty = arena;
+				this.difficulty = arena;
 			
-			if( difficulty != 0 )
+			if( this.difficulty != 0 )
 			{
-				var ep:Int = game_0.player.get_point() + Math.round(Math.pow(1.2, Math.abs(difficulty) ) * difficulty / Math.abs(difficulty)) + difficulty * 5;
+				var ep:Int = game_0.player.get_point() + Math.round(Math.pow(1.2, Math.abs(this.difficulty) ) * this.difficulty / Math.abs(this.difficulty)) + this.difficulty * 5;
 				if( ep > 100000 )
 					ep = 100000;
 				game_1.player.resources.set(com.gt.towers.constants.ResourceType.R2_POINT, ep);
@@ -110,21 +112,34 @@ class BattleField
 			game_1.player.resources.set(com.gt.towers.constants.ResourceType.R1_XP, game_0.player.get_xp() + (game_1.player.get_point() - game_0.player.get_point())* 6 + 1);
 			game_1.player.fillCards();
 			
-			if( difficulty != 0 )
+			if( this.difficulty != 0 )
 			{
 				var arenaScope = game_0.arenas.get(arena).max - game_0.arenas.get(arena).min;
 				game_1.player.resources.set(com.gt.towers.constants.ResourceType.R2_POINT,	Math.round( Math.max(0, game_0.player.get_point() + Math.random() * arenaScope - arenaScope * 0.5) ) );
 			}
+
+			trace("startAt:" + this.startAt + " now:" + this.now + " difficulty:" + this.difficulty);
+
+			// bot elixir is easier and player elixir is faster in tutorial
+			normalElixirSpeeds[0] *= games[0].player.get_battleswins() < 3 ? 2 : 1;
+			if( games[0].player.get_battleswins() < 5 )
+			{
+				normalElixirSpeeds[1] *= Math.min(1, games[0].player.get_battleswins() / 5);
+			}
+			else
+			{
+				// battleField.elixirSpeeds.__set(1, battleRoom.endCalculator.ratio() > 1 ? 1 + battleField.difficulty * 0.04 : 1);
+				normalElixirSpeeds[1]	+= difficulty * 0.00002;
+				finalElixirSpeeds[1]	+= difficulty * 0.00002;
+			}
 		}
-		
-		// bot elixir is easier and player elixir is faster in tutorial
-		elixirSpeeds.set(0, games[0].player.get_battleswins() < 3 ? 2 : 1);
-		elixirSpeeds.set(1, Math.min(1, games[0].player.get_battleswins() / 5));
+		trace(normalElixirSpeeds.toString());
+		trace(finalElixirSpeeds.toString());
 		
 		// create castles
 		if( field.mode != Challenge.MODE_1_TOUCHDOWN )
 		{
-			while ( unitId < 6 )
+			while( unitId < 6 )
 			{
 				var side = unitId % 2;
 				var hqType = field.mode == Challenge.MODE_0_HQ ? 201 : 221;
@@ -155,9 +170,8 @@ class BattleField
 			decks.set(0, getDeckCards(game_0, game_0.player.getSelectedDeck().toArray(game_0.player.get_battleswins() > 3 ), friendlyMode));
 			decks.set(1, getDeckCards(game_1, game_1.player.getSelectedDeck().toArray(true), friendlyMode));
 #end
-		elixirBar = new FloatList();
-		elixirBar.push(POPULATION_INIT);
-		elixirBar.push(POPULATION_INIT);
+		elixirBar = new Array<Float>();
+		elixirBar[0] = elixirBar[1] = POPULATION_INIT;
 	}
 	
 	static function getDeckCards(game:Game, cardsTypes:Array<Int>, friendlyMode:Int) : IntCardMap
@@ -222,16 +236,14 @@ class BattleField
 			bullets.remove(garbage.pop());
 		
 		// -=-=-=-=-=-=-=-=-=-=-  INCREASE ELIXIRS  -=-=-=-=-=-=-=-=-=-=-=-
-		var increaseSpeed = getElixirIncreaseSpeed() * deltaTime;
-		elixirBar.set(0, Math.min(BattleField.POPULATION_MAX, elixirBar.get(0) + increaseSpeed * elixirSpeeds.get(0)));
-		elixirBar.set(1, Math.min(BattleField.POPULATION_MAX, elixirBar.get(1) + increaseSpeed * elixirSpeeds.get(1)));
-		
-		//trace("elixirBar: " + elixirBar.toString() + "  playerSpeed: " + elixirSpeeds.get(0) + "  robotSpeed: " + elixirSpeeds.get(1) + "  increaseSpeed: " + increaseSpeed);
+		elixirBar[0] = Math.min(BattleField.POPULATION_MAX, elixirBar[0] + getElixirIncreaseSpeed(0) * deltaTime);
+		elixirBar[1] = Math.min(BattleField.POPULATION_MAX, elixirBar[1] + getElixirIncreaseSpeed(1) * deltaTime);
+		// trace("elixirBar: " + elixirBar.toString() + "  normalElixirSpeeds: " + normalElixirSpeeds.toString());
 	}
 	
-	public function getElixirIncreaseSpeed() : Float
+	public function getElixirIncreaseSpeed(index:Int) : Float
 	{
-		return (getDuration() > getTime(1) ? 0.00066 : 0.00033);
+		return getDuration() > getTime(1) ? finalElixirSpeeds[index] : normalElixirSpeeds[index];
 	}
 	
 	public function getDuration() : Float
@@ -272,7 +284,7 @@ class BattleField
 			trace(log);
 		}
 		
-		elixirBar.set(side, elixirBar.get(side) - card.elixirSize );
+		elixirBar[side] -= card.elixirSize;
 		
 		if( com.gt.towers.constants.CardTypes.isSpell(type) )
 			return addSpell(card, side, x, y);
@@ -358,7 +370,7 @@ class BattleField
 		if( !decks.get(side).exists(type) )
 			return com.gt.towers.constants.MessageTypes.RESPONSE_NOT_ALLOWED;
 		
-		if( elixirBar.get(side) < decks.get(side).get(type).elixirSize )
+		if( elixirBar[side] < decks.get(side).get(type).elixirSize )
 			return com.gt.towers.constants.MessageTypes.RESPONSE_NOT_ENOUGH_REQS;
 		
 		var index = decks.get(side).queue_indexOf(type);
@@ -383,8 +395,7 @@ class BattleField
 	{
 		resetTime = now + 2000000;
 		dispose();
-		elixirBar.set(0, POPULATION_INIT);
-		elixirBar.set(1, POPULATION_INIT);
+		elixirBar[0] = elixirBar[1] = POPULATION_INIT;
 		state = STATE_2_STARTED;
 	}
 	

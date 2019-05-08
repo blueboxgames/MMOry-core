@@ -278,6 +278,15 @@ class Challenge
 		return ret;
 	}
 	
+	static public function getElixirSpeed(mode:Int, rageMode:Bool) : Float
+	{
+		return switch( mode )
+		{
+			case 2:		rageMode ? 3 : 2;
+			default:	rageMode ? 2 : 1;
+		}
+	}
+	
 	static public function getExchangeItem(mode:Int, requirements:IntIntMap, arena:Int) : ExchangeItem
 	{
 		var ret:ExchangeItem = new ExchangeItem(ResourceType.R30_CHALLENGES + mode + 1);

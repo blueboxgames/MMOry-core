@@ -45,9 +45,9 @@ class Game
 	{
 		arenas = new IntArenaMap();
 	  //						Arena(num   ,	min ,	max , minWinrate));
-		arenas.set(	0	, new Arena(	0	,	0	,	100	,	-8	));
-		arenas.set(	1	, new Arena(	1	,	101	,	200	,	-7	));
-		arenas.set(	2	, new Arena(	2	,	201	,	300	,	-6	));
+		arenas.set(	0	, new Arena(	0	,	0	,	50	,	-8	));
+		arenas.set(	1	, new Arena(	1	,	51	,	120	,	-7	));
+		arenas.set(	2	, new Arena(	2	,	121	,	300	,	-6	));
 		arenas.set(	3	, new Arena(	3	,	301	,	400	,	-5	));
 		arenas.set(	4	, new Arena(	4	,	401	,	500	,	-4	));
 		arenas.set(	5	, new Arena(	5	,	501	,	600	,	-3	));

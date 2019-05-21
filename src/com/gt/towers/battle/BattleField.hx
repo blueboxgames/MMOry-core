@@ -109,8 +109,7 @@ class BattleField
 				var arenaScope = game_0.arenas.get(arena).max - game_0.arenas.get(arena).min;
 				game_1.player.resources.set(com.gt.towers.constants.ResourceType.R2_POINT,	Math.round( Math.max(0, game_0.player.get_point() + Math.random() * arenaScope - arenaScope * 0.5) ) );
 			}
-
-			trace("startAt:" + this.startAt + " now:" + this.now + " difficulty:" + this.difficulty);
+			trace("startAt:" + this.startAt + " now:" + this.now + " difficulty:" + this.difficulty + " winRate:" + winRate);
 
 			// bot elixir is easier and player elixir is faster in tutorial
 			this.elixirUpdater.normalSpeeds[0] *= games[0].player.get_battleswins() < 3 ? 2 : 1;

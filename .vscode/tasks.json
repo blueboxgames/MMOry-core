@@ -16,6 +16,7 @@
         {
             "label": "deploy",
             "type": "shell",
+            "command":[],
             "windows": {
                 "command": "${workspaceRoot}\\deploy.bat"
             },
@@ -28,5 +29,6 @@
             },
             "problemMatcher": []
         }
+        
     ]
 }

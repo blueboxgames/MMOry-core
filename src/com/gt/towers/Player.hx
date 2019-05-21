@@ -165,6 +165,17 @@ class Player
 			return _all.slice(0, _arena + FIRST_CARDS);
 		return _all.slice(arena + FIRST_CARDS);
 	}
+	
+	public function getAvailablity(type:Int) : Int
+	{
+		if( !ResourceType.isCard(type) )
+			return CardTypes.AVAILABLITY_EXISTS;
+		if( cards.exists(type) )
+			return CardTypes.AVAILABLITY_EXISTS;
+		return ScriptEngine.getInt(CardFeatureType.F01_AVAILABLE_AT, type, 1) <= get_arena(0) ? CardTypes.AVAILABLITY_WAIT : CardTypes.AVAILABLITY_NOT;
+	}
+
+
 	public function getSelectedDeck():IntIntMap
 	{
 		return decks.get(selectedDeckIndex);

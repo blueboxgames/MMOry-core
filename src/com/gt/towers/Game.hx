@@ -97,12 +97,4 @@ class Game
 		}
 		return 100;
 	}*/
-	public function getBuildingAvailablity(type:Int =-1) : Int
-	{
-		if( !ResourceType.isCard(type) )
-			return CardTypes.AVAILABLITY_EXISTS;
-		if( player.cards.exists(type) )
-			return CardTypes.AVAILABLITY_EXISTS;
-		return ScriptEngine.getInt(CardFeatureType.F01_AVAILABLE_AT, type, 1) <= player.get_arena(0) ? CardTypes.AVAILABLITY_WAIT : CardTypes.AVAILABLITY_NOT;
-	}
 }

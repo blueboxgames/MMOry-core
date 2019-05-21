@@ -69,41 +69,6 @@ class Quest
 		return new Quest(player, type, key, Quest.getNextStep(player, type, key));
 	}	
 	
-	static public function fill(player:Player):Void
-	{
-		if( player.quests == null )
-			player.quests = new Array<Quest>();
-		
-		if( player.get_battleswins() < 3 )
-			return;
-		
-		if( player.quests.length == 0 && player.get_battleswins() < 10 )
-		{
-			player.quests.push( Quest.instantiate(TYPE_3_BATTLES,		player) );
-			player.quests.push( Quest.instantiate(TYPE_7_CARD_COLLECT,	player) );
-			player.quests.push( Quest.instantiate(TYPE_8_CARD_UPGRADE,	player) );
-			player.quests.push( Quest.instantiate(TYPE_9_BOOK_OPEN,		player) );
-		}
-		
-		if( player.quests.length >= MAX_QUESTS )
-			return;
-		
-		var i = player.quests.length > 0 ? player.quests[player.quests.length - 1].type : -1;
-		if( i == 9 )
-			i = 0;
-		else
-			i ++;
-		while( i < 10 )
-		{
-			if( player.getQuestIndexByType(i) == -1 && i != 2 )
-			{
-				player.quests.push( Quest.instantiate(i, player));
-				fill(player);
-				return;
-			}
-			i ++;
-		}
-	}
 	
 	static public function getKey(player:Player, type:Int):Int
 	{
@@ -165,7 +130,7 @@ class Quest
 	
 	static public function getExchangeItem(type:Int, step:Int) : ExchangeItem
 	{
-		var ret:ExchangeItem = new ExchangeItem(ResourceType.R40_QUESTS + type + 1);
+		var ret:ExchangeItem = new ExchangeItem(20 + type + 1, 0);
 		ret.outcomes = getReward(type, step);
 		return ret;
 	}
@@ -188,7 +153,13 @@ class Quest
 			default: 	0;
 		}
 	}
+
+	public function toString():String
+	{
+		return "{id: " + id + ", type:" + type + ", current:" + current + ", target:" + target + ", nextStep:" + nextStep + "}";
+	}
 }
+
 //'P' plays with card 'C' only
 //'W' wins with card 'C'
 //'W' wins with all buildings occupition

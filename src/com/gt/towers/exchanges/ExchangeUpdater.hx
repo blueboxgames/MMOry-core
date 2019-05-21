@@ -49,7 +49,7 @@ class ExchangeUpdater
 		{
 			if( item.type == ExchangeType.C23_SPECIAL )
 			{
-				if( game.player.cards.keys().length > 0 && game.player.getResource(ResourceType.R6_TICKET) > 20 )
+				if( game.player.cards.keys().length > 0 && game.player.getResource(ResourceType.R6_TICKET) > 10 )
 					item.outcome = game.player.cards.getRandomKey();
 				else
 					item.outcome = ResourceType.R6_TICKET;
@@ -95,12 +95,12 @@ class ExchangeUpdater
 		
 		if( item.outcome == ResourceType.R6_TICKET )
 		{
-			var rand = Math.ceil(Math.random() * 5);
+			var rand = Math.ceil(Math.random() * 2);
 			if( Challenge.getUnlockAt(3) <= arena )
-				return 15 + rand;
-			if( Challenge.getUnlockAt(2) <= arena )
 				return 10 + rand;
-			return 5 + rand;
+			if( Challenge.getUnlockAt(2) <= arena )
+				return 7 + rand;
+			return 4 + rand;
 		}
 		
 		return switch ( item.outcome )

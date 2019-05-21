@@ -86,4 +86,9 @@ class ExchangeItem
 		requirementsStr = requirements.toString();
 	}
 	
+
+	public function toString() : String
+	{
+		return "{ type:" + type + ", numExchanges:"  + numExchanges + ", expiredAt:" + expiredAt + ", requirements:[" + requirements.toString() + "], outcomes:[" + outcomes.toString() + "] }"; 
+	}
 }

@@ -61,7 +61,10 @@ class ExchangeItem
 	{
 		return category >= 100 && category < 130;
 	}
-	
+	public function isEmote() 
+	{
+		return category == 80;
+	}
 	public function isIncreamental() 
 	{
 		return type == ExchangeType.C42_RENAME || type == ExchangeType.C43_ADS;

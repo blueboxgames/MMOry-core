@@ -98,6 +98,27 @@ class CoreUtils
 				default : x;
 			}
 		}
+
+	    if( max == 12 )
+        {
+            return switch ( i )
+			{
+				case 0: x;
+				case 1: x - (GAP * 1.8);
+				case 2: x - (GAP * 3.2);
+				case 3: x + (GAP * 1.8);
+				case 4: x;
+				case 5: x;
+				case 6: x;
+				case 7: x - (GAP * 1.5);
+				case 8: x - (GAP * 1.3);
+				case 9: x - (GAP * 1.7);
+				case 10: x - (GAP * 3.1);
+				case 11: x + (GAP * 1.6);
+				default : x;
+			}
+        }
+
 		return x;
 	}
 	
@@ -146,6 +167,25 @@ class CoreUtils
 				default : y;
 			}
 		}
+		if( max == 12 )
+		{
+			return switch ( i )
+			{
+				case 0: y;
+				case 1: y;
+				case 2: y;
+				case 3: y;
+				case 4: y + (GAP * 1.5);
+				case 5: y - (GAP * 1.1);
+				case 6: y - (GAP * 1.3);
+				case 7: y + (GAP * 1.9);
+				case 8: y - (GAP * 1.6);
+				case 9: y - (GAP * 1.4);
+				case 10: y - (GAP * 1.3);
+				case 11: y - (GAP * 1.7);
+				default : y;
+			}
+        }
 		return y;
 	}
 	

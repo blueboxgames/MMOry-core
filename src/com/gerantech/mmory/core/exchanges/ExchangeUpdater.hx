@@ -20,15 +20,14 @@ class ExchangeUpdater
 
 	public function new(game:Game) 
 	{
-		
 		this.game = game;
-	    this.now = cast(java.lang.System.currentTimeMillis() / 1000, Int);
 		this.arena = game.player.get_arena(0);
-        this.changes = new java.util.ArrayList();
-    }
+		this.changes = new java.util.ArrayList();
+		this.now = cast(java.lang.System.currentTimeMillis() / 1000, Int);
+	}
 
-    public function update( item:ExchangeItem ) : Void
-    {
+	public function update( item:ExchangeItem ) : Void
+	{
 		if( item.category == ExchangeType.C20_SPECIALS )
 			updateSpecials(item);
 	}

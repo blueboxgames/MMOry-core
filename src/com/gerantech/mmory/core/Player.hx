@@ -19,6 +19,8 @@ class Player
 {
 	static var FIRST_CARDS:Int = 8;
 	public var id:Int;
+	public var createAt:Int;
+	public var lastLogin:Int;
 	public var admin:Bool = false;
 	public var tutorialMode:Int = 0;
 	public var hasOperations:Bool = true;

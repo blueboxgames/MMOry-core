@@ -13,6 +13,8 @@ class InitData
 	public var nickName:String;
 	public var market:String;
 	public var appVersion:Int;
+	public var createAt:Int;
+	public var lastLogin:Int;
 	public var sessionsCount:Int;
 	public var resources:IntIntMap;
 	public var cardsLevel:IntIntMap;

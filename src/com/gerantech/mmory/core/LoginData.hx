@@ -12,7 +12,7 @@ class LoginData
 {
 	public static var coreSize:Int = 0;
 	public var coreVersion:String = "2100.0530181529";//do not change len.
-	public var noticeVersion:Int = 2100;
+	public var noticeVersion:Int = 2000;
 	public var forceVersion:Int = 2000;
 	public var resources:IntIntMap;
 	public var buildingsLevel:IntIntMap;

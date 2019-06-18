@@ -1,4 +1,6 @@
-//trace("featureType:" + featureType + " cardType:" + cardType + " cardLevel:" + cardLevel);
+//trace("__type:" + __type + " __arg0:" + __arg0 + " __arg1:" + __arg1);
+// __arg0 => card-type : int
+// __arg1 => card-level : int
 
 // To change each unit stat refer to this table :
 // range - splash - quantity - health - damage - speed
@@ -27,9 +29,9 @@
 // 222 
 
 
-if( featureType == -3 )
+if( __type == -3 )
 {
-	return switch ( cardType )
+	return switch( __arg0 )
 	{
 		case	101	:[	105 ,  113 , 103 , 112 , 106 , 151 , 110 , 108 , 102 , 101 , 107 , 111 , 152 , 104 , 109	];
 		case	102	:[	103 ,  112 , 101 , 108 , 110 , 105 , 106 , 113 , 111 , 102 , 107 , 104 , 151 , 152 , 109	];
@@ -46,20 +48,20 @@ if( featureType == -3 )
 		case	114	:[	151 ,  152 , 106 , 104 , 107 , 101 , 111 , 103 , 110 , 112 , 108 , 105 , 102 , 113 , 109	];
 		case	115	:[	101 ,  105 , 108 , 113 , 107 , 106 , 104 , 102 , 112 , 151 , 152 , 111 , 103 , 110 , 109	];
 
-		default     :[ -1 ];
+		default   :[ -1 ];
 	}
 }
 
 // version
-if( featureType == -2 )
+if( __type == -2 )
 {
 	return 1400.0;
 }
 
 // chance
-if( featureType == -1 )
+if( __type == -1 )
 {
-	return switch ( cardType )
+	return switch( __arg0 )
 	{
 		case	101	:	0	;
 		case	102	:	0	;
@@ -70,11 +72,11 @@ if( featureType == -1 )
 		case	107	:	0	;
 		case	108	:	1	;
 		case	109	:	4	;
-		case	110	:	12	;
-		case	111	:	18	;
-		case	112	:	30	;
-		case	113	:	40	;
-		case	114	:	40	;
+		case	110	:	12;
+		case	111	:	18;
+		case	112	:	30;
+		case	113	:	40;
+		case	114	:	40;
 		case	115	:	0	;
 		
 		case	151	:	8	;
@@ -85,9 +87,9 @@ if( featureType == -1 )
 }
 
 // rarity
-if( featureType == 0 )
+if( __type == 0 )
 {
-	return switch ( cardType )
+	return switch( __arg0 )
 	{
 		case	101	:	 0	;
 		case	102	:	 0	;
@@ -120,10 +122,10 @@ if( featureType == 0 )
 }
 
 // availableAt
-if( featureType == 1 )
+if( __type == 1 )
 {
 	var all = [108,109,151,110,111,152,112,113,153,114,154,115,116,155,117,118,119,156,120,121,122,123,157,124,125,126,127,128,158,129,130,159];
-	if( cardType == -1 )
+	if( __arg0 == -1 )
 	{
 		all.unshift(107);
 		all.unshift(106);
@@ -137,7 +139,7 @@ if( featureType == 1 )
 	var index = 0;
 	for( c in all )
 	{
-		if( c == cardType )
+		if( c == __arg0 )
 			return index;
 		index ++;
 	}
@@ -146,9 +148,9 @@ if( featureType == 1 )
 
 
 // elixirSize
-if( featureType == 2 )
+if( __type == 2 )
 {
-	return switch( cardType )
+	return switch( __arg0 )
 	{
 		case 101 :	4	;
 		case 102 :	5	;
@@ -179,25 +181,25 @@ if( featureType == 2 )
 // H = 4 and higher
 // M = 3
 // L = 2
-if( featureType == 3 )
+if( __type == 3 )
 {
-	return switch ( cardType )
+	return switch( __arg0 )
 	{
-		case	101	:	 1.0	;
-		case	102	:	 1.0	;
-		case	103	:	 12		;
-		case	104	:	 1.0	;
-		case	105	:	 1.0	;
-		case	106	:	 1.0	;
-		case	107	:	 1.0	;
-		case	108	:	 2.0	;
-		case	109	:	 1.0	;
-		case	110	:	 3.0	;
-		case	111	:	 2.0	;
-		case	112	:	 4.0	;
-		case	113	:	 1.0	;
-		case	114	:	 3.0	;
-		case	115	:	 1.0	;
+		case	101	:	 1	;
+		case	102	:	 1	;
+		case	103	:	 12	;
+		case	104	:	 1	;
+		case	105	:	 1	;
+		case	106	:	 1	;
+		case	107	:	 1	;
+		case	108	:	 2	;
+		case	109	:	 1	;
+		case	110	:	 3	;
+		case	111	:	 2	;
+		case	112	:	 4	;
+		case	113	:	 1	;
+		case	114	:	 3	;
+		case	115	:	 1	;
 
 		
 		case	151	:	 1	;
@@ -211,9 +213,9 @@ if( featureType == 3 )
 }
 
 // summonTime
-if( featureType == 4 )
+if( __type == 4 )
 {
-	var ret = switch( cardType )
+	var ret = switch( __arg0 )
 	{
 		case	101	:	 0.8	;
 		case	102	:	 1.0	;
@@ -242,9 +244,9 @@ if( featureType == 4 )
 }
 
 // speed
-if( featureType == 11 )
+if( __type == 11 )
 {
-	var ret = switch ( cardType )
+	var ret = switch( __arg0 )
 	{
 		case	101	:	0.70;
 		case	102	:	0.60;
@@ -278,9 +280,9 @@ if( featureType == 11 )
 // H = min 2.0 , max ~    
 // M = min 1.0 , max 1.8  
 // L = min 0.1 , max 0.8
-if( featureType == 12 )
+if( __type == 12 )
 {
-	var ret = switch ( cardType )
+	var ret = switch( __arg0 )
 	{
 		case	101	:	0.50;
 		case	102	:	3.00;
@@ -307,17 +309,17 @@ if( featureType == 12 )
 		
 		default		:	1.00;
 	}
-	return (ret * Math.pow(1.095, cardLevel - 1)) * 1.5;
+	return (ret * Math.pow(1.095, __arg1 - 1)) * 1.5;
 }
 
 // sizeH
-if( featureType == 13 )
+if( __type == 13 )
 {
-	var ret = return switch ( cardType )
+	var ret = return switch( __arg0 )
 	{
 		case	101	:	15	;
 		case	102	:	45  ;
-		case	103	:	5	;
+		case	103	:	5		;
 		case	104	:	25	;
 		case	105	:	35	;
 		case	106	:	13	;
@@ -344,9 +346,9 @@ if( featureType == 13 )
 }
 
 // sizeV
-if( featureType == 14 )
+if( __type == 14 )
 {
-	var ret = switch ( cardType )
+	var ret = switch( __arg0 )
 	{
 		case	101	:	0.50;
 		case	102	:	0.55;
@@ -377,9 +379,9 @@ if( featureType == 14 )
 }
 
 // focusRange
-if( featureType == 15 )
+if( __type == 15 )
 {
-	var ret = switch( cardType )
+	var ret = switch( __arg0 )
 	{
 		case	101	:	1.8 ;
 		case	102	:	1.0	;
@@ -398,8 +400,8 @@ if( featureType == 15 )
 		case	115	:	1.0	;
 
 		
-		case 	201 : 	1.5 ;
-		case 	221 : 	1.6 ;
+		case 	201 : 1.5 ;
+		case 	221 :	1.6 ;
 		case	222	:	1.9	;
 		case	223	:	1.6	;
 		
@@ -410,9 +412,9 @@ if( featureType == 15 )
 }
 
 // explosive
-if( featureType == 16 )
+if( __type == 16 )
 {
-	return switch ( cardType )
+	return switch( __arg0 )
 	{
 		case	107	:	true;
 		default		:	false;
@@ -421,9 +423,9 @@ if( featureType == 16 )
 
 
 // bulletSpeed
-if( featureType == 21 )
+if( __type == 21 )
 {
-	var ret = switch( cardType )
+	var ret = switch( __arg0 )
 	{
 		case	101	:	3.0	;
 		case	102	:	0.9	;
@@ -461,21 +463,21 @@ if( featureType == 21 )
 // M = min 0.20 , max 0.29  
 // L = min 0.05 , max 0.19 
 // Spells must divide by 3 
-if( featureType == 22 )
+if( __type == 22 )
 {
-	var ret = switch( cardType )
+	var ret = switch( __arg0 )
 	{
-		case	101	:	0.30	;
-		case	102	:	0.30	;
-		case	103	:	0.04	;
+		case	101	:	0.30;
+		case	102	:	0.30;
+		case	103	:	0.04;
 		case	104	:	0.24	;
 		case	105	:	0.68	;
 		case	106	:	0.16	;
 		case	107	:	0.60	;
 		case	108	:	0.07	;
-		case	109	:  -0.08	;
-		case	110	:  	0.10	;
-		case	111	:  	0.24	;
+		case	109	:-0.08	;
+		case	110	: 0.10	;
+		case	111	: 0.24	;
 		case	112	:	0.10	;
 		case	113	:	0.20	;
 		case	114	:	0.12	;
@@ -492,13 +494,13 @@ if( featureType == 22 )
 		
 		default		:	1.00	;
 	}
-	return (ret * Math.pow(1.095, cardLevel - 1));
+	return (ret * Math.pow(1.095, __arg1 - 1));
 }
 
 // bulletShootGap
-if( featureType == 23 )
+if( __type == 23 )
 {
-	var ret = switch( cardType )
+	var ret = switch( __arg0 )
 	{
 		case	101	:	2.0 ;
 		case	102	:	1.8	;
@@ -524,13 +526,13 @@ if( featureType == 23 )
 		
 		default		:	1.0 ;
 	}
-	return ret * 750 ;
+	return 	ret * 750 ;
 }
 
 // bulletShootDelay
-if( featureType == 24 )
+if( __type == 24 )
 {
-	var ret = switch( cardType )
+	var ret = switch( __arg0 )
 	{
 		case	101	:	0.0	;
 		case	102	:	0.7	;
@@ -548,11 +550,10 @@ if( featureType == 24 )
 		case	114	:	0.7	;
 		case	115	:	0.5	;
 
-		
-		case	201	:	0.5;
-		case	221	:	0.5;
-		case	222	:	0.5;
-		case	223	:	0.5;
+		case	201	:	0.5	;
+		case	221	:	0.5	;
+		case	222	:	0.5	;
+		case	223	:	0.5	;
 		
 		default		:	1.0;
 	}
@@ -560,7 +561,7 @@ if( featureType == 24 )
 }
 
 // bulletRangeMin
-if( featureType == 25 )
+if( __type == 25 )
 {
 	return 0;
 }
@@ -570,9 +571,9 @@ if( featureType == 25 )
 // M = min 1.0 , max 1.4
 // L = min 0.6 , max 0.9
 // melee = min 0.1 , max 0.5 
-if( featureType == 26 )
+if( __type == 26 )
 {
-	var ret =  switch( cardType )
+	var ret =  switch( __arg0 )
 	{
 		case	101	:	1.8 	;
 		case	102	:	0.9		;
@@ -591,10 +592,10 @@ if( featureType == 26 )
 		case	115	:	0.9		;
 
 		
-		case 	201 : 	1.5 	;
-		case 	221 : 	0.5 	;
-		case 	222 : 	1.4 	;
-		case 	223 : 	0.4 	;
+		case 	201 : 1.5 	;
+		case 	221 : 0.5 	;
+		case 	222 : 1.4 	;
+		case 	223 : 0.4 	;
 		
 		
 		default		:	1.0;
@@ -606,9 +607,9 @@ if( featureType == 26 )
 //H = min 12 , max ~
 //M = min 5.0 , max 10 
 //L = min 0.7 , max 1.0
-if( featureType == 27 )
+if( __type == 27 )
 {
-	var ret =  switch( cardType )
+	var ret =  switch( __arg0 )
 	{
 		case	101	:	0.50	;
 		case	102	:	0.50	;
@@ -630,9 +631,9 @@ if( featureType == 27 )
 		case	151	:	17.0	;
 		case	152	:	20.0	;
 		
-		case 	201 : 	0.50 	;
-		case 	221 : 	1.00 	;
-		case 	222 : 	0.50 	;
+		case 	201 :	0.50 	;
+		case 	221 :	1.00 	;
+		case 	222 :	0.50 	;
 		case	223	:	0.50	;
 		
 		default 	:	1.00	;
@@ -641,9 +642,9 @@ if( featureType == 27 )
 }
 
 // bulletExplodeDelay
-if( featureType == 28 )
+if( __type == 28 )
 {
-	return switch( cardType )
+	return switch( __arg0 )
 	{
 		case	106	:	0	;
 		default		:	0	;
@@ -651,9 +652,9 @@ if( featureType == 28 )
 }
 
 // force kill
-if( featureType == 29 )
+if( __type == 29 )
 {
-	return switch ( cardType )
+	return switch( __arg0 )
 	{
 		case	101	:	true;
 		case	105	:	true;

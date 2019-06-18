@@ -6,12 +6,44 @@ package com.gerantech.mmory.core.scripts;
  */
 class ScriptEngine
 {
+	static public var T00_RARITY:Int = 0;
+	static public var T01_AVAILABLE_AT:Int = 1;
+	static public var T02_ELIXIR_SIZE = 2;
+	static public var T03_QUANTITY = 3;
+	static public var T04_SUMMON_TIME = 4;
+	//static public var T05_BIRTH_RATE = 5;
+	
+	static public var T11_SPEED:Int = 11;
+	static public var T12_HEALTH:Int = 12;
+	static public var T13_SIZE_H:Int = 13;
+	static public var T14_SIZE_V:Int = 14;
+	static public var T15_FOCUS_RANGE:Int = 15;
+	static public var T16_EXPLOSIVE:Int = 16;
+	
+	static public var T21_BULLET_SPEED:Int = 21;
+	static public var T22_BULLET_DAMAGE:Int = 22;
+	static public var T23_BULLET_SHOOT_GAP:Int = 23;
+	static public var T24_BULLET_SHOOT_DELAY:Int = 24;
+	static public var T25_BULLET_RANGE_MIN:Int = 25;
+	static public var T26_BULLET_RANGE_MAX:Int = 26;
+	static public var T27_BULLET_DAMAGE_AREA:Int = 27;
+	static public var T28_BULLET_EXPLODE_DElAY:Int = 28;
+	static public var T29_BULLET_FORCE_KILL:Int = 29;
+
+	static public var T41_CHALLENGE_MODE:Int = 41;
+	static public var T42_CHALLENGE_TYPEE:Int = 42;
+	static public var T43_CHALLENGE_UNLOCKAT:Int = 43;
+	static public var T44_CHALLENGE_CAPACITY:Int = 44;
+	static public var T45_CHALLENGE_WAITTIME:Int = 45;
+	static public var T46_CHALLENGE_DURATION:Int = 46;
+	static public var T47_CHALLENGE_ELIXIRSPEED:Int = 47;
+
 	static var script:String;
 	static var version:Float;
 	static var program:Dynamic;
 	static var interp:hscript.Interp;
 
-	public static function initialize(_script:String) 
+	static public function initialize(_script:String) 
 	{
 		script = _script;
 		program = new hscript.Parser().parseString(script);
@@ -20,23 +52,21 @@ class ScriptEngine
 		version = get( -2, 0);
 	}
 	
-	public static function get(featureType:Int, cardType:Int, cardLevel:Int = 1) : Dynamic
+	static public function get(type:Int, args0:Dynamic, args1:Dynamic = 1) : Dynamic
 	{
-		interp.variables.set("featureType", featureType);
-		interp.variables.set("cardType", cardType);
-		interp.variables.set("cardLevel", cardLevel);
+		interp.variables.set("__type", type);
+		interp.variables.set("__args0", args0);
+		interp.variables.set("__args1", args1);
 		return interp.execute(program); 
 	}
 	
-	public static function getInt(featureType:Int, cardType:Int, cardLevel:Int = 1) : Int
+	static public function getInt(type:Int, args0:Dynamic, args1:Dynamic = 1) : Int
 	{
-		return Math.round( get(featureType, cardType, cardLevel) );
+		return Math.round( get(type, args0, args1) );
 	}
 	
-	public static function getBool(featureType:Int, cardType:Int, cardLevel:Int) : Bool
+	static public function getBool(type:Int, args0:Dynamic, args1:Dynamic = 1) : Bool
 	{
-		if( version < 1400 )
-			return get(featureType, cardType, cardLevel) == true;
-		return cast(get(featureType, cardType, cardLevel), Bool);
+		return cast(get(type, args0, args1), Bool);
 	}
 }

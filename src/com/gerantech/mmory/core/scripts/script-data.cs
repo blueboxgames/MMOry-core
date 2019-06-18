@@ -668,4 +668,83 @@ if( __type == 29 )
 }
 
 
+// =================== Challenges ====================== 
+
+// getMode(index:Int) : Int
+if( __type == 41 )
+{
+	return switch( __arg0 )
+	{
+		case 1:		1;
+		case 2:		2;
+		case 3:		3;
+		default:	0;
+	}
+}
+
+// getType(index:Int) : Int
+if( __type == 42 )
+{
+	return switch( __arg0 )
+	{
+		case 1:		1;
+		case 2:		1;
+		case 3:		2;
+		default:	0;
+	}
+}
+
+// getUnlockAt(index:Int) : Int
+if( __type == 43 )
+{
+	return switch( __arg0 )
+	{
+		case 1:		1;
+		case 2:		8;
+		case 3:		20;
+		default:	0;
+	}
+}
+
+// getCapacity(type:Int):Int
+if( __type == 44 )
+{
+	return switch( __arg0 )
+	{
+		case 2:		100;
+		default:	0;
+	}
+}
+
+// getWaitTime(type:Int) 
+if( __type == 45 )
+{
+	return switch( __arg0 )
+	{
+		case 2:		3600 * 24;
+		default:	0;
+	}
+}
+
+// getDuration(type:Int):Int
+if( __type == 46 )
+{
+	return switch( __arg0 )
+	{
+		case 1:		3600 * 24;
+		case 2:		3600 * 72;
+		default:	0;
+	}
+}
+
+// getElixirSpeed(mode:Int, rageMode:Bool) : Float
+if( __type == 47 )
+{
+	return switch( __arg0 )
+	{
+		case 2:		__arg1 ? 3 : 2;
+		default:	__arg1 ? 2 : 1;
+	}
+}
+
 return 0;

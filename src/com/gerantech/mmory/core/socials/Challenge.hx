@@ -147,69 +147,6 @@ class Challenge
 		return game.exchanger.exchange(getExchangeItem(type, runRequirements, arena), now);
 	}
 	
-	static public function getUnlockAt(index:Int) : Int
-	{
-		return switch( index )
-		{
-			case 1:		1;
-			case 2:		8;
-			case 3:		20;
-			default:	0;
-		}
-	}
-	
-	static public function getMode(index:Int) : Int
-	{
-		return switch( index )
-		{
-			case 1:		1;
-			case 2:		2;
-			case 3:		3;
-			default:	0;
-		}
-	}
-
-	#if java
-	
-	static public function getType(index:Int) : Int
-	{
-		return switch( index )
-		{
-			case 1:		1;
-			case 2:		1;
-			case 3:		2;
-			default:	0;
-		}
-	}
-	
-	static public function getCapacity(type:Int):Int
-	{
-		return switch( type )
-		{
-			case 2:		100;
-			default:	0;
-		}
-	}
-	
-	static public function getWaitTime(type:Int) 
-	{
-		return switch( type )
-		{
-			case 2:		3600 * 24;
-			default:	0;
-		}
-	}
-	
-	static public function getDuration(type:Int):Int
-	{
-		return switch( type )
-		{
-			case 1:		3600 * 24;
-			case 2:		3600 * 72;
-			default:	0;
-		}
-	}
-
 	static public function getlowestJoint(player:Player) : Int
 	{
 		var ret = ResourceType.R30_CHALLENGES + 1;
@@ -249,6 +186,7 @@ class Challenge
 		return ret;
 	}
 	
+#if java
 	static public function getJoinRequiements(type:Int):IntIntMap
 	{
 		var ret = new IntIntMap();
@@ -259,12 +197,12 @@ class Challenge
 		}
 		return ret;
 	}
-	#elseif flash
+#elseif flash
 	static public function getTargetLabel(type:Int) : String
 	{
 		return "challenge_wins";
 	}
-	#end
+#end
 	static public function getRunRequiements(mode:Int):IntIntMap
 	{
 		var ret = new IntIntMap();
@@ -276,15 +214,6 @@ class Challenge
 			default:	ret.set(ResourceType.R6_TICKET, 0);
 		}
 		return ret;
-	}
-	
-	static public function getElixirSpeed(mode:Int, rageMode:Bool) : Float
-	{
-		return switch( mode )
-		{
-			case 2:		rageMode ? 3 : 2;
-			default:	rageMode ? 2 : 1;
-		}
 	}
 	
 	static public function getExchangeItem(mode:Int, requirements:IntIntMap, arena:Int) : ExchangeItem

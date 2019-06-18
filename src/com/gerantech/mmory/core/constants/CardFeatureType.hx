@@ -7,29 +7,6 @@ package com.gerantech.mmory.core.constants;
 class CardFeatureType 
 {
 	public function new() {}
-	static public var F00_RARITY:Int = 0;
-	static public var F01_AVAILABLE_AT:Int = 1;
-	static public var F02_ELIXIR_SIZE = 2;
-	static public var F03_QUANTITY = 3;
-	static public var F04_SUMMON_TIME = 4;
-	//static public var F05_BIRTH_RATE = 5;
-	
-	static public var F11_SPEED:Int = 11;
-	static public var F12_HEALTH:Int = 12;
-	static public var F13_SIZE_H:Int = 13;
-	static public var F14_SIZE_V:Int = 14;
-	static public var F15_FOCUS_RANGE:Int = 15;
-	static public var F16_EXPLOSIVE:Int = 16;
-	
-	static public var F21_BULLET_SPEED:Int = 21;
-	static public var F22_BULLET_DAMAGE:Int = 22;
-	static public var F23_BULLET_SHOOT_GAP:Int = 23;
-	static public var F24_BULLET_SHOOT_DELAY:Int = 24;
-	static public var F25_BULLET_RANGE_MIN:Int = 25;
-	static public var F26_BULLET_RANGE_MAX:Int = 26;
-	static public var F27_BULLET_DAMAGE_AREA:Int = 27;
-	static public var F28_BULLET_EXPLODE_DElAY:Int = 28;
-	static public var F29_BULLET_FORCE_KILL:Int = 29;
 	
 #if flash
 	private static var _all:com.gerantech.mmory.core.utils.lists.IntList;

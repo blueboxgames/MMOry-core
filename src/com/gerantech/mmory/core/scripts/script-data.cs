@@ -675,7 +675,8 @@ if( __type == 41 )
 {
 	return switch( __arg0 )
 	{
-		case 1:		1;
+		case 0:		__arg1 % 2 == 0 ? 1 : 0;
+		case 1:		__arg1 % 2 == 0 ? 0 : 1;
 		case 2:		2;
 		case 3:		3;
 		default:	0;
@@ -744,6 +745,39 @@ if( __type == 47 )
 	{
 		case 2:		__arg1 ? 3 : 2;
 		default:	__arg1 ? 2 : 1;
+	}
+}
+
+// getRewardCoef(type:Int) : Float
+if( __type == 48 )
+{
+	return switch( __arg0 )
+	{
+		case 1:		1;
+		case 2:		2;
+		default:	0;
+	}
+}
+
+// getJoinRequiements(type:Int):IntIntMap
+if( __type == 51 )
+{
+	return switch( __arg0 )
+	{
+		//case 1:		ret.set(ResourceType.R4_CURRENCY_HARD, 0);
+		default:	"";//"4:0";
+	}
+}
+
+// getRunRequiements(type:Int):IntIntMap
+if( __type == 52 )
+{
+	return switch( __arg0 )
+	{
+		case 1:		"6:1";
+		case 2:		"6:2";
+		case 3:		"6:3";
+		default:	"6:0";
 	}
 }
 

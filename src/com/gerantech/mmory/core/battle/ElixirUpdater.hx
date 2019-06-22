@@ -1,6 +1,7 @@
 package com.gerantech.mmory.core.battle;
 
-import com.gerantech.mmory.core.socials.Challenge;
+import com.gerantech.mmory.core.scripts.ScriptEngine;
+
 /**
  * ...
  * @author Mansour Djawadi
@@ -8,25 +9,25 @@ import com.gerantech.mmory.core.socials.Challenge;
 class ElixirUpdater
 {
 	static public var INIT_VALUE:Int = 7;
-    static public var MAX_VALUE:Int = 10;
+	static public var MAX_VALUE:Int = 10;
 	static public var SPEED:Float = 0.00033;
 
-    public var bars:Array<Float>;
-    public var reserved:Array<Int>;
+	public var bars:Array<Float>;
+	public var reserved:Array<Int>;
 	public var normalSpeeds:Array<Float>;
 	public var finalSpeeds:Array<Float>;
 #if java 
 	public var callback:com.gerantech.mmory.core.interfaces.IValueChangeCallback;
 #end
-    public function new (mode:Int)
-    {
+	public function new (mode:Int)
+	{
 		this.reserved = [-1,-1];
 		this.bars = new Array<Float>();
 		this.normalSpeeds = new Array<Float>();
 		this.finalSpeeds = new Array<Float>();
-		this.normalSpeeds[0]	= this.normalSpeeds[1]	= SPEED * Challenge.getElixirSpeed(mode, false);
-		this.finalSpeeds[0]		= this.finalSpeeds[1]	= SPEED * Challenge.getElixirSpeed(mode, true);
-    }
+		this.normalSpeeds[0]	= this.normalSpeeds[1]	= SPEED * ScriptEngine.getInt(ScriptEngine.T47_CHALLENGE_ELIXIRSPEED, mode, false);
+		this.finalSpeeds[0]		= this.finalSpeeds[1]	= SPEED * ScriptEngine.getInt(ScriptEngine.T47_CHALLENGE_ELIXIRSPEED, mode, true);
+	}
 
 	public function init() : Void
 	{

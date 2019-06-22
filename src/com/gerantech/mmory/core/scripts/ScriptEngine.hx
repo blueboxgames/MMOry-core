@@ -1,5 +1,7 @@
 package com.gerantech.mmory.core.scripts;
 
+import hscript.Expr.Error;
+
 /**
  * ...
  * @author Mansour Djawadi
@@ -31,12 +33,15 @@ class ScriptEngine
 	static public var T29_BULLET_FORCE_KILL:Int = 29;
 
 	static public var T41_CHALLENGE_MODE:Int = 41;
-	static public var T42_CHALLENGE_TYPEE:Int = 42;
+	static public var T42_CHALLENGE_TYPE:Int = 42;
 	static public var T43_CHALLENGE_UNLOCKAT:Int = 43;
 	static public var T44_CHALLENGE_CAPACITY:Int = 44;
 	static public var T45_CHALLENGE_WAITTIME:Int = 45;
 	static public var T46_CHALLENGE_DURATION:Int = 46;
 	static public var T47_CHALLENGE_ELIXIRSPEED:Int = 47;
+	static public var T48_CHALLENGE_REWARDCOEF:Int = 48;
+	static public var T51_CHALLENGE_JOIN_REQS:Int = 51;
+	static public var T52_CHALLENGE_RUN_REQS:Int = 52;
 
 	static var script:String;
 	static var version:Float;
@@ -49,24 +54,27 @@ class ScriptEngine
 		program = new hscript.Parser().parseString(script);
 		interp = new hscript.Interp();
 		interp.variables.set("Math", Math); // share the Math class
-		version = get( -2, 0);
+		version = get(-2, 0);
 	}
 	
-	static public function get(type:Int, args0:Dynamic, args1:Dynamic = 1) : Dynamic
+	static public function get(type:Int, arg0:Dynamic, arg1:Dynamic = 1) : Dynamic
 	{
 		interp.variables.set("__type", type);
-		interp.variables.set("__args0", args0);
-		interp.variables.set("__args1", args1);
-		return interp.execute(program); 
+		interp.variables.set("__arg0", arg0);
+		interp.variables.set("__arg1", arg1);
+		
+		try { return interp.execute(program);	}
+		catch(e:Error) { trace("Error exp execute in type: " + type + ", args0: " + arg0 + ", arg1: " + arg1); }
+		return null;
 	}
 	
-	static public function getInt(type:Int, args0:Dynamic, args1:Dynamic = 1) : Int
+	static public function getInt(type:Int, arg0:Dynamic, arg1:Dynamic = 1) : Int
 	{
-		return Math.round( get(type, args0, args1) );
+		return Math.round( get(type, arg0, arg1) );
 	}
 	
-	static public function getBool(type:Int, args0:Dynamic, args1:Dynamic = 1) : Bool
+	static public function getBool(type:Int, arg0:Dynamic, arg1:Dynamic = 1) : Bool
 	{
-		return cast(get(type, args0, args1), Bool);
+		return cast(get(type, arg0, arg1), Bool);
 	}
 }

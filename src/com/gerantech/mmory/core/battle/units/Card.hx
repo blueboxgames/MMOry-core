@@ -1,6 +1,5 @@
 package com.gerantech.mmory.core.battle.units;
 import com.gerantech.mmory.core.Game;
-import com.gerantech.mmory.core.constants.CardFeatureType;
 import com.gerantech.mmory.core.constants.MessageTypes;
 import com.gerantech.mmory.core.constants.ResourceType;
 import com.gerantech.mmory.core.exchanges.ExchangeItem;
@@ -55,37 +54,37 @@ class Card
 	
 	private function setFeatures() : Void
 	{
-		rarity = ScriptEngine.getInt(CardFeatureType.F00_RARITY, type, level);
-		availableAt = ScriptEngine.getInt(CardFeatureType.F01_AVAILABLE_AT, type, level);
-		elixirSize = ScriptEngine.getInt(CardFeatureType.F02_ELIXIR_SIZE, type, level);
-		quantity = ScriptEngine.getInt(CardFeatureType.F03_QUANTITY, type, level);
-		summonTime = ScriptEngine.getInt(CardFeatureType.F04_SUMMON_TIME, type, level);
+		rarity = ScriptEngine.getInt(ScriptEngine.T00_RARITY, type, level);
+		availableAt = ScriptEngine.getInt(ScriptEngine.T01_AVAILABLE_AT, type, level);
+		elixirSize = ScriptEngine.getInt(ScriptEngine.T02_ELIXIR_SIZE, type, level);
+		quantity = ScriptEngine.getInt(ScriptEngine.T03_QUANTITY, type, level);
+		summonTime = ScriptEngine.getInt(ScriptEngine.T04_SUMMON_TIME, type, level);
 		
 		// troops data
-		speed = ScriptEngine.get(CardFeatureType.F11_SPEED, type, level);
-		health = ScriptEngine.get(CardFeatureType.F12_HEALTH, type, level);
-		sizeH = ScriptEngine.get(CardFeatureType.F13_SIZE_H, type, level);
-		sizeV = ScriptEngine.get(CardFeatureType.F14_SIZE_V, type, level);
-		focusRange = ScriptEngine.get(CardFeatureType.F15_FOCUS_RANGE, type, level);
-		explosive = ScriptEngine.getBool(CardFeatureType.F16_EXPLOSIVE, type, level);
+		speed = ScriptEngine.get(ScriptEngine.T11_SPEED, type, level);
+		health = ScriptEngine.get(ScriptEngine.T12_HEALTH, type, level);
+		sizeH = ScriptEngine.get(ScriptEngine.T13_SIZE_H, type, level);
+		sizeV = ScriptEngine.get(ScriptEngine.T14_SIZE_V, type, level);
+		focusRange = ScriptEngine.get(ScriptEngine.T15_FOCUS_RANGE, type, level);
+		explosive = ScriptEngine.getBool(ScriptEngine.T16_EXPLOSIVE, type, level);
 		
 		// bullet data
-		bulletSpeed = ScriptEngine.get(CardFeatureType.F21_BULLET_SPEED, type, level);
-		bulletDamage = ScriptEngine.get(CardFeatureType.F22_BULLET_DAMAGE, type, level);
-		bulletShootGap = ScriptEngine.getInt(CardFeatureType.F23_BULLET_SHOOT_GAP, type, level);
-		bulletShootDelay = ScriptEngine.getInt(CardFeatureType.F24_BULLET_SHOOT_DELAY, type, level);
-		//bulletRangeMin = ScriptEngine.get(CardFeatureType.F25_BULLET_RANGE_MIN, type, level);
-		bulletRangeMax = ScriptEngine.get(CardFeatureType.F26_BULLET_RANGE_MAX, type, level);
-		bulletDamageArea = ScriptEngine.get(CardFeatureType.F27_BULLET_DAMAGE_AREA, type, level);
-		bulletExplodeDelay = ScriptEngine.getInt(CardFeatureType.F28_BULLET_EXPLODE_DElAY, type, level);
+		bulletSpeed = ScriptEngine.get(ScriptEngine.T21_BULLET_SPEED, type, level);
+		bulletDamage = ScriptEngine.get(ScriptEngine.T22_BULLET_DAMAGE, type, level);
+		bulletShootGap = ScriptEngine.getInt(ScriptEngine.T23_BULLET_SHOOT_GAP, type, level);
+		bulletShootDelay = ScriptEngine.getInt(ScriptEngine.T24_BULLET_SHOOT_DELAY, type, level);
+		//bulletRangeMin = ScriptEngine.get(ScriptEngine.T25_BULLET_RANGE_MIN, type, level);
+		bulletRangeMax = ScriptEngine.get(ScriptEngine.T26_BULLET_RANGE_MAX, type, level);
+		bulletDamageArea = ScriptEngine.get(ScriptEngine.T27_BULLET_DAMAGE_AREA, type, level);
+		bulletExplodeDelay = ScriptEngine.getInt(ScriptEngine.T28_BULLET_EXPLODE_DElAY, type, level);
 #if java
-		bulletForceKill = ScriptEngine.getBool(CardFeatureType.F29_BULLET_FORCE_KILL, type, level);
+		bulletForceKill = ScriptEngine.getBool(ScriptEngine.T29_BULLET_FORCE_KILL, type, level);
 #end		
 	}
 	
 	static public function addNew(game:Game, type:Int) : Int
 	{
-		if( game.player.get_arena(0) < ScriptEngine.getInt(CardFeatureType.F01_AVAILABLE_AT, type, 1) )
+		if( game.player.get_arena(0) < ScriptEngine.getInt(ScriptEngine.T01_AVAILABLE_AT, type, 1) )
 		{
 			trace("card " + type + " can not collect in current league.");
 			return MessageTypes.RESPONSE_NOT_ALLOWED;

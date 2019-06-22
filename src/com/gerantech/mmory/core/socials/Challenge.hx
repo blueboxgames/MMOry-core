@@ -31,9 +31,9 @@ class Challenge
 	public var type:Int;
 	public var startAt:Int;
 	public var unlockAt:Int;
+	public var capacity:Int = 20;
 	public var waitTime:Int = 7200;
 	public var duration:Int = 28800;
-	public var capacity:Int = 20;
 	public var rewards:IntArenaMap;
 	public var joinRequirements:IntIntMap;
 	public var runRequirements:IntIntMap;
@@ -180,46 +180,23 @@ class Challenge
 			ret.set(5, new Arena(5, 11, 15, 55));
 			ret.set(6, new Arena(1, 16, 20, 54));
 			ret.set(7, new Arena(5, 21, 30, 53));
-			ret.set(8, new Arena(6, 31, 50, 1002));
+			ret.set(8, new Arena(6, 31, 50,	3 ));
 			ret.set(9, new Arena(7, 41, 999,-1));
 		}
 		return ret;
 	}
 	
-#if java
-	static public function getJoinRequiements(type:Int):IntIntMap
-	{
-		var ret = new IntIntMap();
-		switch( type )
-		{
-			//case 1:		ret.set(ResourceType.R4_CURRENCY_HARD, 0);
-			default:	ret.set(ResourceType.R4_CURRENCY_HARD, 0);
-		}
-		return ret;
-	}
-#elseif flash
+#if flash
 	static public function getTargetLabel(type:Int) : String
 	{
 		return "challenge_wins";
 	}
 #end
-	static public function getRunRequiements(mode:Int):IntIntMap
-	{
-		var ret = new IntIntMap();
-		switch( mode )
-		{
-			case 1:		ret.set(ResourceType.R6_TICKET, 1);
-			case 2:		ret.set(ResourceType.R6_TICKET, 2);
-			case 3:		ret.set(ResourceType.R6_TICKET, 3);
-			default:	ret.set(ResourceType.R6_TICKET, 0);
-		}
-		return ret;
-	}
 	
 	static public function getExchangeItem(mode:Int, requirements:IntIntMap, arena:Int) : ExchangeItem
 	{
 		var ret:ExchangeItem = new ExchangeItem(ResourceType.R30_CHALLENGES + mode + 1);
-        ret.outcomes = new IntIntMap(ResourceType.R1_XP + ":" + 2 * arena);
+		ret.outcomes = new IntIntMap(ResourceType.R1_XP + ":" + 2 * arena);
 		ret.requirements = requirements;
 		return ret;
 	}	

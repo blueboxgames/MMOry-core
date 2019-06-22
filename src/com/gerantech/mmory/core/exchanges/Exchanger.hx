@@ -2,7 +2,6 @@ package com.gerantech.mmory.core.exchanges;
 
 import com.gerantech.mmory.core.Game;
 import com.gerantech.mmory.core.battle.units.Card;
-import com.gerantech.mmory.core.constants.CardFeatureType;
 import com.gerantech.mmory.core.constants.CardTypes;
 import com.gerantech.mmory.core.constants.ExchangeType;
 import com.gerantech.mmory.core.constants.MessageTypes;
@@ -225,7 +224,7 @@ class Exchanger
 			else if( reqKeys[i] == ResourceType.R3_CURRENCY_SOFT )
 				softs += map.get(reqKeys[i]);
 			else if( ResourceType.isCard(reqKeys[i])) 
-				softs += cardToSoft(map.get(reqKeys[i]), ScriptEngine.getInt(CardFeatureType.F00_RARITY, reqKeys[i]));
+				softs += cardToSoft(map.get(reqKeys[i]), ScriptEngine.getInt(ScriptEngine.T00_RARITY, reqKeys[i]));
 			else if( ResourceType.isBook(reqKeys[i]))
 				hards += toHard(estimateBookOutcome(reqKeys[i], map.get(reqKeys[i]), 1));
 			i ++;
@@ -249,7 +248,7 @@ class Exchanger
 			else if( reqKeys[i] == ResourceType.R3_CURRENCY_SOFT )
 				softs += map.get(reqKeys[i]);
 			else if( ResourceType.isCard(reqKeys[i]) ) 
-				softs += cardToSoft(map.get(reqKeys[i]), ScriptEngine.getInt(CardFeatureType.F00_RARITY, reqKeys[i]));
+				softs += cardToSoft(map.get(reqKeys[i]), ScriptEngine.getInt(ScriptEngine.T00_RARITY, reqKeys[i]));
 			
 			i ++;
 		}

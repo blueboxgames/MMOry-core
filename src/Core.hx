@@ -2,6 +2,7 @@ package;
 import com.gerantech.mmory.core.Game;
 import com.gerantech.mmory.core.others.Quest;
 import com.gerantech.mmory.core.utils.CoreUtils;
+import com.gerantech.mmory.core.battle.Outcome;
 import com.gerantech.mmory.core.battle.BattleField;
 import com.gerantech.mmory.core.scripts.ScriptEngine;
 import com.gerantech.mmory.core.socials.Challenge;

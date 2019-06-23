@@ -152,8 +152,8 @@ if( featureType == 2 )
 	{
 		case 101 :	4	;
 		case 102 :	5	;
-		case 103 :  4	;
-		case 104 :  3	;
+		case 103 :  3	;
+		case 104 :  4	;
 		case 105 :  5	;
 		case 106 :  4	;
 		case 107 :  4	;
@@ -291,7 +291,7 @@ if( featureType == 12 )
 		case	107	:	0.30;
 		case	108	:	0.80;
 		case	109	:	0.30;
-		case	110	:	0.10;
+		case	110	:	0.30;
 		case	111	:	1.00;
 		case	112	:	1.00;
 		case	113	:	1.30;
@@ -576,7 +576,7 @@ if( featureType == 26 )
 	{
 		case	101	:	1.8 	;
 		case	102	:	0.9		;
-		case	103	:	0.55	;
+		case	103	:	0.4		;
 		case	104	:	0.9		;
 		case	105	:	0.5		;
 		case	106	:	1.6		;

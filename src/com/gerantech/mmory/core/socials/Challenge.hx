@@ -283,7 +283,7 @@ class Challenge
 		return switch( mode )
 		{
 			case 2:		rageMode ? 3 : 2;
-			default:	rageMode ? 2 : 1;
+			default:	rageMode ? 2.5 : 1.5;
 		}
 	}
 	

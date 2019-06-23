@@ -55,7 +55,7 @@ if( __type == -3 )
 // version
 if( __type == -2 )
 {
-	return 1400.0;
+	return 2100;
 }
 
 // chance
@@ -780,7 +780,6 @@ if( __type == 52 )
 		default:	"6:0";
 	}
 }
-
 // =================== BATTLES ====================== 
 
 //numtutorBattles(mode:Int) : Int
@@ -789,52 +788,78 @@ if( __type == 61 )
 	return switch( __arg0 ) // mode
 	{
 		case 0	: 3;
-		default:	3;
+		default	:	3;
 	}
 }
 
 //numCovers(mode:Int, battleWins:Int) : Int
 if( __type == 62 )
 {
-	// mode 0
-	if( __arg0 == 0 )
+	if( __arg0 == 0 ) // mode 0
 	return switch( __arg1 ) // battleWins
 	{
 		case 0	: 1;
-		default:	0;
+		default	:	1;
 	}
 
 	// mode 1
 	return switch( __arg1 )
 	{
 		case 0	: 1;
-		default:	0;
+		default	:	1;
 	}
 }
 
 //numRound(mode:Int, battleWins:Int) : Int
 if( __type == 63 )
 {
-	if( __arg0 == 0 )	// mode 0
+	// mode 0
+	if( __arg0 == 0 )
 	return switch( __arg1 )
 	{
 		case 0	: 2;
-		default:	1;
+		default	:	2;
 	}
 
 	// mode 1
 	return switch( __arg1 )
 	{
 		case 0	: 2;
-		default:	1;
+		default	:	2;
 	}
 }
 
-// summonPos(mode:Int, type:String, battleIndex:Int):Array
+// getPauseTime(mode:Int, battleWins:Int, numSummonedUnits:Int) : Int
 if( __type == 64 )
 {
+	if( __arg2 == 1 ) // numSummonedUnits
+	{
+		// mode 0
+		if( __arg0 == 0 )
+		return switch( __arg1 )
+		{
+			case 0	: 1200;
+			default	:	0;
+		}
+
+		// mode 1
+		return switch( __arg1 )
+		{
+			case 0	: 1200;
+			default	:	0;
+		}
+	}
+
+	if( __arg2 == 2 ) // numSummonedUnits
+		return 2000000;
+	return 0;
+}
+
+// summonPos(mode:Int, type:String, battleIndex:Int):Array
+if( __type == 66 )
+{
 	// mode 0
-	if( __arg0 == 0 )
+	if( __arg0 == 0 ) // mode 0
 	{
 		if( __arg1 == "start" )
 		return switch( __arg2 )
@@ -843,7 +868,7 @@ if( __type == 64 )
 			case 0	: [1, 200, 1300, 500];
 			case 1	:	[1, 200, 1300, 500];
 			case 2	: [1, 200, 1300, 500];
-			default:	[;
+			default	:	null;
 		}
 
 		if( __arg1 == "cover" )
@@ -852,17 +877,16 @@ if( __type == 64 )
 			case 0	: [1, 300, 1200, 2000];
 			case 1	:	[1, 300, 1200, 2000];
 			case 2	: [1, 300, 1200, 2000];
-			default:	[];
+			default:	null;
 		}
 
 		if( __arg1 == "newround" )
 		return switch( __arg2 )
 		{
-		// (deck-card-index, x-pos, y-pos, delay)
 			case 0	: [1, 450, 900, 200];
 			case 1	:	[1, 450, 900, 200];
 			case 2	: [1, 450, 900, 200];
-			default:	[];
+			default:	null;
 		}
 	}
 
@@ -870,32 +894,30 @@ if( __type == 64 )
 	if( __arg1 == "start" )
 	return switch( __arg2 )
 	{
-		case 0	: [1, 222, 333, 111];
-		case 1	:	[1, 222, 333, 111];
-		case 2	: [1, 222, 333, 111];
-		default:	[];
+		case 0	: [1, 500, 1500, 500];
+		case 1	:	[1, 650, 1600, 500];
+		case 2	: [1, 500, 1400, 500];
+		default:	null;
 	}
 
 	if( __arg1 == "cover" )
 	return switch( __arg2 )
 	{
-		case 0	: [1, 222, 333, 111];
-		case 1	:	[1, 222, 333, 111];
-		case 2	: [1, 222, 333, 111];
-		default:	[];
+		case 0	: [2, 700, 1800, 2000];
+		case 1	:	[2, 600, 1700, 2000];
+		case 2	: [2, 600, 1600, 2000];
+		default:	null;
 	}
 
 	if( __arg1 == "newround" )
 	return switch( __arg2 )
 	{
-		case 0	: [1, 222, 333, 111];
-		case 1	:	[1, 222, 333, 111];
-		case 2	: [1, 222, 333, 111];
-		default:	[];
+		case 0	: [1, 450, 900, 200];
+		case 1	:	[3, 450, 900, 200];
+		case 2	: [2, 450, 900, 200];
+		default:	null;
 	}
-
-	return [];
-	}
+	return null;
 }
 
 return 0;

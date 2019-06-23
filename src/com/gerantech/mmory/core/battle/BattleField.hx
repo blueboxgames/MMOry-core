@@ -1,4 +1,5 @@
 package com.gerantech.mmory.core.battle;
+import com.gerantech.mmory.core.scripts.ScriptEngine;
 import com.gerantech.mmory.core.Game;
 import com.gerantech.mmory.core.battle.fieldes.FieldData;
 import com.gerantech.mmory.core.battle.tilemap.TileMap;
@@ -243,13 +244,12 @@ class BattleField
 			return index;
 		}
 		
-		if( side == 0 && games[0].player.get_battleswins() < 2 )
+		if( side == 0 )
 		{
 			numSummonedUnits ++;
-			if( numSummonedUnits == 1 )
-				pauseTime = now + 1200;
-			else if( numSummonedUnits == 2 )
-				pauseTime = now + 2000000;
+			var ptoffset = ScriptEngine.getInt(ScriptEngine.T64_BATTLE_PAUSE_TIME, field.mode, games[0].player.get_battleswins(), numSummonedUnits);
+			if( ptoffset > 0 )
+				pauseTime = now + ptoffset;
 		}
 		
 		var card = decks.get(side).get(type);

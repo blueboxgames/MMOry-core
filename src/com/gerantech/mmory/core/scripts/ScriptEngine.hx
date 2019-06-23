@@ -46,7 +46,8 @@ class ScriptEngine
 	static public var T61_BATTLE_NUM_TUTORS:Int = 61;
 	static public var T62_BATTLE_NUM_COVERS:Int = 62;
 	static public var T63_BATTLE_NUM_ROUND:Int = 63;
-	static public var T64_BATTLE_SUMMON_POS:Int = 64;
+	static public var T64_BATTLE_PAUSE_TIME:Int = 64;
+	static public var T66_BATTLE_SUMMON_POS:Int = 66;
 
 	static var script:String;
 	static var version:Float;
@@ -56,16 +57,20 @@ class ScriptEngine
 	static public function initialize(_script:String) 
 	{
 		script = _script;
-		program = new hscript.Parser().parseString(script);
-		interp = new hscript.Interp();
-		interp.variables.set("Math", Math); // share the Math class
-		version = get(-2, 0);
+		try
+		{
+			program = new hscript.Parser().parseString(script);
+			interp = new hscript.Interp();
+			interp.variables.set("Math", Math); // share the Math class
+			version = get(-2, 0);
+		} catch(e:Error) { trace(e); }
 	}
 	
 	static public function get(type:Int, ?arg0:Dynamic, ?arg1:Dynamic = null, ?arg2:Dynamic = null, ?arg3:Dynamic = null) : Dynamic
 	{
 		interp.variables.set("__type", type);
-		interp.variables.set("__arg0", arg0);
+		if( arg0 != null )
+			interp.variables.set("__arg0", arg0);
 		if( arg1 != null )
 			interp.variables.set("__arg1", arg1);
 		if( arg2 != null )

@@ -6,6 +6,9 @@
         {
             "type": "haxe",
             "args": "active configuration",
+            "presentation": {
+                "clear": true,
+            },
             "problemMatcher": [
                 "$haxe-absolute",
                 "$haxe",

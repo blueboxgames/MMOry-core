@@ -43,6 +43,11 @@ class ScriptEngine
 	static public var T51_CHALLENGE_JOIN_REQS:Int = 51;
 	static public var T52_CHALLENGE_RUN_REQS:Int = 52;
 
+	static public var T61_BATTLE_NUM_TUTORS:Int = 61;
+	static public var T62_BATTLE_NUM_COVERS:Int = 62;
+	static public var T63_BATTLE_NUM_ROUND:Int = 63;
+	static public var T64_BATTLE_SUMMON_POS:Int = 64;
+
 	static var script:String;
 	static var version:Float;
 	static var program:Dynamic;
@@ -57,24 +62,29 @@ class ScriptEngine
 		version = get(-2, 0);
 	}
 	
-	static public function get(type:Int, arg0:Dynamic, arg1:Dynamic = 1) : Dynamic
+	static public function get(type:Int, ?arg0:Dynamic, ?arg1:Dynamic = null, ?arg2:Dynamic = null, ?arg3:Dynamic = null) : Dynamic
 	{
 		interp.variables.set("__type", type);
 		interp.variables.set("__arg0", arg0);
-		interp.variables.set("__arg1", arg1);
+		if( arg1 != null )
+			interp.variables.set("__arg1", arg1);
+		if( arg2 != null )
+			interp.variables.set("__arg2", arg2);
+		if( arg3 != null )
+			interp.variables.set("__arg3", arg3);
 		
 		try { return interp.execute(program);	}
-		catch(e:Error) { trace("Error exp execute in type: " + type + ", args0: " + arg0 + ", arg1: " + arg1); }
+		catch(e:Error) { trace("Error exp execute in type: " + type + ", args0: " + arg0 + ", arg1: " + arg1 + ", arg2: " + arg2 + ", arg3: " + arg3); }
 		return null;
 	}
 	
-	static public function getInt(type:Int, arg0:Dynamic, arg1:Dynamic = 1) : Int
+	static public function getInt(type:Int, arg0:Dynamic, arg1:Dynamic = null, arg2:Dynamic = null, arg3:Dynamic = null) : Int
 	{
-		return Math.round( get(type, arg0, arg1) );
+		return Math.round(get(type, arg0, arg1, arg2, arg3));
 	}
 	
-	static public function getBool(type:Int, arg0:Dynamic, arg1:Dynamic = 1) : Bool
+	static public function getBool(type:Int, ?arg0:Dynamic, ?arg1:Dynamic = null, ?arg2:Dynamic = null, ?arg3:Dynamic = null) : Bool
 	{
-		return cast(get(type, arg0, arg1), Bool);
+		return cast(get(type, arg0, arg1, arg2, arg3), Bool);
 	}
 }

@@ -42,7 +42,7 @@
                 "clear": true,
             },
             "windows": {
-                "command": "call ${workspaceRoot}\\deployScript.bat"
+                "command": "${workspaceRoot}\\deployScript.bat"
             },
             "problemMatcher": []
         }

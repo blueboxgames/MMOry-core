@@ -1,7 +1,6 @@
 package com.gerantech.mmory.core;
 import com.gerantech.mmory.core.Game;
 import com.gerantech.mmory.core.battle.units.Card;
-import com.gerantech.mmory.core.constants.CardFeatureType;
 import com.gerantech.mmory.core.constants.CardTypes;
 import com.gerantech.mmory.core.constants.PrefsTypes;
 import com.gerantech.mmory.core.constants.ResourceType;
@@ -156,7 +155,7 @@ class Player
 	public function availabledCards(arena:Int = -1, mode:Int = 0) : Array<Int>
 	{
 		var _arena = arena == -1 ? get_arena(get_point()) : arena;
-		var _all:Array<Int> = ScriptEngine.get(CardFeatureType.F01_AVAILABLE_AT, -1);
+		var _all:Array<Int> = ScriptEngine.get(ScriptEngine.T01_AVAILABLE_AT, -1);
 		if( mode == 0 )
 		{
 			if( _arena == 0 )
@@ -174,7 +173,7 @@ class Player
 			return CardTypes.AVAILABLITY_EXISTS;
 		if( cards.exists(type) )
 			return CardTypes.AVAILABLITY_EXISTS;
-		return ScriptEngine.getInt(CardFeatureType.F01_AVAILABLE_AT, type, 1) <= get_arena(0) ? CardTypes.AVAILABLITY_WAIT : CardTypes.AVAILABLITY_NOT;
+		return ScriptEngine.getInt(ScriptEngine.T01_AVAILABLE_AT, type, 1) <= get_arena(0) ? CardTypes.AVAILABLITY_WAIT : CardTypes.AVAILABLITY_NOT;
 	}
 
 
@@ -235,7 +234,7 @@ class Player
 		var targets = new IntIntMap();
 		while ( i >= 0 )
 		{
-			if( ScriptEngine.getInt(CardFeatureType.F00_RARITY, keys[i]) == rarity )
+			if( ScriptEngine.getInt(ScriptEngine.T00_RARITY, keys[i]) == rarity )
 				targets.set(keys[i], 0);
 			i --;
 		}
@@ -327,8 +326,8 @@ class Player
         while ( i < numCards )
         {
 			var type:Int = cardTypes[i];
-			var rarity = ScriptEngine.getInt(CardFeatureType.F00_RARITY, type, 1);
-			var availabled = ScriptEngine.getInt(CardFeatureType.F01_AVAILABLE_AT, type, 1);
+			var rarity = ScriptEngine.getInt(ScriptEngine.T00_RARITY, type, 1);
+			var availabled = ScriptEngine.getInt(ScriptEngine.T01_AVAILABLE_AT, type, 1);
 			var level:Int = Math.round(Math.max(1, roundBase - rarity - availabled + (Math.random() < ratio ? 1 : 0)));
 			log += (" ," + type + ":" + level);
 			cards.set(type, new Card(game, type, level));

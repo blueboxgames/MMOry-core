@@ -6,6 +6,9 @@
         {
             "type": "haxe",
             "args": "active configuration",
+            "presentation": {
+                "clear": true,
+            },
             "problemMatcher": [
                 "$haxe-absolute",
                 "$haxe",
@@ -16,19 +19,32 @@
         {
             "label": "deploy",
             "type": "shell",
-            "command":[],
+            "group": "build",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
             "windows": {
                 "command": "${workspaceRoot}\\deploy.bat"
             },
-            "group": {
-                "kind": "build",
-                "isDefault": true
+            "presentation": {
+                "clear": true,
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "deploy script",
+            "type": "shell",
+            "group": "build",
+            "options": {
+                "cwd": "${workspaceFolder}"
             },
             "presentation": {
-                "panel": "dedicated"
+                "clear": true,
+            },
+            "windows": {
+                "command": "call ${workspaceRoot}\\deployScript.bat"
             },
             "problemMatcher": []
         }
-        
     ]
 }

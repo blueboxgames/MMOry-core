@@ -7,8 +7,8 @@ set DATE=%date:~-10,2%%date:~-7,2%%time:~-11,2%%time:~-8,2%%time:~-5,2%
 :: Repace space with 0
 for %%a in (%DATE: =0%) do set DATE=%%a
 
-set INTEXTFILE=src\com\gt\towers\LoginData.hx
-set OUTTEXTFILE=src\com\gt\towers\LoginData_temp.hx
+set INTEXTFILE=src\com\gerantech\mmory\core\LoginData.hx
+set OUTTEXTFILE=src\com\gerantech\mmory\core\LoginData_temp.hx
 set SEARCHTEXT=coreVersion
 set REPLACETEXT=%DATE%";//do not change len.
 
@@ -41,12 +41,12 @@ echo %%A | findstr /C:%SEARCHTEXT% 1>nul
 )
 
 del %OUTTEXTFILE%
-
-
+echo LoginData version updated.
 endlocal
 
 :: Compile haxe classes to flash and java platforms
 haxe compile.hxml
+echo Haxe targets compiled.
 
 :: Move to usage address
 :::echo f | xcopy /f /y bin\flash\Core.swf C:\SmartFoxServer_2X\SFS2X-5000\www\swfcores\core-%NEWNAME%.swf
@@ -56,6 +56,5 @@ echo f | xcopy /f /y bin\flash\Core.swc C:\_projects\mmories\mmory-client\libs\m
 echo f | xcopy /f /y bin\java\Core.jar C:\SmartFoxServer_2X\SFS2X-5000\extensions\__lib__\\mmory-core.jar
 ::C:\_softwares\server\pscp.exe -pw *** bin\java\Core.jar root@130.185.74.249:/home/babak/SmartFoxServer_2X/SFS2X/extensions/__lib__/core.jar
 
-echo f | xcopy /f /y src\com\gt\towers\scripts\features.hs C:\SmartFoxServer_2X\SFS2X-5000\www\maps\features.js
-
+echo f | xcopy /f /y src\com\gerantech\mmory\core\scripts\script-data.cs C:\SmartFoxServer_2X\SFS2X-5000\www\maps\script-data.cs
 exit

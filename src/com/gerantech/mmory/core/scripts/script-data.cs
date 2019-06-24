@@ -467,17 +467,17 @@ if( __type == 22 )
 {
 	var ret = switch( __arg0 )
 	{
-		case	101	:	0.30;
-		case	102	:	0.30;
-		case	103	:	0.04;
+		case	101	:	0.30	;
+		case	102	:	0.30	;
+		case	103	:	0.04	;
 		case	104	:	0.24	;
 		case	105	:	0.68	;
 		case	106	:	0.16	;
 		case	107	:	0.60	;
 		case	108	:	0.07	;
-		case	109	:-0.08	;
-		case	110	: 0.10	;
-		case	111	: 0.24	;
+		case	109	:	-0.08	;
+		case	110	: 	0.10	;
+		case	111	: 	0.24	;
 		case	112	:	0.10	;
 		case	113	:	0.20	;
 		case	114	:	0.12	;
@@ -488,7 +488,7 @@ if( __type == 22 )
 		
 		case	201	:	0.06	;
 		case	221	:	0.20	;
-		case	222	:	0.17	;
+		case	222	:	0.26	;
 		case	223	:	0.16	;
 		
 		
@@ -521,7 +521,7 @@ if( __type == 23 )
 		
 		case 	201 :	1.0 ;
 		case 	221 :	1.0 ;
-		case 	222 :	1.0 ;
+		case 	222 :	1.5 ;
 		case 	223 :	0.7 ;
 		
 		default		:	1.0 ;

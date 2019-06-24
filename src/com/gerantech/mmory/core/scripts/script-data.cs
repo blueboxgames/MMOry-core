@@ -743,8 +743,8 @@ if( __type == 47 )
 {
 	return switch( __arg0 )
 	{
-		case 2:		__arg1 ? 3 : 2;
-		default:	__arg1 ? 2 : 1;
+		case 2:		__arg1 ? 3.0 : 2.0;
+		default:	__arg1 ? 2.5 : 1.5;
 	}
 }
 

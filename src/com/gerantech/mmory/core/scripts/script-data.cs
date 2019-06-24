@@ -676,7 +676,7 @@ if( __type == 41 )
 	return switch( __arg0 )
 	{
 		case 0:		__arg1 % 2 == 0 ? 0 : 1;
-		case 1:		__arg1 % 2 == 0 ? 0 : 1;
+		case 1:		__arg1 % 2 == 0 ? 1 : 0;
 		case 2:		2;
 		case 3:		3;
 		default:	0;
@@ -838,14 +838,17 @@ if( __type == 64 )
 		if( __arg0 == 0 )
 		return switch( __arg1 )
 		{
-			case 0	: 1200;
+			case 0	: 1000;
+			case 1	: 1300;
 			default	:	0;
 		}
 
 		// mode 1
 		return switch( __arg1 )
 		{
-			case 0	: 1200;
+			case 0	: 1000;
+			case 1	: 1300;
+			case 2	: 1300;
 			default	:	0;
 		}
 	}
@@ -855,7 +858,7 @@ if( __type == 64 )
 	return 0;
 }
 
-// summonPos(mode:Int, type:String, battleIndex:Int):Array
+// summonPos(mode:Int, type:String, battleIndex*10+numSummonedUnits:Int):Array
 if( __type == 66 )
 {
 	// mode 0
@@ -865,8 +868,8 @@ if( __type == 66 )
 		return switch( __arg2 )
 		{
 		// (deck-card-index, x-pos, y-pos, delay)
-			case 0	: [1, 200, 1300, 500];
-			case 1	:	[1, 200, 1300, 500];
+			case 0	: [0, 200, 1250, 500];
+			case 1	:	[0, 200, 1300, 500];
 			case 2	: [1, 200, 1300, 500];
 			default	:	null;
 		}
@@ -874,16 +877,16 @@ if( __type == 66 )
 		if( __arg1 == "cover" )
 		return switch( __arg2 )
 		{
-			case 0	: [1, 300, 1200, 2000];
-			case 1	:	[1, 300, 1200, 2000];
-			case 2	: [1, 300, 1200, 2000];
+			case 1	: [2, 300, 1450, 2000];
+			case 11	:	[1, 300, 1200, 2000];
+			case 21	: [1, 300, 1200, 2000];
 			default:	null;
 		}
 
 		if( __arg1 == "newround" )
 		return switch( __arg2 )
 		{
-			case 0	: [1, 450, 900, 200];
+			case 0	: [1, 450, 850, 200];
 			case 1	:	[1, 450, 900, 200];
 			case 2	: [1, 450, 900, 200];
 			default:	null;
@@ -894,27 +897,29 @@ if( __type == 66 )
 	if( __arg1 == "start" )
 	return switch( __arg2 )
 	{
-		case 0	: [1, 500, 1500, 500];
-		case 1	:	[1, 650, 1600, 500];
-		case 2	: [1, 500, 1400, 500];
+		case 0	: [1, 350, 1400, 500];
+		case 1	:	[1, 650, 1400, 500];
+		case 2	: [0, 500, 1400, 500];
 		default:	null;
 	}
 
 	if( __arg1 == "cover" )
 	return switch( __arg2 )
 	{
-		case 0	: [2, 700, 1800, 2000];
-		case 1	:	[2, 600, 1700, 2000];
-		case 2	: [2, 600, 1600, 2000];
+		case 1	: [1, 700, 1400, 2000];
+		case 11	:	[3, 600, 1500, 2000];
+		case 12	:	[2, 600, 1500, 2000];
+		case 21	: [2, 600, 1400, 2000];
+		case 22	: [2, 700, 1500, 2000];
 		default:	null;
 	}
 
 	if( __arg1 == "newround" )
 	return switch( __arg2 )
 	{
-		case 0	: [1, 450, 900, 200];
-		case 1	:	[3, 450, 900, 200];
-		case 2	: [2, 450, 900, 200];
+		case 0	: [1, 540, 1400, 3000];
+		case 1	:	[3, 540, 1500, 3000];
+		case 2	: [2, 540, 1500, 3000];
 		default:	null;
 	}
 	return null;

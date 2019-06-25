@@ -101,7 +101,7 @@ class Card
 	static public var UPGRADE_CARD:Array<Int> = [0,	2,	4,	 10,	 20,	50,		100,	200,	400,	800,	1000,	2000,	5000];
 	static public function get_upgradeCost(level:Int, rarity:Int = 0):Int
 	{
-		var lvl = Math.round(Math.max(1, level - RARITY_START_LEVEL[rarity]));
+		var lvl = level;// Math.round(Math.max(1, level - RARITY_START_LEVEL[rarity]));
 		if( lvl < UPGRADE_COST.length )
 			return UPGRADE_COST[lvl];
 		return Math.floor( Math.pow( 2, lvl - 9 ) * 100000 );

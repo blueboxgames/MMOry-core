@@ -136,17 +136,17 @@ class Card
 	public function get_upgradeRewards():IntIntMap 
 	{
 		var ret = new IntIntMap();
-		var arena = game.player.get_arena(game.player.get_point());
-		var minWinStreak = game.arenas.get(arena).minWinStreak;
-		var playerWinStreak = game.player.get_winStreak();
+/* 		var arena = game.player.get_arena(game.player.get_point());
+		var minWinRate = game.arenas.get(arena).minWinStreak;
+		var playerWinRate = game.player.get_winRate(); */
 		
 		// XP rewards
 		ret.set(ResourceType.R1_XP, Math.round( ( Math.log(level * level) + Math.log(1) ) * 30 ) + 4);
 		
 		// reduce winStreak to make AI difficulty easier
-		if ( playerWinStreak - 9 <= minWinStreak )
-			ret.set(ResourceType.R16_WIN_RATE, minWinStreak - playerWinStreak);
-		else
+	/* 	if ( playerWinRate - 9 <= minWinRate )
+			ret.set(ResourceType.R16_WIN_RATE, minWinRate - playerWinRate);
+		else */
 			ret.set(ResourceType.R16_WIN_RATE, -1);
 		
 		return ret;

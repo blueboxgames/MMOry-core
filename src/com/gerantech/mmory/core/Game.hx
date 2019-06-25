@@ -41,15 +41,15 @@ class Game
 	{
 		arenas = new IntArenaMap();
 	  //						Arena(num   ,	min ,	max , minWinrate));
-		arenas.set(	0	, new Arena(	0	,	0	,	50	,	-8	));
-		arenas.set(	1	, new Arena(	1	,	51	,	120	,	-7	));
-		arenas.set(	2	, new Arena(	2	,	121	,	300	,	-6	));
-		arenas.set(	3	, new Arena(	3	,	301	,	400	,	-5	));
-		arenas.set(	4	, new Arena(	4	,	401	,	500	,	-4	));
-		arenas.set(	5	, new Arena(	5	,	501	,	600	,	-3	));
-		arenas.set(	6	, new Arena(	6	,	601	,	730	,	-2	));
-		arenas.set(	7	, new Arena(	7	,	731	,	860	,	-1	));
-		arenas.set(	8	, new Arena(	8	,	861	,	1000	,	0	));
+		arenas.set(	0	, new Arena(	0	,	0		,	50		,	-8	));
+		arenas.set(	1	, new Arena(	1	,	51		,	120		,	-7	));
+		arenas.set(	2	, new Arena(	2	,	121		,	300		,	-6	));
+		arenas.set(	3	, new Arena(	3	,	301		,	400		,	-5	));
+		arenas.set(	4	, new Arena(	4	,	401		,	500		,	-4	));
+		arenas.set(	5	, new Arena(	5	,	501		,	600		,	-3	));
+		arenas.set(	6	, new Arena(	6	,	601		,	730		,	-2	));
+		arenas.set(	7	, new Arena(	7	,	731		,	860		,	-1	));
+		arenas.set(	8	, new Arena(	8	,	861		,	1000	,	0	));
 		arenas.set(	9	, new Arena(	9	,	1001	,	1160	,	0	));
 		arenas.set(	10	, new Arena(	10	,	1161	,	1320	,	0	));
 		arenas.set(	11	, new Arena(	11	,	1321	,	1500	,	0	));

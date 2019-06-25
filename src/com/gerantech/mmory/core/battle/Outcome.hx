@@ -18,10 +18,10 @@ class Outcome
 	static var COE_POINTS:Int = 3;
 
 	static public function get(game:Game, type:Int, mode:Int, friendlyMode:Int, stars:Int, ratio:Float, now:Int) : IntIntMap
-  {
+  	{
 		var ret = new IntIntMap();
 		if( friendlyMode > 0 )
-    {
+    	{
 			ret.set(ResourceType.R15_BATTLES_FRIENDLY, 1);
 			return ret;
 		}
@@ -41,13 +41,13 @@ class Outcome
 			ret.set(ResourceType.R17_STARS, stars);
 
 		if( ratio > 1 )
-    {
+    	{
 			// num wins
 			ret.set(ResourceType.R13_BATTLES_WINS, 1);
 			ret.set(ResourceType.R30_CHALLENGES, mode + 1);
 
 			// soft-currency
-      var sc = Math.max(0, stars) + Math.min(league.index * 2, Math.max(0, game.player.get_point() - game.player.get_softs())) * mode;
+      		var sc = Math.max(0, stars) + Math.min(league.index * 2, Math.max(0, game.player.get_point() - game.player.get_softs())) * mode;
 			var softs:Int = 2 * cast(sc, Int);
 			if( softs != 0 )
 				ret.set(ResourceType.R3_CURRENCY_SOFT, softs);
@@ -63,7 +63,7 @@ class Outcome
 			// random book
 			var emptySlotsType = getEmptySlots(game, now);
 			if( emptySlotsType.length > 0 )
-      {
+      		{
 				var randomEmptySlotIndex = game.player.get_battleswins() == 0 ? 0 : Math.floor(Math.random() * emptySlotsType.length);
 				var emptySlot = game.exchanger.items.get(emptySlotsType[randomEmptySlotIndex]);
 				game.exchanger.findRandomOutcome(emptySlot, now);

@@ -154,8 +154,8 @@ if( __type == 2 )
 	{
 		case 101 :	4	;
 		case 102 :	5	;
-		case 103 :  4	;
-		case 104 :  3	;
+		case 103 :  3	;
+		case 104 :  4	;
 		case 105 :  5	;
 		case 106 :  4	;
 		case 107 :  4	;
@@ -293,7 +293,7 @@ if( __type == 12 )
 		case	107	:	0.30;
 		case	108	:	0.80;
 		case	109	:	0.30;
-		case	110	:	0.10;
+		case	110	:	0.30;
 		case	111	:	1.00;
 		case	112	:	1.00;
 		case	113	:	1.30;
@@ -467,17 +467,17 @@ if( __type == 22 )
 {
 	var ret = switch( __arg0 )
 	{
-		case	101	:	0.30;
-		case	102	:	0.30;
-		case	103	:	0.04;
+		case	101	:	0.30	;
+		case	102	:	0.30	;
+		case	103	:	0.04	;
 		case	104	:	0.24	;
 		case	105	:	0.68	;
 		case	106	:	0.16	;
 		case	107	:	0.60	;
 		case	108	:	0.07	;
-		case	109	:-0.08	;
-		case	110	: 0.10	;
-		case	111	: 0.24	;
+		case	109	:	-0.08	;
+		case	110	: 	0.10	;
+		case	111	: 	0.24	;
 		case	112	:	0.10	;
 		case	113	:	0.20	;
 		case	114	:	0.12	;
@@ -488,7 +488,7 @@ if( __type == 22 )
 		
 		case	201	:	0.06	;
 		case	221	:	0.20	;
-		case	222	:	0.17	;
+		case	222	:	0.26	;
 		case	223	:	0.16	;
 		
 		
@@ -521,7 +521,7 @@ if( __type == 23 )
 		
 		case 	201 :	1.0 ;
 		case 	221 :	1.0 ;
-		case 	222 :	1.0 ;
+		case 	222 :	1.5 ;
 		case 	223 :	0.7 ;
 		
 		default		:	1.0 ;
@@ -577,7 +577,7 @@ if( __type == 26 )
 	{
 		case	101	:	1.8 	;
 		case	102	:	0.9		;
-		case	103	:	0.55	;
+		case	103	:	0.4		;
 		case	104	:	0.9		;
 		case	105	:	0.5		;
 		case	106	:	1.6		;
@@ -701,8 +701,8 @@ if( __type == 43 )
 	return switch( __arg0 )
 	{
 		case 1:		1;
-		case 2:		8;
-		case 3:		20;
+		case 2:		5;
+		case 3:		19;
 		default:	0;
 	}
 }
@@ -743,8 +743,8 @@ if( __type == 47 )
 {
 	return switch( __arg0 )
 	{
-		case 2:		__arg1 ? 3 : 2;
-		default:	__arg1 ? 2 : 1;
+		case 2:		__arg1 ? 3.0 : 2.0;
+		default:	__arg1 ? 2.5 : 1.5;
 	}
 }
 

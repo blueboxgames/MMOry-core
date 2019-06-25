@@ -153,7 +153,7 @@ class ExchangeType
 		}
 		if( rarity >= 2 )
 		{
-			ret = type < 55 ? 0 : Math.round(ret * 0.18);
+			ret = type < 56 ? 0 : Math.round(ret * 0.08);//0.18
 		}
 		return ret;
 	}

@@ -1,11 +1,7 @@
 package com.gerantech.mmory.core;
 import com.gerantech.mmory.core.InitData;
 import com.gerantech.mmory.core.Player;
-import com.gerantech.mmory.core.scripts.ScriptEngine;
-import com.gerantech.mmory.core.constants.CardFeatureType;
 import com.gerantech.mmory.core.others.Arena;
-import com.gerantech.mmory.core.constants.CardTypes;
-import com.gerantech.mmory.core.constants.ResourceType;
 import com.gerantech.mmory.core.exchanges.Exchanger;
 import com.gerantech.mmory.core.socials.Lobby;
 import com.gerantech.mmory.core.utils.maps.IntArenaMap;

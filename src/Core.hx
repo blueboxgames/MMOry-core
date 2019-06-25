@@ -11,6 +11,8 @@ import com.gerantech.mmory.core.constants.SegmentType;
 import com.gerantech.mmory.core.constants.StickerType;
 import com.gerantech.mmory.core.constants.TroopType;
 import com.gerantech.mmory.core.utils.GraphicMetrics;
+import com.gerantech.mmory.core.constants.CardTypes;
+
 
 #if java
 import com.gerantech.mmory.core.LoginData;

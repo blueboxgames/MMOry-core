@@ -1,5 +1,7 @@
 package com.gerantech.mmory.core.constants;
-import com.gerantech.mmory.core.utils.lists.IntList;
+
+
+import com.gerantech.mmory.core.scripts.ScriptEngine;
 
 /**
  * ...
@@ -8,14 +10,14 @@ import com.gerantech.mmory.core.utils.lists.IntList;
 class CardTypes 
 {
 	static public var AVAILABLITY_EXISTS:Int = 0;
-    static public var AVAILABLITY_WAIT:Int = -1;
-    static public var AVAILABLITY_NOT:Int = -2;
+	static public var AVAILABLITY_WAIT:Int = -1;
+	static public var AVAILABLITY_NOT:Int = -2;
 
-    public static var INITIAL:Int = 101;
-	
-    public static var IMPROVE:Int = -2;
-    public static var NONE:Int = -1;
-	
+	public static var INITIAL:Int = 101;
+
+	public static var IMPROVE:Int = -2;
+	public static var NONE:Int = -1;
+
 	// troops
 	public static var C101:Int = 101;
 	public static var C102:Int = 102;
@@ -65,36 +67,7 @@ class CardTypes
 	public static var C221:Int = 221;
 	
 	public function new() {}
-	
-	/*public static function migrate( oldType:Int ) : Int
-	{
-		return switch( oldType )
-		{
-			case 10 : 400;
-			case 11 : 401;
-			case 12 : 402;
-			case 13 : 403;
-			case 14 : 404;
-			case 20 : 200;
-			case 21 : 201;
-			case 22 : 202;
-			case 23 : 203;
-			case 24 : 204;
-			case 30 : 300;
-			case 31 : 301;
-			case 32 : 302;
-			case 33 : 303;
-			case 34 : 304;
-			case 40 : 500;
-			case 41 : 501;
-			case 42 : 502;
-			case 43 : 503;
-			case 44 : 504;
-			
-			default: oldType;
-		}
-	}*/
-	
+		
 	public static function getRarityColor(rarity:Int) : Int
 	{
 		return [0xFFFFFF, 0xFFCC00, 0xAA00AA][rarity];
@@ -116,24 +89,6 @@ class CardTypes
 		return type / 10;
 	}*/
 	
-	public static function getAll():IntList
-	{
-		var ret:IntList = new IntList();
-		var i = 0;
-		while ( i < 129 )
-		{
-			ret.push(i);
-			i ++;
-		}
-		i = 151;
-		while ( i <= 154 )
-		{
-			ret.push(i);
-			i ++;
-		}
-		return ret;
-	}
-	
 	static public function isTroop(type:Int) : Bool
 	{
 		return type < 150;
@@ -153,4 +108,62 @@ class CardTypes
 	{
 		return type > 220;
 	}
+
+// #if flash
+/* static private var _all:Array<Int>;
+	static public function getAll():Array<Int>
+	{
+		if( _all == null )
+		{
+			_all = new Array<Int>();
+			var ret = new Array<Int>();
+			var i = 0;
+			while ( i < 131 )
+			{
+				ret.push(i);
+				i ++;
+			}
+			i = 151;
+			while ( i <= 154 )
+			{
+				ret.push(i);
+				i ++;
+			}
+		}
+		return ret;
+	} */
+
+	static public function getRelatedTo(cardType:Int) : Array<Int> 
+	{
+		var ret = new Array<Int>();
+		ret.push(ScriptEngine.T22_BULLET_DAMAGE);
+		if( CardTypes.isSpell(cardType) )
+			return ret;
+		ret.push(ScriptEngine.T23_BULLET_SHOOT_GAP);
+		ret.push(ScriptEngine.T04_SUMMON_TIME);
+		ret.push(ScriptEngine.T11_SPEED);
+		ret.push(ScriptEngine.T12_HEALTH);
+		ret.push(ScriptEngine.T26_BULLET_RANGE_MAX);
+		return ret;
+	}
+
+	static public function getUIFactor(featureType:Int):Float
+	{
+		return switch (featureType)
+		{
+			/*case 5 : 1000;
+				case 12: 50;
+				case 21: 50;
+				case 23: 0.2;
+				case 24: 0.2; */
+			case 4: 0.001;
+			case 11: 1000;
+			case 12: 50;
+			case 22: 100;
+			case 23: 0.01;
+			case 26: 0.5;
+			default: 1;
+		}
+	}
+// #end
 }

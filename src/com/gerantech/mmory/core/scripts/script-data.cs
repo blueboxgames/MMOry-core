@@ -701,8 +701,8 @@ if( __type == 43 )
 	return switch( __arg0 )
 	{
 		case 1:		1;
-		case 2:		8;
-		case 3:		20;
+		case 2:		5;
+		case 3:		19;
 		default:	0;
 	}
 }

@@ -1,50 +1,50 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558 
-    // for the documentation about the tasks.json format
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "type": "haxe",
-            "args": "active configuration",
-            "presentation": {
-                "clear": true,
-            },
-            "problemMatcher": [
-                "$haxe-absolute",
-                "$haxe",
-                "$haxe-error",
-                "$haxe-trace"
-            ]
-        },
-        {
-            "label": "deploy",
-            "type": "shell",
-            "group": "build",
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "windows": {
-                "command": "${workspaceRoot}\\deploy.bat"
-            },
-            "presentation": {
-                "clear": true,
-            },
-            "problemMatcher": []
-        },
-        {
-            "label": "deploy script",
-            "type": "shell",
-            "group": "build",
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "presentation": {
-                "clear": true,
-            },
-            "windows": {
-                "command": "call ${workspaceRoot}\\deployScript.bat"
-            },
-            "problemMatcher": []
-        }
-    ]
+	// See https://go.microsoft.com/fwlink/?LinkId=733558 
+	// for the documentation about the tasks.json format
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "haxe",
+			"args": "active configuration",
+			"presentation": {
+				"clear": true,
+			},
+			"problemMatcher": [
+				"$haxe-absolute",
+				"$haxe",
+				"$haxe-error",
+				"$haxe-trace"
+			]
+		},
+		{
+			"label": "deploy",
+			"type": "shell",
+			"group": "build",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"windows": {
+				"command": "${workspaceRoot}\\deploy.bat"
+			},
+			"presentation": {
+				"clear": true,
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "deploy script",
+			"type": "shell",
+			"group": "build",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"presentation": {
+				"clear": true,
+			},
+			"windows": {
+				"command": "${workspaceRoot}\\deployScript.bat"
+			},
+			"problemMatcher": []
+		}
+	]
 }

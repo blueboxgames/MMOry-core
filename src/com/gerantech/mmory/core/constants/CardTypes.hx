@@ -13,7 +13,7 @@ class CardTypes
 	static public var AVAILABLITY_WAIT:Int = -1;
 	static public var AVAILABLITY_NOT:Int = -2;
 
-	public static var INITIAL:Int = 101;
+	public static var INITIAL:Int = 102;
 
 	public static var IMPROVE:Int = -2;
 	public static var NONE:Int = -1;

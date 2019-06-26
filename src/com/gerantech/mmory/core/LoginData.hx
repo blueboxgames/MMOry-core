@@ -32,8 +32,8 @@ class LoginData
 		resources = new IntIntMap();
 		resources.set(ResourceType.R1_XP, 0);
 		resources.set(ResourceType.R2_POINT, 0);
-		resources.set(ResourceType.R3_CURRENCY_SOFT, 50);
-		resources.set(ResourceType.R4_CURRENCY_HARD, 100);
+		resources.set(ResourceType.R3_CURRENCY_SOFT, 100);
+		resources.set(ResourceType.R4_CURRENCY_HARD, 50);
 		resources.set(ResourceType.R6_TICKET, 10);
 		resources.set(CardTypes.C101, 1);
 		resources.set(CardTypes.C102, 1);

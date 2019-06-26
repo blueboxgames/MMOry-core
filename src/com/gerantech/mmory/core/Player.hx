@@ -115,7 +115,7 @@ class Player
 	public function get_hards():Int { return resources.get(ResourceType.R4_CURRENCY_HARD); }
 	public function get_battlesCount():Int { return resources.get(ResourceType.R12_BATTLES); }
 	public function get_battleswins():Int { return resources.get(ResourceType.R13_BATTLES_WINS); }
-	public function get_winStreak():Int { return resources.get(ResourceType.R16_WIN_RATE); }
+	public function get_winRate():Int { return resources.get(ResourceType.R16_WIN_RATE); }
 	public function get_level(xp:Int):Int
 	{
 		if( xp == 0 )

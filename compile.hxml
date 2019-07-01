@@ -2,6 +2,10 @@
 -cp src
 -main Core
 -java bin\java
+# -cs bin\cs
+# -cpp bin\cpp
+# -neko bin\neko\core.n
+# -js bin\js\core.js
 
 #				_-_-_-_-_-_-      SWF COMPILE      -_-_-_-_-_
 # --next

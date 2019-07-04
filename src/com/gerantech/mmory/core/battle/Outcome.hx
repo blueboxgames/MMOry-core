@@ -92,7 +92,7 @@ class Outcome
 		var winRate = game.player.getResource(ResourceType.R16_WIN_RATE);
 		if( ratio > 1 && ret < 0 )
 			ret *= stars;
-		if( ret < 0 && winRate < league.minWinStreak )
+		if( ret < 0 && winRate < league.minWinRate )
 			ret = 0;
 		return ret;
 	}

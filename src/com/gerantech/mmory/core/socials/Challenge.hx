@@ -90,12 +90,12 @@ class Challenge
 				prize = rewards.get(prizeKeys[i]);
 				if( rank >= prize.min && rank <= prize.max )
 				{
-					if( prize.minWinStreak == -1 )
-						ret.set(prize.minWinStreak, 0);
-					else if( ResourceType.isBook(prize.minWinStreak) )
-						ret.set(prize.minWinStreak, 1);
+					if( prize.minWinRate == -1 )
+						ret.set(prize.minWinRate, 0);
+					else if( ResourceType.isBook(prize.minWinRate) )
+						ret.set(prize.minWinRate, 1);
 					else
-						ret.set(prize.minWinStreak, Math.floor(ratio * 1000));
+						ret.set(prize.minWinRate, Math.floor(ratio * 1000));
 					break; 
 				}
 				i ++;

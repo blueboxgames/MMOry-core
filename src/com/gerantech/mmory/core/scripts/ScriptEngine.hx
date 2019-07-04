@@ -50,6 +50,8 @@ class ScriptEngine
 	static public var T66_BATTLE_SUMMON_POS:Int = 66;
 	static public var T68_BATTLE_UNIT_ENEMIES:Int = 68;
 
+	static public var T81_TROPHY_ROAD:Int = 81;
+
 	static var script:String;
 	static var version:Float;
 	static var program:Dynamic;

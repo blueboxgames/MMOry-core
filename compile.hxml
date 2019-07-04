@@ -4,8 +4,9 @@
 -java bin\java
 # -cs bin\cs
 # -cpp bin\cpp
-# -neko bin\neko\core.n
+# -php bin\php
 # -js bin\js\core.js
+# -neko bin\neko\core.n
 
 #				_-_-_-_-_-_-      SWF COMPILE      -_-_-_-_-_
 # --next

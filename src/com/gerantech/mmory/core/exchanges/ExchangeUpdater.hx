@@ -48,7 +48,7 @@ class ExchangeUpdater
 		{
 			if( item.type == ExchangeType.C23_SPECIAL )
 			{
-				if( game.player.cards.keys().length > 0 && game.player.getResource(ResourceType.R6_TICKET) > 10 )
+				if( game.player.cards.keys().length > 0 && game.player.getResource(ResourceType.R6_TICKET) > 20 )
 					item.outcome = game.player.cards.getRandomKey();
 				else
 					item.outcome = ResourceType.R6_TICKET;

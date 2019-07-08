@@ -79,9 +79,9 @@ class Outcome
 	{
 		if( league == 0 )
 			return ratio > 1 ? 13 : 0;
-		var random = Math.ceil(Math.random() * COE_POINTS - COE_POINTS * 0.5);
+		//var random = Math.ceil(Math.random() * COE_POINTS - COE_POINTS * 0.5);
 		var challengeCoef:Float = ScriptEngine.get(ScriptEngine.T48_CHALLENGE_REWARDCOEF, type);
-		return Math.round((MIN_POINTS + stars * COE_POINTS + random) * challengeCoef * (ratio > 1 ? 1 : -1));
+		return Math.round((MIN_POINTS + stars * COE_POINTS) * challengeCoef * (ratio > 1 ? 1 : -1));
 	}
 	
   static function getWinRate(game:Game, league:Arena, stars:Int, ratio:Float) : Int

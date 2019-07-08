@@ -95,6 +95,7 @@ class ExchangeUpdater
 		if( item.outcome == ResourceType.R6_TICKET )
 		{
 			var rand = Math.ceil(Math.random() * 2);
+			if( ScriptEngine.getInt(ScriptEngine.T43_CHALLENGE_UNLOCKAT, 3) <= game.player.get_point() )
 				return 20 + rand;
 			if( ScriptEngine.getInt(ScriptEngine.T43_CHALLENGE_UNLOCKAT, 2) <= game.player.get_point() )
 				return 15 + rand;

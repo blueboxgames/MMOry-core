@@ -14,8 +14,8 @@ import com.gerantech.mmory.core.constants.ResourceType;
 class Outcome
 {
 #if java
-	static var MIN_POINTS:Int = 3;
-	static var COE_POINTS:Int = 3;
+	static var MIN_POINTS:Int = 2;
+	static var COE_POINTS:Int = 2;
 
 	static public function get(game:Game, type:Int, mode:Int, friendlyMode:Int, stars:Int, ratio:Float, now:Int) : IntIntMap
   	{

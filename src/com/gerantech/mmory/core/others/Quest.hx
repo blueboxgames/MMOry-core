@@ -37,7 +37,6 @@ class Quest
 #end
 		this.type = type;
 		this.key = key;
-		this.nextStep = nextStep;
 	}
 	
 	public function passed() : Bool

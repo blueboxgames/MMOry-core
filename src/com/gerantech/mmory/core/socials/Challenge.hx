@@ -173,15 +173,15 @@ class Challenge
 		var ret = new IntArenaMap();
 		if( type == 2 )
 		{
-			ret.set(1, new Arena(1,	1,	1,	59));
-			ret.set(2, new Arena(2, 2,	2,	58));
-			ret.set(3, new Arena(3, 3,	3,	57));
-			ret.set(4, new Arena(4, 4,	10,	56));
-			ret.set(5, new Arena(5, 11, 15, 55));
-			ret.set(6, new Arena(1, 16, 20, 54));
-			ret.set(7, new Arena(5, 21, 30, 53));
-			ret.set(8, new Arena(6, 31, 50,	3 ));
-			ret.set(9, new Arena(7, 41, 999,-1));
+			ret.set(1, new Arena(null, 1,	1,	1,	59));
+			ret.set(2, new Arena(null, 2, 2,	2,	58));
+			ret.set(3, new Arena(null, 3, 3,	3,	57));
+			ret.set(4, new Arena(null, 4, 4,	10,	56));
+			ret.set(5, new Arena(null, 5, 11, 15, 55));
+			ret.set(6, new Arena(null, 1, 16, 20, 54));
+			ret.set(7, new Arena(null, 5, 21, 30, 53));
+			ret.set(8, new Arena(null, 6, 31, 50,	3 ));
+			ret.set(9, new Arena(null, 7, 41, 999,-1));
 		}
 		return ret;
 	}

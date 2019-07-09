@@ -24,6 +24,7 @@ class ResourceType
 	
 	public static var R21_BOOK_OPENED_BATTLE:Int = 21;
 	public static var R22_BOOK_OPENED_FREE:Int = 22;
+	public static var R25_REWARD_STEP:Int = 25;
 	
 	public static var R30_CHALLENGES:Int = 30;
 	public static var R40_QUESTS:Int = 40;
@@ -40,12 +41,16 @@ class ResourceType
 		else return "TYPE_" + type;
 	}
 	
-	static public function isCard(type:Int) 
+	static public function isEvent(type:Int) 
 	{
-		return (type >= 100); 
+		return type >= 30 && type < 40;
 	}
 	static public function isBook(type:Int) 
 	{
 		return type >= 50 && type < 60;
+	}
+	static public function isCard(type:Int) 
+	{
+		return (type >= 100); 
 	}
 }

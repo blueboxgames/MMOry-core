@@ -48,7 +48,7 @@ class ExchangeUpdater
 		{
 			if( item.type == ExchangeType.C23_SPECIAL )
 			{
-				if( game.player.cards.keys().length > 0 && game.player.getResource(ResourceType.R6_TICKET) > 20 )
+				if( game.player.cards.keys().length > 0 && game.player.getResource(ResourceType.R6_TICKET) > 15 )
 					item.outcome = game.player.cards.getRandomKey();
 				else
 					item.outcome = ResourceType.R6_TICKET;
@@ -96,9 +96,9 @@ class ExchangeUpdater
 		{
 			var rand = Math.ceil(Math.random() * 2);
 			if( ScriptEngine.getInt(ScriptEngine.T43_CHALLENGE_UNLOCKAT, 3) <= game.player.get_point() )
-				return 20 + rand;
-			if( ScriptEngine.getInt(ScriptEngine.T43_CHALLENGE_UNLOCKAT, 2) <= game.player.get_point() )
 				return 15 + rand;
+			if( ScriptEngine.getInt(ScriptEngine.T43_CHALLENGE_UNLOCKAT, 2) <= game.player.get_point() )
+				return 12 + rand;
 				return 10 + rand;
 		}
 		

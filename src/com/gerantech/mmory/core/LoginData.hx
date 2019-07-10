@@ -34,7 +34,7 @@ class LoginData
 		resources.set(ResourceType.R2_POINT, 0);
 		resources.set(ResourceType.R3_CURRENCY_SOFT, 100);
 		resources.set(ResourceType.R4_CURRENCY_HARD, 50);
-		resources.set(ResourceType.R6_TICKET, 20);
+		resources.set(ResourceType.R6_TICKET, 15);
 		resources.set(CardTypes.C101, 1);
 		resources.set(CardTypes.C102, 1);
 		resources.set(CardTypes.C103, 1);

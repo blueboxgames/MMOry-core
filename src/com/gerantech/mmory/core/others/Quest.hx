@@ -60,7 +60,7 @@ class Quest
 	
 #if java
 	static public inline var MAX_QUESTS:Int = 4;
-	static public var MAX_STEP:Array<Int> = [20, 8, 4, 100, 100, 20, 10, 10, 100, 100];
+	static public var MAX_STEP:Array<Int> = [30, 30, 4, 100, 100, 100, 100, 100, 100, 100];
 
 	static public function instantiate(type:Int, player:Player) : Quest
 	{
@@ -94,13 +94,13 @@ class Quest
 			case 0 :	1 + step;
 			case 1 :	1 + step;
 			//case 2 :	step * 10;
-			case 3 :	CoreUtils.round( Math.pow(1.3, step) * 10) - 8;
-			case 4 :	CoreUtils.round( Math.pow(1.4, step) * 7);
-			case 5 :	CoreUtils.round( Math.pow(1.4, step) * 5);
-			case 6 :	step * 5;
+			case 3 :	CoreUtils.round( Math.pow(1.3, step) * 20) - 8;
+			case 4 :	CoreUtils.round( Math.pow(1.4, step) * 14);
+			case 5 :	CoreUtils.round( Math.pow(1.4, step) * 10);
+			case 6 :	step * 10;
 			case 7 :	Card.getTotalCollected(step, 0) - 1;
 			case 8 :	step;
-			case 9 :	CoreUtils.round( Math.pow(1.4, step) * 5) - 2;
+			case 9 :	CoreUtils.round( Math.pow(1.4, step) * 10) - 2;
 			default: 	0;
 		}
 	}
@@ -123,7 +123,7 @@ class Quest
 	{
 		var ret:IntIntMap = new IntIntMap();
 		ret.set(ResourceType.R1_XP,			CoreUtils.round( Math.pow(1.4, step) * 1));
-		ret.set(ResourceType.R3_CURRENCY_SOFT,	CoreUtils.round( Math.pow(1.4, step) * 7));
+		ret.set(ResourceType.R3_CURRENCY_SOFT,	CoreUtils.round( Math.pow(1.4, step) * 5));
 		return ret;
 	}
 	

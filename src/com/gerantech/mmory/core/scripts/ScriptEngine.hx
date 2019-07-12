@@ -34,7 +34,7 @@ class ScriptEngine
 
 	static public var T41_CHALLENGE_MODE:Int = 41;
 	static public var T42_CHALLENGE_TYPE:Int = 42;
-	static public var T43_CHALLENGE_UNLOCKAT:Int = 43;
+	// static public var T43_CHALLENGE_UNLOCKAT:Int = 43;
 	static public var T44_CHALLENGE_CAPACITY:Int = 44;
 	static public var T45_CHALLENGE_WAITTIME:Int = 45;
 	static public var T46_CHALLENGE_DURATION:Int = 46;

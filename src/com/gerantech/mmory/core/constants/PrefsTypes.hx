@@ -22,7 +22,6 @@ class PrefsTypes
 	public static var AUTH_43_TELEGRAM:Int = 43;
 	
 	public static var OTHERS_91_LOBBY:Int = 91;
-
 	
 	public static var TUTOR:Int = 101;
 	
@@ -45,8 +44,12 @@ class PrefsTypes
 	public static var T_71_SELECT_NAME_FOCUS:Int = 71;
 	public static var T_72_NAME_SELECTED:Int = 72;
 
-	public static var T_201_CHALLENGES_SHOWN:Int = 201;
-	public static var T_202_CHALLENGE_SELECTED:Int = 202;
+	public static var T_210_CHALLENGES_FOCUS:Int = 210;
+	public static var T_211_CHALLENGES_SELECTED:Int = 211;
+	public static var T_220_CHALLENGES_FOCUS:Int = 220;
+	public static var T_221_CHALLENGES_SELECTED:Int = 221;
+	public static var T_230_CHALLENGES_FOCUS:Int = 230;
+	public static var T_231_CHALLENGES_SELECTED:Int = 231;
 
 	public function new() {}
 	public static function isSettings(type:Int) : Bool

@@ -1,13 +1,14 @@
 package com.gerantech.mmory.core.battle;
+import com.gerantech.mmory.core.events.BattleEvent;
+import com.gerantech.mmory.core.battle.tilemap.TileMap;
 import com.gerantech.mmory.core.scripts.ScriptEngine;
+import com.gerantech.mmory.core.battle.units.Card;
+import com.gerantech.mmory.core.utils.maps.IntCardMap;
+import com.gerantech.mmory.core.socials.Challenge;
 import com.gerantech.mmory.core.Game;
 import com.gerantech.mmory.core.battle.fieldes.FieldData;
-import com.gerantech.mmory.core.battle.tilemap.TileMap;
-import com.gerantech.mmory.core.battle.units.Card;
-import com.gerantech.mmory.core.socials.Challenge;
 import com.gerantech.mmory.core.utils.lists.IntList;
 import com.gerantech.mmory.core.utils.maps.IntBulletMap;
-import com.gerantech.mmory.core.utils.maps.IntCardMap;
 import com.gerantech.mmory.core.utils.maps.IntIntCardMap;
 import com.gerantech.mmory.core.utils.maps.IntUnitMap;
 
@@ -15,8 +16,13 @@ import com.gerantech.mmory.core.utils.maps.IntUnitMap;
  * ...
  * @author Mansour Djawadi
  */
+#if flash
+class BattleField extends flash.events.EventDispatcher
+{
+#elseif java
 class BattleField
 {
+#end
 	static public var WIDTH:Int = 960;
 	static public var HEIGHT:Int = 1280;
 	static public var PADDING:Int = 100;
@@ -57,8 +63,12 @@ class BattleField
 	public var unitsHitCallback:com.gerantech.mmory.core.interfaces.IUnitHitCallback;
 	var unitId:Int = 0;
 #end
-
-	public function new(){}
+	public function new()
+	{
+		#if flash
+		super();
+		#end
+	}
 	public function initialize(game_0:Game, game_1:Game, field:FieldData, side:Int, startAt:Float, now:Float, hasExtraTime:Bool, friendlyMode:Int) : Void
 	{
 		this.side = side;
@@ -200,8 +210,25 @@ class BattleField
 		
 		if( resetTime <= this.now )
 			reset();
-		if( pauseTime < now )
-			return;
+		
+		// trace((resetTime - now) + " delta " + (pauseTime - now) + " state " + state);
+		if( pauseTime > now )
+		{
+			if( state == STATE_3_PAUSED )
+			{
+				state = STATE_2_STARTED;
+				fireEvent(0, BattleEvent.PAUSE, state);
+			}
+		}
+		else
+		{
+			if( state == STATE_2_STARTED )
+			{
+				state = STATE_3_PAUSED;
+				fireEvent(0, BattleEvent.PAUSE, state);
+			}
+		}
+
 		if( state > STATE_2_STARTED )
 			return;
 		
@@ -248,9 +275,9 @@ class BattleField
 	public function summonUnit(type:Int, side:Int, x:Float, y:Float) : Int
 	{
 		var index = cardAvailabled(side, type);
+		// trace("summon  => side:" + side + " type:" + type + " index: " + index);
 		if( index < 0 )
 		{
-			//trace("summon  => side:" + side + " type:" + type + " error: " + index);
 			return index;
 		}
 		
@@ -423,5 +450,16 @@ class BattleField
 		if( field == null || index < 0 || index > 3 )
 			return 0;
 		return field.times.get(index) + extraTime;
+	}
+
+	private function fireEvent(dispatcherId:Int, type:String, data:Any) : Void
+	{
+		trace("fireEvent => id:" + dispatcherId + ", type:" + type + ", data:" + data);
+		#if java
+		// if( eventCallback != null )
+		// 	eventCallback.dispatch(dispatcherId, type, data);
+		#elseif flash
+		dispatchEvent(new com.gerantech.mmory.core.events.BattleEvent(type, data));
+		#end
 	}
 }

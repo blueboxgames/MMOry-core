@@ -274,7 +274,7 @@ if( __type == 12 )
 		case	111	:	1.00;
 		case	112	:	1.00;
 		case	113	:	1.30;
-		case	114	:	0.60;
+		case	114	:	0.80;
 		case	115	:	1.00;
 
 		
@@ -731,8 +731,8 @@ if( __type == 48 )
 	return switch( __arg0 )
 	{
 		case 0:		1;
-		case 1:		2.2;
-		case 2:		5;
+		case 1:		2;
+		case 2:		3;
 		default:	0;
 	}
 }
@@ -777,15 +777,17 @@ if( __type == 62 )
 	if( __arg0 == 0 ) // mode 0
 	return switch( __arg1 ) // battleWins
 	{
-		case 0	: 1;
-		default	:	1;
+		case 0	: 2;
+		case 2	: 2;
+		default	: 1;
 	}
 
 	// mode 1
 	return switch( __arg1 )
 	{
-		case 0	: 1;
-		default	:	1;
+		case 0	: 2;
+		case 2	: 2;
+		default	: 1;
 	}
 }
 
@@ -817,16 +819,13 @@ if( __type == 64 )
 		if( __arg0 == 0 )
 		return switch( __arg1 )
 		{
-			case 0	: 1000;
-			case 1	: 1300;
+			case 2	: 1300;
 			default	:	0;
 		}
 
 		// mode 1
 		return switch( __arg1 )
 		{
-			case 0	: 1000;
-			case 1	: 1300;
 			case 2	: 1300;
 			default	:	0;
 		}
@@ -847,28 +846,28 @@ if( __type == 66 )
 		return switch( __arg2 )
 		{
 		// (deck-card-index, x-pos, y-pos, delay)
-			case 0	: [0, 200, 1250, 500];
-			case 1	:	[0, 200, 1250, 500];
-			case 2	: [1, 200, 1300, 500];
+			case 0	: 	[1, 300, 1500, 300];
+			case 1	:		[2, 200, 1300, 300];
+			case 2	: 	[0, 200, 1300, 300];
 			default	:	null;
 		}
 
 		if( __arg1 == "cover" )
 		return switch( __arg2 )
 		{
-			case 1	: [2, 300, 1450, 2000];
-			// case 2	: [1, 300, 1400, 2000];
-			case 11	: [1, 300, 1400, 2000];
-			case 21	: [1, 300, 1200, 2000];
+			case 1	: 	[2, 350, 1350, 500];
+			case 2	: 	[2, 200, 1200, 500];
+			case 11	:		[3, 300, 1300, 500];
+			case 21	: 	[2, 300, 1350, 500];
 			default:	null;
 		}
 
 		if( __arg1 == "newround" )
 		return switch( __arg2 )
 		{
-			case 0	: [1, 450, 850, 200];
+			case 0	: 	[1, 450, 850, 200];
 			case 1	:	[1, 450, 900, 200];
-			case 2	: [1, 450, 900, 200];
+			case 2	: 	[1, 450, 900, 200];
 			default:	null;
 		}
 	}
@@ -877,20 +876,20 @@ if( __type == 66 )
 	if( __arg1 == "start" )
 	return switch( __arg2 )
 	{
-		case 0	: [1, 350, 1400, 500];
-		case 1	:	[1, 450, 1400, 500];
-		case 2	: [0, 500, 1350, 500];
+		case 0	: 	[2, 550, 1500, 500];
+		case 1	:		[3, 712, 1400, 500];
+		case 2	: 	[0, 525, 1350, 500];
 		default:	null;
 	}
 
 	if( __arg1 == "cover" )
 	return switch( __arg2 )
 	{
-		case 1	: [1, 700, 1400, 2000];
-		case 11	:	[3, 600, 1500, 2000];
-		case 12	:	[2, 600, 1500, 2000];
-		case 21	: [2, 500, 1480, 2000];
-		case 22	: [2, 700, 1500, 2000];
+		case 1	: 	[3, 780, 1400, 500];
+		case 2	: 	[1, 300, 1250, 500];
+		case 11	:		[1, 335, 1400, 500];
+		case 21	: 	[3, 610, 1400, 500];
+		case 22	: 	[2, 450, 1400, 500];
 		default:	null;
 	}
 

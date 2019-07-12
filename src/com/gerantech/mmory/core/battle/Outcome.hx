@@ -14,8 +14,8 @@ import com.gerantech.mmory.core.constants.ResourceType;
 class Outcome
 {
 #if java
-	static var MIN_POINTS:Int = 3;
-	static var COE_POINTS:Int = 3;
+	static var MIN_POINTS:Int = 2;
+	static var COE_POINTS:Int = 2;
 
 	static public function get(game:Game, type:Int, mode:Int, friendlyMode:Int, stars:Int, ratio:Float, now:Int) : IntIntMap
   	{
@@ -79,9 +79,8 @@ class Outcome
 	{
 		if( league == 0 )
 			return ratio > 1 ? 1 : 0;
-		var random = Math.ceil(Math.random() * COE_POINTS - COE_POINTS * 0.5);
 		var challengeCoef:Float = ScriptEngine.get(ScriptEngine.T48_CHALLENGE_REWARDCOEF, type);
-		return Math.round((MIN_POINTS + stars * COE_POINTS + random) * challengeCoef * (ratio > 1 ? 1 : -1));
+		return Math.round((MIN_POINTS + stars * COE_POINTS) * challengeCoef * (ratio > 1 ? 1 : -1));
 	}
 	
   static function getWinRate(game:Game, league:Arena, stars:Int, ratio:Float) : Int

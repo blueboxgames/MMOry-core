@@ -1,4 +1,7 @@
 package com.gerantech.mmory.core;
+import com.gerantech.mmory.core.exchanges.ExchangeItem;
+import com.gerantech.mmory.core.others.TrophyReward;
+import com.gerantech.mmory.core.constants.MessageTypes;
 import com.gerantech.mmory.core.Game;
 import com.gerantech.mmory.core.battle.units.Card;
 import com.gerantech.mmory.core.constants.CardTypes;
@@ -212,19 +215,21 @@ class Player
 	
 	public function addResources(bundle:IntIntMap) : Void
 	{
-		var bundleKeys = bundle.keys();
-		var i = 0;
-		while ( i < bundleKeys.length )
+		var keys = bundle.keys();
+		var len = keys.length;
+		for (i in 0...len) 
+			addCard(keys[i]);
+		resources.increaseMap(bundle);
+	}
+
+	public function addCard(type:Int) : Void
+	{
+		if( ResourceType.isCard(type) && !cards.exists(type) )
 		{
-			if( ResourceType.isCard(bundleKeys[i]) && !game.player.cards.exists(bundleKeys[i]) )
-			{
-				if( getSelectedDeck().keys().length < 8 && !cards.exists(bundleKeys[i]) && !getSelectedDeck().existsValue(bundleKeys[i]) )
-					getSelectedDeck().set(getSelectedDeck().keys().length, bundleKeys[i]);
-				cards.set(bundleKeys[i], new Card(game, bundleKeys[i], bundle.get(bundleKeys[i]) ) );
-			}
-			i ++;
+			if( getSelectedDeck().keys().length < 8 && !getSelectedDeck().existsValue(type) )
+				getSelectedDeck().set(getSelectedDeck().keys().length, type);
+			cards.set(type, new Card(game, type, 1) );
 		}
-		resources.increaseMap ( bundle );
 	}
 	
 	public function getRandomCard(rarity:Int):Int
@@ -272,7 +277,38 @@ class Player
 	#end
 		return false;
 	}
-	
+
+	public function achieveReward(league:Int, index:Int) : Int
+	{
+		var reward:TrophyReward = game.arenas.get(league).rewards[index];
+		var lastRewardStep = getResource(ResourceType.R25_REWARD_STEP);
+		if( lastRewardStep != reward.step - 1 )
+		{
+			if( lastRewardStep == reward.step - 2 )
+			{
+				var prevType:Int = index == 0 ? game.arenas.get(league - 1).rewards[2].key : game.arenas.get(league).rewards[index - 1].key;
+				if( !ResourceType.isEvent(prevType) )
+					return MessageTypes.RESPONSE_NOT_ALLOWED;
+			}
+			else
+			{
+				trace("reward.step " + reward.step + " can not achieve in current league.");
+				return MessageTypes.RESPONSE_NOT_ALLOWED;
+			}
+		}
+		trace("reward.step " + reward.step + " lastRewardStep " + lastRewardStep);
+
+		resources.set(ResourceType.R25_REWARD_STEP, reward.step);
+		#if java
+		if( ResourceType.isBook(reward.key) )
+			return game.exchanger.exchange(new ExchangeItem(reward.key, 1 ,0, "", reward.key + ":" + league), 0);
+
+		addCard(reward.key);
+		resources.increase(reward.key, reward.value);
+		#end
+		return MessageTypes.RESPONSE_SUCCEED;
+	}
+
 	#if flash
 	public function dashboadTabEnabled(index:Int) : Bool
 	{

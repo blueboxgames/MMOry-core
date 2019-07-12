@@ -82,18 +82,6 @@ class Card
 #end		
 	}
 	
-	static public function addNew(game:Game, type:Int) : Int
-	{
-		if( game.player.get_arena(0) < ScriptEngine.getInt(ScriptEngine.T01_AVAILABLE_AT, type, 1) )
-		{
-			trace("card " + type + " can not collect in current league.");
-			return MessageTypes.RESPONSE_NOT_ALLOWED;
-		}
-		game.player.cards.set(type, new Card(game, type, 1));
-		game.player.resources.set(type, 1);
-		return MessageTypes.RESPONSE_SUCCEED;
-	}
-	
 	static var RARITY_START_LEVEL = [0, 2, 6, 9];
 	static public var PRICE = [5, 50, 500, 5000];
 	static public var RARITY_COUNT = [1, 10, 200, 4000];

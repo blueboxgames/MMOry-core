@@ -37,17 +37,17 @@ class Outcome
 		// battle stats
 		ret.set(ResourceType.R12_BATTLES, 1);
 		ret.set(ResourceType.R16_WIN_RATE, getWinRate(game, league, stars, ratio));
-		if( game.player.get_arena(0) > 0 )
+		if( league.index > 0 )
 			ret.set(ResourceType.R17_STARS, stars);
 
 		if( ratio > 1 )
-    	{
+		{
 			// num wins
 			ret.set(ResourceType.R13_BATTLES_WINS, 1);
 			ret.set(ResourceType.R30_CHALLENGES, mode + 1);
 
 			// soft-currency
-      		var sc = Math.max(0, stars) + Math.min(league.index * 2, Math.max(0, game.player.get_point() - game.player.get_softs())) * mode;
+			var sc = Math.max(0, stars) + Math.min(league.index * 2, Math.max(0, game.player.get_point() - game.player.get_softs())) * mode;
 			var softs:Int = 2 * cast(sc, Int);
 			if( softs != 0 )
 				ret.set(ResourceType.R3_CURRENCY_SOFT, softs);
@@ -63,7 +63,7 @@ class Outcome
 			// random book
 			var emptySlotsType = getEmptySlots(game, now);
 			if( emptySlotsType.length > 0 )
-      		{
+			{
 				var randomEmptySlotIndex = game.player.get_battleswins() == 0 ? 0 : Math.floor(Math.random() * emptySlotsType.length);
 				var emptySlot = game.exchanger.items.get(emptySlotsType[randomEmptySlotIndex]);
 				game.exchanger.findRandomOutcome(emptySlot, now);
@@ -78,8 +78,7 @@ class Outcome
 	static function getPoint(type:Int, stars:Int, league:Int, ratio:Float) : Int
 	{
 		if( league == 0 )
-			return ratio > 1 ? 13 : 0;
-		//var random = Math.ceil(Math.random() * COE_POINTS - COE_POINTS * 0.5);
+			return ratio > 1 ? 1 : 0;
 		var challengeCoef:Float = ScriptEngine.get(ScriptEngine.T48_CHALLENGE_REWARDCOEF, type);
 		return Math.round((MIN_POINTS + stars * COE_POINTS) * challengeCoef * (ratio > 1 ? 1 : -1));
 	}
@@ -101,8 +100,8 @@ class Outcome
   {
 		var ret = new Array<Int>();
     var i = 0;
-		var keys = game.exchanger.items.keys();
     var k = 0;
+		var keys = game.exchanger.items.keys();
     while( i < keys.length )
     {
       k = keys[i];

@@ -37,7 +37,7 @@ class Game
 		arenas = new IntArenaMap();
 		var ls:Array<Array<Any>> = ScriptEngine.get(ScriptEngine.T81_TROPHY_ROAD);
 		for( i in 0...ls.length ) 
-			arenas.set(i	, new Arena(this, i,	i > 0 ? Std.int(ls[i - 1][0]) + 1 : -4, ls[i][0], ls[i][1], ls[i][2]));	
+			arenas.set(i, new Arena(this, i,	i > 0 ? Std.int(ls[i - 1][0]) + 1 : -4, ls[i][0], ls[i][1], ls[i][2]));	
 
 		player = new Player(this, data);
 		exchanger = new Exchanger(this);

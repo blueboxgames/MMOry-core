@@ -210,6 +210,7 @@ class BattleField
 		this.deltaTime = deltaTime;
 		this.now += deltaTime;
 		
+		// -=-=-=-=-=-=-=-  UPDATE TIME-STATE  -=-=-=-=-=-=-=-=-=-
 		if( resetTime <= this.now )
 			reset();
 		
@@ -231,10 +232,13 @@ class BattleField
 			}
 		}
 
+		// -=-=-=-=-=-=-=-=-=-  UPDATE EXIXIR-BARS  -=-=-=-=-=-=-=-=-=-=-=-
+		elixirUpdater.update(deltaTime, getDuration() > getTime(1));
+
 		if( state > STATE_2_STARTED )
 			return;
 		
-		// -=-=-=-=-=-=-=-  UPDATE AND REMOVE UNITS  -=-=-=-=-=-=-=-=-=-
+		// -=-=-=-=-=-=-=-=-  UPDATE AND REMOVE UNITS  -=-=-=-=-=-=-=-=-=-=
 		garbage = new IntList();
 		var keys = units.keys();
 		var i = keys.length - 1;
@@ -264,8 +268,6 @@ class BattleField
 		// remove exploded bullets
 		while( garbage.size() > 0 )
 			bullets.remove(garbage.pop());
-		
-		elixirUpdater.update(deltaTime, getDuration() > getTime(1));
 	}
 	
 	public function getDuration() : Float
@@ -409,10 +411,12 @@ class BattleField
 		if( state > STATE_2_STARTED )
 			return;
 		resetTime = now + 2000;
+		pauseTime = now;
 		state = STATE_3_PAUSED;
 	}
 	function reset() : Void
 	{
+		pauseTime = now + 2000000; 
 		resetTime = now + 2000000;
 		dispose();
 		elixirUpdater.init();

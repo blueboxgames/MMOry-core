@@ -55,27 +55,31 @@ class ScriptEngine
 	static var script:String;
 	static var version:Float;
 	static var program:Dynamic;
+	static var appVersion:Int;
 	static var interp:hscript.Interp;
 
-	static public function initialize(_script:String) 
+	static public function initialize(_script:String, _appVersion:Int) 
 	{
 		script = _script;
+		appVersion = _appVersion;
 		try
 		{
 			program = new hscript.Parser().parseString(script);
 			interp = new hscript.Interp();
 			interp.variables.set("Math", Math); // share the Math class
-			version = get(-2, 0);
+			version = get(-2);
+			trace("appVersion: " + appVersion + ", script version: " + version);
 		} catch(e:Error) { trace(e); }
 	}
 	
 	static public function get(type:Int, ?arg0:Dynamic, ?arg1:Dynamic = null, ?arg2:Dynamic = null, ?arg3:Dynamic = null) : Dynamic
 	{
-		interp.variables.set("__type", type);
+		
+		interp.variables.set(appVersion > 2000 ? "__type" : "featureType", type);
 		if( arg0 != null )
-			interp.variables.set("__arg0", arg0);
+			interp.variables.set(appVersion > 2000 ? "__arg0" : "cardType", arg0);
 		if( arg1 != null )
-			interp.variables.set("__arg1", arg1);
+			interp.variables.set(appVersion > 2000 ? "__arg1" : "cardLevel", arg1);
 		if( arg2 != null )
 			interp.variables.set("__arg2", arg2);
 		if( arg3 != null )

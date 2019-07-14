@@ -672,18 +672,6 @@ if( __type == 42 )
 	}
 }
 
-// getUnlockAt(index:Int) : Int
-if( __type == 43 )
-{
-	return switch( __arg0 )
-	{
-		case 1:		120;
-		case 2:		730;
-		case 3:		1300;
-		default:	-10;
-	}
-}
-
 // getCapacity(type:Int):Int
 if( __type == 44 )
 {

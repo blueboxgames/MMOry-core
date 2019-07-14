@@ -29,6 +29,7 @@ class Challenge
 	public var id:Int;
 	public var mode:Int;
 	public var type:Int;
+	public var index:Int;
 	public var startAt:Int;
 	public var unlockAt:Int;
 	public var capacity:Int = 20;
@@ -40,10 +41,13 @@ class Challenge
 	public var attendees:Array<Attendee>;
 	public var rewardCollected:Bool;
 
-	public function new(type:Int = 0, mode:Int = 0)
+	public function new(game:Game, index:Int, type:Int, mode:Int)
 	{
+		this.index = index;
 		this.type = type;
 		this.mode = mode;
+		if( game != null )
+			this.unlockAt = getUnlockAt(game, index);
 	}
 	
 	public function getState(now:Int):Int
@@ -127,7 +131,8 @@ class Challenge
 		
 		trace(rank + " " + ratio + " " + ret.toString());
 		return ret;
-	}	
+	}
+
 	public function indexOfAttendees(attendeeId:Int) : Int
 	{
 		var i = 0;
@@ -147,6 +152,21 @@ class Challenge
 		return game.exchanger.exchange(getExchangeItem(type, runRequirements, arena), now);
 	}
 	
+	static public function getUnlockAt(game:Game, index:Int) : Int
+	{
+		if( index == 0 )
+			return -10;
+		var len = game.arenas.keys().length;
+		for (l in 0...len)
+		{
+			var rLen = game.arenas.get(l).rewards.length;
+			for (r in 0...rLen)
+				if( game.arenas.get(l).rewards[r].key == (30 + index) )
+					return game.arenas.get(l).rewards[r].point;
+		}
+		return -10;
+	}
+
 	static public function getlowestJoint(player:Player) : Int
 	{
 		var ret = ResourceType.R30_CHALLENGES + 1;

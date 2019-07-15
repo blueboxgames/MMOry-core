@@ -55,7 +55,7 @@ class Card
 	private function setFeatures() : Void
 	{
 		rarity = ScriptEngine.getInt(ScriptEngine.T00_RARITY, type, level);
-		availableAt = ScriptEngine.getInt(ScriptEngine.T01_AVAILABLE_AT, type, level);
+		availableAt = get_unlockat(game, type);
 		elixirSize = ScriptEngine.getInt(ScriptEngine.T02_ELIXIR_SIZE, type, level);
 		quantity = ScriptEngine.getInt(ScriptEngine.T03_QUANTITY, type, level);
 		summonTime = ScriptEngine.getInt(ScriptEngine.T04_SUMMON_TIME, type, level);
@@ -191,6 +191,32 @@ class Card
 		return Exchanger.softToHard( toSoft(count) );
 	}
 	
+	static private var UNLOCKES:IntIntMap;
+	static public function get_unlockes(game:Game) : IntIntMap
+	{
+		if( UNLOCKES != null )
+			return UNLOCKES;
+
+		UNLOCKES = new IntIntMap();
+		var lLen = game.arenas.keys().length;
+		for( l in 0...lLen )
+		{
+			var rLen = game.arenas.get(l).rewards.length;
+			for( r in 0...rLen )
+			{
+				var rw = game.arenas.get(l).rewards[r];
+				if( ResourceType.isCard(rw.key) )
+					UNLOCKES.set(rw.key, rw.point);
+			}
+		}
+		return UNLOCKES;
+	}
+	static public function get_unlockat(game:Game, type:Int) : Int
+	{
+		var uls = get_unlockes(game);
+		return uls.exists(type) ? uls.get(type) : 100000;	
+	}
+
 	public function toString(showCardPrperties:Bool = true, showUnitPrperties:Bool = true, showBulletPrperties:Bool = true) : String
 	{
 		var ret = type + " > ";

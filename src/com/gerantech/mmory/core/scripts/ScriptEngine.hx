@@ -9,7 +9,7 @@ import hscript.Expr.Error;
 class ScriptEngine
 {
 	static public var T00_RARITY:Int = 0;
-	static public var T01_AVAILABLE_AT:Int = 1;
+	// static public var T01_AVAILABLE_AT:Int = 1;
 	static public var T02_ELIXIR_SIZE = 2;
 	static public var T03_QUANTITY = 3;
 	static public var T04_SUMMON_TIME = 4;

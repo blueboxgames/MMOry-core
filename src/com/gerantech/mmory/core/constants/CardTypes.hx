@@ -109,30 +109,6 @@ class CardTypes
 		return type > 220;
 	}
 
-// #if flash
-/* static private var _all:Array<Int>;
-	static public function getAll():Array<Int>
-	{
-		if( _all == null )
-		{
-			_all = new Array<Int>();
-			var ret = new Array<Int>();
-			var i = 0;
-			while ( i < 131 )
-			{
-				ret.push(i);
-				i ++;
-			}
-			i = 151;
-			while ( i <= 154 )
-			{
-				ret.push(i);
-				i ++;
-			}
-		}
-		return ret;
-	} */
-
 	static public function getRelatedTo(cardType:Int) : Array<Int> 
 	{
 		var ret = new Array<Int>();

@@ -235,6 +235,12 @@ class Unit extends GameObject
 			if( u == null || u.disposed() || u.summonTime != 0 )
 				continue;
 			
+			if( !card.focusUnit && CardTypes.isTroop(u.card.type) )
+				continue;
+			
+			if( card.focusHeight < u.z )
+				continue;
+
 			if( (card.bulletDamage >= 0 && this.side != u.side) || (card.bulletDamage < 0 && this.side == u.side && u.card.type != CardTypes.C109 && u.card.type < CardTypes.C201 && u.health < u.card.health) )
 			{
 				var dis = com.gerantech.mmory.core.utils.CoreUtils.getDistance(this.x, this.y, u.x, u.y);

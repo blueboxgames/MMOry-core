@@ -372,6 +372,36 @@ if( __type == 16 )
 	}
 }
 
+// focus unit
+if( __type == 17 )
+{
+	return switch( __arg0 )
+	{
+		case	107	:	false;
+		default		:	true;
+	}
+}
+
+// focus height
+if( __type == 18 )
+{
+	return switch( __arg0 )
+	{
+		case	106	:	10;
+		default		:	1000;
+	}
+}
+
+// self dammage
+if( __type == 19 )
+{
+	return switch( __arg0 )
+	{
+		case	106	:	0.001;
+		default		:	0;
+	}
+}
+
 
 // bulletSpeed
 if( __type == 21 )

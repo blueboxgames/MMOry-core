@@ -31,6 +31,9 @@ class Card
 	public var sizeV:Float = 50;
 	public var focusRange:Float = 150;
 	public var explosive:Bool;
+	public var focusUnit:Bool = true;
+	public var focusHeight:Int = 200;
+	public var selfDammage:Float = 0;
 	
 	public var bulletSpeed:Float = 1.0;
 	public var bulletDamage:Float = 1.05;
@@ -67,6 +70,9 @@ class Card
 		sizeV = ScriptEngine.get(ScriptEngine.T14_SIZE_V, type, level);
 		focusRange = ScriptEngine.get(ScriptEngine.T15_FOCUS_RANGE, type, level);
 		explosive = ScriptEngine.getBool(ScriptEngine.T16_EXPLOSIVE, type, level);
+		focusUnit = ScriptEngine.getBool(ScriptEngine.T17_FOCUS_UNIT, type);
+		focusHeight = ScriptEngine.getInt(ScriptEngine.T18_FOCUS_HEIGHT, type);
+		selfDammage = ScriptEngine.get(ScriptEngine.T19_SELF_DAMMAGE, type);
 		
 		// bullet data
 		bulletSpeed = ScriptEngine.get(ScriptEngine.T21_BULLET_SPEED, type, level);

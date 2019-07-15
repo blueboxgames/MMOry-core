@@ -8,9 +8,9 @@ import com.gerantech.mmory.core.scripts.ScriptEngine;
  */
 class ElixirUpdater
 {
-	static public var INIT_VALUE:Int = 7;
+	static public var INIT_VALUE:Int = 5;
 	static public var MAX_VALUE:Int = 10;
-	static public var SPEED:Float = 0.00033;
+	static public var SPEED:Float = 0.00030;
 
 	public var bars:Array<Float>;
 	public var reserved:Array<Int>;
@@ -40,7 +40,7 @@ class ElixirUpdater
 		// -=-=-=-=-=-=-=-=-=-=-  INCREASE ELIXIRS  -=-=-=-=-=-=-=-=-=-=-=-
 		this.updateAt(0, this.bars[0] + (isFinalMode ? this.finalSpeeds[0] : this.normalSpeeds[0]) * deltaTime);
 		this.updateAt(1, this.bars[1] + (isFinalMode ? this.finalSpeeds[1] : this.normalSpeeds[1]) * deltaTime);
-		// trace("bars: " + bars.toString() + "  normalSpeeds: rmalSpeeds.toString}
+	  // trace("bars: " + bars.toString() + "  normalSpeeds: " + normalSpeeds.toString());
 	}
 
 	public function updateAt(side:Int, value:Float) : Void

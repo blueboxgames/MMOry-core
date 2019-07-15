@@ -98,8 +98,8 @@ class Quest
 			case 4 :	CoreUtils.round( Math.pow(1.4, step) * 14);
 			case 5 :	CoreUtils.round( Math.pow(1.4, step) * 10);
 			case 6 :	step * 10;
-			case 7 :	Card.getTotalCollected(step, 0) - 1;
-			case 8 :	step;
+			case 7 :	Card.getTotalCollected(step + 2, 0);
+			case 8 :	step + 1;
 			case 9 :	CoreUtils.round( Math.pow(1.4, step) * 10) - 2;
 			default: 	0;
 		}

@@ -152,22 +152,20 @@ class Player
 	/**
 	 * 
 	 * @param	selectedArena
-	 * @param	mode => 0: only arena card<br/>1: avalables<br/>2: unavailables 
+	 * @param	mode => 0: all<br/>1: avalables<br/>2: unavailables 
 	 * @return
 	 */
-	public function availabledCards(arena:Int = -1, mode:Int = 0) : Array<Int>
+	public function availabledCards(point:Int, mode:Int = 0) : Array<Int>
 	{
-		var _arena = arena == -1 ? get_arena(get_point()) : arena;
-		var _all:Array<Int> = ScriptEngine.get(ScriptEngine.T01_AVAILABLE_AT, -1);
-		if( mode == 0 )
-		{
-			if( _arena == 0 )
-				return _all.slice(0, FIRST_CARDS);
-			return [_all[_arena + FIRST_CARDS - 1]];
-		}
-		if( mode == 1 )
-			return _all.slice(0, _arena + FIRST_CARDS);
-		return _all.slice(arena + FIRST_CARDS);
+		var ret = new Array<Int>();
+		var unlocks = Card.get_unlockes(game);
+		var keys = unlocks.keys();
+		var len:Int = keys.length;
+		for (i in 0...len) 
+			if( (mode == 0) || (mode == 1 && unlocks.get(keys[i]) <= point) || (mode == 2 && unlocks.get(keys[i]) > point) )
+				ret.push(keys[i]);
+		
+		return ret;
 	}
 	
 	public function getAvailablity(type:Int) : Int
@@ -176,7 +174,7 @@ class Player
 			return CardTypes.AVAILABLITY_EXISTS;
 		if( cards.exists(type) )
 			return CardTypes.AVAILABLITY_EXISTS;
-		return ScriptEngine.getInt(ScriptEngine.T01_AVAILABLE_AT, type, 1) <= get_arena(0) ? CardTypes.AVAILABLITY_WAIT : CardTypes.AVAILABLITY_NOT;
+		return Card.get_unlockat(game, type) < get_point() ? CardTypes.AVAILABLITY_WAIT : CardTypes.AVAILABLITY_NOT;
 	}
 
 
@@ -347,11 +345,7 @@ class Player
 	
 	public function fillCards() : Void
 	{
-		var myArenaIndex:Int = Std.int(Math.max(1, game.player.get_arena(0)));
-		if( myArenaIndex > 3 )
-			myArenaIndex = 3;
-		
-		var cardTypes = availabledCards(myArenaIndex, 1);
+		var cardTypes = availabledCards(get_point(), 1);
 		var numCards:Int = cardTypes.length;
 		var baseLevel = get_point() * 0.005 + 1;
 		var roundBase = Math.floor(baseLevel); 
@@ -359,17 +353,15 @@ class Player
 		var log = "BOT => point:" + get_point() + " base-level: " + baseLevel;
 		var i = 0;
 		cards = new IntCardMap();
-        while ( i < numCards )
-        {
+		while ( i < numCards )
+		{
 			var type:Int = cardTypes[i];
-			var rarity = ScriptEngine.getInt(ScriptEngine.T00_RARITY, type, 1);
-			var availabled = ScriptEngine.getInt(ScriptEngine.T01_AVAILABLE_AT, type, 1);
-			var level:Int = Math.round(Math.max(1, roundBase - rarity - availabled + (Math.random() < ratio ? 1 : 0)));
+			var level:Int = Math.round(Math.max(1, roundBase + (Math.random() < ratio ? 1 : 0)));
 			log += (" ," + type + ":" + level);
 			cards.set(type, new Card(game, type, level));
-            i ++;
-        }
-		
+			i ++;
+		}
+
 		log += " deck=> ";
 		i = 0;
 		var allCards = cards.keys();

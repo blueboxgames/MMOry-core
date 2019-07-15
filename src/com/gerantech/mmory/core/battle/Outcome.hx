@@ -28,7 +28,7 @@ class Outcome
 		var league = game.arenas.get(game.player.get_arena(0));
 
 		// points
-		var point = getPoint(type, stars, league.index, ratio);
+		var point = getPoint(type, stars, game.player.get_point(), ratio);
 		trace("mode:" + mode + " type:" + type + " point:" + point);
 
 		if( game.player.isBot() )
@@ -36,9 +36,12 @@ class Outcome
 
 		// battle stats
 		ret.set(ResourceType.R12_BATTLES, 1);
-		ret.set(ResourceType.R16_WIN_RATE, getWinRate(game, league, stars, ratio));
+		ret.set(ResourceType.R30_CHALLENGES, mode + 6);
 		if( league.index > 0 )
+		{
 			ret.set(ResourceType.R17_STARS, stars);
+			ret.set(ResourceType.R16_WIN_RATE, getWinRate(game, league, stars, ratio));
+		}
 
 		if( ratio > 1 )
 		{
@@ -75,10 +78,12 @@ class Outcome
 		return ret;
 	}
 
-	static function getPoint(type:Int, stars:Int, league:Int, ratio:Float) : Int
+	static function getPoint(type:Int, stars:Int, lastPoint:Int, ratio:Float) : Int
 	{
-		if( league == 0 )
-			return ratio > 1 ? 1 : 0;
+		if( lastPoint < 0 && ratio > 1 )
+			return 1;
+		if( lastPoint < 20 && ratio <= 1 )
+			return 0;
 		var challengeCoef:Float = ScriptEngine.get(ScriptEngine.T48_CHALLENGE_REWARDCOEF, type);
 		return Math.round((MIN_POINTS + stars * COE_POINTS) * challengeCoef * (ratio > 1 ? 1 : -1));
 	}

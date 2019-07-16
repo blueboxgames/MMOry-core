@@ -57,19 +57,19 @@ class Card
 	
 	private function setFeatures() : Void
 	{
-		rarity = ScriptEngine.getInt(ScriptEngine.T00_RARITY, type, level);
+		rarity = ScriptEngine.getInt(ScriptEngine.T00_RARITY, type);
 		availableAt = get_unlockat(game, type);
-		elixirSize = ScriptEngine.getInt(ScriptEngine.T02_ELIXIR_SIZE, type, level);
-		quantity = ScriptEngine.getInt(ScriptEngine.T03_QUANTITY, type, level);
-		summonTime = ScriptEngine.getInt(ScriptEngine.T04_SUMMON_TIME, type, level);
+		elixirSize = ScriptEngine.getInt(ScriptEngine.T02_ELIXIR_SIZE, type);
+		quantity = ScriptEngine.getInt(ScriptEngine.T03_QUANTITY, type);
+		summonTime = ScriptEngine.getInt(ScriptEngine.T04_SUMMON_TIME, type);
 		
 		// troops data
-		speed = ScriptEngine.get(ScriptEngine.T11_SPEED, type, level);
+		speed = ScriptEngine.get(ScriptEngine.T11_SPEED, type);
 		health = ScriptEngine.get(ScriptEngine.T12_HEALTH, type, level);
-		sizeH = ScriptEngine.get(ScriptEngine.T13_SIZE_H, type, level);
-		sizeV = ScriptEngine.get(ScriptEngine.T14_SIZE_V, type, level);
-		focusRange = ScriptEngine.get(ScriptEngine.T15_FOCUS_RANGE, type, level);
-		explosive = ScriptEngine.getBool(ScriptEngine.T16_EXPLOSIVE, type, level);
+		sizeH = ScriptEngine.get(ScriptEngine.T13_SIZE_H, type);
+		sizeV = ScriptEngine.get(ScriptEngine.T14_SIZE_V, type);
+		focusRange = ScriptEngine.get(ScriptEngine.T15_FOCUS_RANGE, type);
+		explosive = ScriptEngine.getBool(ScriptEngine.T16_EXPLOSIVE, type);
 		focusUnit = ScriptEngine.getBool(ScriptEngine.T17_FOCUS_UNIT, type);
 		focusHeight = ScriptEngine.getInt(ScriptEngine.T18_FOCUS_HEIGHT, type);
 		selfDammage = ScriptEngine.get(ScriptEngine.T19_SELF_DAMMAGE, type);

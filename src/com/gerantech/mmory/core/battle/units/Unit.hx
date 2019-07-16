@@ -12,7 +12,7 @@ import com.gerantech.mmory.core.utils.Point2;
  */
 class Unit extends GameObject
 {
-    public var health:Float;
+	public var health:Float;
 	public var bulletId:Int = 0;
 	var target:Point2;
 	var defaultTarget:Point2;
@@ -25,223 +25,223 @@ class Unit extends GameObject
 	{
 		super(id, battleField, card, side, x, y, z);
 		//trace(card.toString() );
-		this.summonTime = battleField.now + card.summonTime;
+		this.summonTime = this.battleField.now + this.card.summonTime;
 		this.immortalTime = this.summonTime;
 		
 		// fake health for tutorial
 		if( side == 1 )
-			this.health = card.health * 0.5 + Math.min(0.5, (battleField.games[0].player.get_battleswins() + 1) / 10) * card.health;
+			this.health = this.card.health * 0.5 + Math.min(0.5, (battleField.games[0].player.get_battleswins() + 1) / 10) * this.card.health;
 		else
-			this.health = card.health;
+			this.health = this.card.health;
 		
 		this.bulletId = id * 10000;
-		this.movable = card.type != CardTypes.C201;
+		this.movable = this.card.type != CardTypes.C201;
 		if( !this.movable )
 			return;
 		this.target = new Point2(0, 0);
-		var returnigPosition = battleField.field.tileMap.getTile(this.x, this.y);
+		var returnigPosition = this.battleField.field.tileMap.getTile(this.x, this.y);
 		if( CardTypes.isHero(card.type) )
 			this.defaultTarget = new Point2(returnigPosition.x, returnigPosition.y);
 		else
-			this.defaultTarget = new Point2(battleField.field.mode == Challenge.MODE_0_HQ ? BattleField.WIDTH * 0.5 : returnigPosition.x, side == 0 ? 0 : BattleField.HEIGHT);
+			this.defaultTarget = new Point2(this.battleField.field.mode == Challenge.MODE_0_HQ ? BattleField.WIDTH * 0.5 : returnigPosition.x, side == 0 ? 0 : BattleField.HEIGHT);
 	}
 	
 	override public function update() : Void
 	{
-		if( isDump || disposed() )
+		if( this.isDump || this.disposed() )
 			return;
 		
-		if( summonTime > battleField.now )
+		if( this.summonTime > this.battleField.now )
 			return;
 		
-		finalizeDeployment();
-		finalizeImmortal();
-		decide();
+		this.health -= this.card.selfDammage;
+		this.finalizeDeployment();
+		this.finalizeImmortal();
+		this.decide();
 	}
 
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= deploy -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	function finalizeDeployment() : Void
 	{
-		if( summonTime == 0 )
+		if( this.summonTime == 0 )
 			return;
-		summonTime = 0;
-		setState(GameObject.STATE_1_DIPLOYED);
+		this.summonTime = 0;
+		this.setState(GameObject.STATE_1_DIPLOYED);
 	}
 	function finalizeImmortal() : Void
 	{
-		if( immortalTime == 0 )
+		if( this.immortalTime == 0 )
 			return;
-		if( immortalTime < battleField.now )
+		if( this.immortalTime < this.battleField.now )
 		{
-			setState(GameObject.STATE_2_MORTAL);
-			immortalTime = 0;
+			this.setState(GameObject.STATE_2_MORTAL);
+			this.immortalTime = 0;
 		}
 	}
 	
-
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= decide -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	function decide() 
 	{
-		//var log = "decide => id:" + id + " type: " + card.type;
+		//var log = "decide => id:" + id + " type: " + this.card.type;
 		var enemyId = getNearestEnemy();
 		if( enemyId > -1 )
 		{
-			var enemy = battleField.units.get(enemyId);
-			var newEnemyFound = enemyId != cachedEnemy;
+			var enemy = this.battleField.units.get(enemyId);
+			var newEnemyFound = enemyId != this.cachedEnemy;
 			if( newEnemyFound )
-				cachedEnemy = enemyId;
+				this.cachedEnemy = enemyId;
 			
 			//log += " enemyId:" + enemyId;
-			if( com.gerantech.mmory.core.utils.CoreUtils.getDistance(this.x, this.y, enemy.x, enemy.y) <= card.bulletRangeMax )
+			if( com.gerantech.mmory.core.utils.CoreUtils.getDistance(this.x, this.y, enemy.x, enemy.y) <= this.card.bulletRangeMax )
 			{
-				if( attackTime < battleField.now )
+				if( this.attackTime < this.battleField.now )
 				{
-					attack(enemy);
-					//log += "   " + health + " <=> " + enemy.health;
-					//trace(log);
+					this.attack(enemy);
+					// log += "   " + health + " <=> " + enemy.health;
+					// trace(log);
 				}
 				else
 				{
-					//log += "   wait" ;
-					//trace(log);
-					setState(GameObject.STATE_3_WAITING);
+					// log += "   wait" ;
+					// trace(log);
+					this.setState(GameObject.STATE_3_WAITING);
 				}
 				return;
 			}
 			
-			if( !movable )
+			if( !this.movable )
 				return;
 			
 			if( newEnemyFound )
 			{
-				//log += " move to enemy." ;
-				//trace(log);
-				changeMovingTarget(enemy.x, enemy.y);
+				// log += " move to enemy." ;
+				// trace(log);
+				this.changeMovingTarget(enemy.x, enemy.y);
 			}
-			move();
+			this.move();
 			return;
 		}
-		if( !movable )
+		if( !this.movable )
 			return;
 		
-		if( !target.equalsPoint(defaultTarget) )
-			changeMovingTarget(defaultTarget.x, defaultTarget.y);
-		move();
+		if( !this.target.equalsPoint(this.defaultTarget) )
+			this.changeMovingTarget(this.defaultTarget.x, this.defaultTarget.y);
+		this.move();
 	}
 	
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= movement -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	function changeMovingTarget(x:Float, y:Float) : Void
 	{
-//		trace("changeMovingTarget  id: " + id + " type: " + card.type + "   " + target );
+		// trace("changeMovingTarget  id: " + id + " type: " + this.card.type + "   " + target );
 		this.target.x = x;
 		this.target.y = y;
-		findPath(x, y);
+		this.findPath(x, y);
 	}
 
 	function findPath(targetX:Float, targetY:Float) : Void
 	{
-		Point2.disposeAll(path);
-		if( !movable )
+		Point2.disposeAll(this.path);
+		if( !this.movable )
 			return;
 		
 		if( this.x == targetX && this.y == targetY )
 		{
-			path = null;
+			this.path = null;
 			return;
 		}
-		path = battleField.field.tileMap.findPath(this.x, this.y, targetX, targetY, side == 0 ? 1 : -1);
-		if( path == null || path.length == 0 )
+		this.path = this.battleField.field.tileMap.findPath(this.x, this.y, targetX, targetY, side == 0 ? 1 : -1);
+		if( this.path == null || this.path.length == 0 )
 			return;
 		if( BattleField.DEBUG_MODE )
 		{
 			var i = 0;
 			var len = path.length;
-			var pthStr = "findPath  id: " + id + " side: " + side + " type: " + card.type + "  ";
+			var pthStr = "findPath  id: " + id + " side: " + side + " type: " + this.card.type + "  ";
 			while ( i < len )
 			{
-				pthStr += (path[i].x + "," + path[i].y + " ");
+				pthStr += (this.path[i].x + "," + this.path[i].y + " ");
 				i ++;
 			}
-			fireEvent(id, "findPath", null);
+			this.fireEvent(id, "findPath", null);
 			trace(pthStr);
 		}
-		estimateAngle();
+		this.estimateAngle();
 	}
 
 	function estimateAngle() : Void 
 	{
-		var angle:Float = Math.atan2(path[0].y - y, path[0].x - x);
-        deltaX = Math.round(card.speed * Math.cos(angle) * 1000) / 1000;
-        deltaY = Math.round(card.speed * Math.sin(angle) * 1000) / 1000;
+		var angle:Float = Math.atan2(this.path[0].y - y, this.path[0].x - x);
+		this.deltaX = Math.round(this.card.speed * Math.cos(angle) * 1000) / 1000;
+		this.deltaY = Math.round(this.card.speed * Math.sin(angle) * 1000) / 1000;
 		//trace("side:" + side + "  x:" + x + " " + path[0].x + " ,  y:" + y + " " + path[0].y + " ,  delta:" + deltaX + " " + deltaY);
 	}
 	
 //	var tracetime:Float;
 	function move() : Void
 	{
-		if( !movable || path == null || path.length == 0 )
+		if( !this.movable || this.path == null || this.path.length == 0 )
 			return;
 		
-		var cx:Float = deltaX * battleField.deltaTime;
-		var cy:Float = deltaY * battleField.deltaTime;
+		var cx:Float = this.deltaX * this.battleField.deltaTime;
+		var cy:Float = this.deltaY * this.battleField.deltaTime;
 		/*var log = "";
-		if( battleField.now > tracetime )
-			log = "move   id: " + id + " type: " + card.type + " path:" + this.path.length + "   px:" + path[0].x + " x:" + x + " cx:" + cx + "   py:" + path[0].y + " y:" + y + " cy:" + cy;*/
-		cx = (Math.abs(path[0].x - x) < Math.abs(cx) || cx == 0) ? GameObject.NaN : (x + cx);
-		cy = (Math.abs(path[0].y - y) < Math.abs(cy) || cy == 0) ? GameObject.NaN : (y + cy);
-		/*if( battleField.now > tracetime )
+		if( this.battleField.now > tracetime )
+			log = "move   id: " + id + " type: " + this.card.type + " path:" + this.path.length + "   px:" + path[0].x + " x:" + x + " cx:" + cx + "   py:" + path[0].y + " y:" + y + " cy:" + cy;*/
+		cx = (Math.abs(this.path[0].x - x) < Math.abs(cx) || cx == 0) ? GameObject.NaN : (x + cx);
+		cy = (Math.abs(this.path[0].y - y) < Math.abs(cy) || cy == 0) ? GameObject.NaN : (y + cy);
+		/*if( this.battleField.now > tracetime )
 		{
 			log += "   ccx:" + cx + " ccy:" + cy;
 			trace( log );
-			tracetime = battleField.now + 1000;
+			tracetime = this.battleField.now + 1000;
 		}*/
 		
 		if( cx == GameObject.NaN && cy == GameObject.NaN )
 		{
-			if( path.length > 1 )
+			if( this.path.length > 1 )
 			{
-				path.shift();
-				estimateAngle();
+				this.path.shift();
+				this.estimateAngle();
 			}
 			#if flash
 			else
 			{
-				setState(GameObject.STATE_3_WAITING);
+				this.setState(GameObject.STATE_3_WAITING);
 			}
 			#end
 			return;
 		}
-		setPosition(cx, cy, GameObject.NaN);
+		this.setPosition(cx, cy, GameObject.NaN);
 	}
 	
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= attack -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	function getNearestEnemy() : Int
 	{
-		if ( cachedEnemy != -1 && battleField.units.exists(cachedEnemy) && !battleField.units.get(cachedEnemy).disposed() )
+		if ( this.cachedEnemy != -1 && this.battleField.units.exists(this.cachedEnemy) && !this.battleField.units.get(this.cachedEnemy).disposed() )
 		{
-			if( com.gerantech.mmory.core.utils.CoreUtils.getDistance(this.x, this.y, battleField.units.get(cachedEnemy).x, battleField.units.get(cachedEnemy).y) <= card.focusRange )
-				return cachedEnemy;
+			if( com.gerantech.mmory.core.utils.CoreUtils.getDistance(this.x, this.y, this.battleField.units.get(this.cachedEnemy).x, this.battleField.units.get(this.cachedEnemy).y) <= this.card.focusRange )
+				return this.cachedEnemy;
 		}
 		
-		var distance:Float = card.focusRange;
+		var distance:Float = this.card.focusRange;
 		var ret:Int = -1;
 		var u:Unit;
 		var i = 0;
-		var keys = battleField.units.keys();
+		var keys = this.battleField.units.keys();
 		var len = keys.length;
 		while ( i < len )
 		{
-			u = battleField.units.get(keys[i++]);
+			u = this.battleField.units.get(keys[i++]);
 			if( u == null || u.disposed() || u.summonTime != 0 )
 				continue;
-			
-			if( !card.focusUnit && CardTypes.isTroop(u.card.type) )
+
+			if( !this.card.focusUnit && CardTypes.isTroop(u.card.type) )
 				continue;
 			
-			if( card.focusHeight < u.z )
+			if( this.card.focusHeight < u.z )
 				continue;
 
-			if( (card.bulletDamage >= 0 && this.side != u.side) || (card.bulletDamage < 0 && this.side == u.side && u.card.type != CardTypes.C109 && u.card.type < CardTypes.C201 && u.health < u.card.health) )
+			if( (this.card.bulletDamage >= 0 && this.side != u.side) || (this.card.bulletDamage < 0 && this.side == u.side && u.card.type != CardTypes.C109 && u.card.type < CardTypes.C201 && u.health < u.card.health) )
 			{
 				var dis = com.gerantech.mmory.core.utils.CoreUtils.getDistance(this.x, this.y, u.x, u.y);
 				if( dis <= distance )
@@ -256,32 +256,41 @@ class Unit extends GameObject
 	
 	function attack(enemy:Unit) : Void
 	{
-		setState(GameObject.STATE_5_SHOOTING);
+		this.setState(GameObject.STATE_5_SHOOTING);
 #if java
-		battleField.addBullet(this, side, x, y, enemy);
+		this.battleField.addBullet(this, side, x, y, enemy);
 #end
-		fireEvent(id, BattleEvent.ATTACK, enemy);
-		attackTime = battleField.now + card.bulletShootGap;
+		this.fireEvent(id, BattleEvent.ATTACK, enemy);
+		this.attackTime = this.battleField.now + this.card.bulletShootGap;
 	}
 	
 	public function hit(damage:Float) : Void
 	{
-		if( disposed() || ( battleField.now < immortalTime && !card.explosive ) )
+		if( this.disposed() || ( this.battleField.now < this.immortalTime && !this.card.explosive ) )
 			return;
 		
-		health = Math.min(health - damage, card.health);
-		if( health <= 0 )
-			dispose();
-		//trace("type:" + card.type + " id:" + id + " damage:" + damage + " health:" + health);
+		setHealth(this.health - damage);
+		//trace("type:" + this.card.type + " id:" + id + " damage:" + damage + " health:" + health);
 		fireEvent(id, BattleEvent.HIT, damage);
+	}
+
+	function setHealth(health:Float) : Void
+	{
+		if( health > this.card.health )
+			health = this.card.health;
+		
+		this.health = health;
+		
+		if( this.health <= 0 )
+			this.dispose();
 	}
 
 	public override function dispose() : Void
 	{
-		if( disposed() )
+		if( this.disposed() )
 			return;
-		Point2.disposeAll(path);
-		if( card.explosive && !isDump )
+		Point2.disposeAll(this.path);
+		if( this.card.explosive && !this.isDump )
 			attack(this);
 		super.dispose();
 	}
@@ -292,6 +301,6 @@ class Unit extends GameObject
 	public override function toString():String
 	#end
 	{
-		return "type:" + card.type + " x:" + x + " y:" + y + " side:" + side + " level:" + card.level + " elixirSize:" + card.elixirSize + " summonTime:" + card.summonTime + " health:" + health + " speed:" + card.speed + " bulletDamage:" + card.bulletDamage + " bulletFireGap:" + card.bulletShootGap + " bulletRangeMax:" + card.bulletRangeMax;
+		return "type:" + this.card.type + " x:" + this.x + " y:" + this.y + " side:" + this.side + " level:" + this.card.level + " elixirSize:" + this.card.elixirSize + " summonTime:" + this.card.summonTime + " health:" + this.health + " speed:" + this.card.speed + " bulletDamage:" + this.card.bulletDamage + " bulletFireGap:" + this.card.bulletShootGap + " bulletRangeMax:" + this.card.bulletRangeMax;
 	}
 }

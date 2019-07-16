@@ -29,7 +29,6 @@ class GameObject
 	public var card:Card;
 	public var state:Int;
 	public var isDump:Bool;
-	public var movable:Bool = true;
 	public var summonTime:Float = 0;
 	public var battleField:BattleField;
 	var deltaX:Float;

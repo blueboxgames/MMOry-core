@@ -35,8 +35,7 @@ class Unit extends GameObject
 			this.health = this.card.health;
 		
 		this.bulletId = id * 10000;
-		this.movable = this.card.type != CardTypes.C201;
-		if( !this.movable )
+		if( this.card.speed <= 0 )
 			return;
 		this.target = new Point2(0, 0);
 		var returnigPosition = this.battleField.field.tileMap.getTile(this.x, this.y);
@@ -109,7 +108,7 @@ class Unit extends GameObject
 				return;
 			}
 			
-			if( !this.movable )
+			if( this.card.speed <= 0 )
 				return;
 			
 			if( newEnemyFound )
@@ -121,7 +120,7 @@ class Unit extends GameObject
 			this.move();
 			return;
 		}
-		if( !this.movable )
+		if( this.card.speed <= 0 )
 			return;
 		
 		if( !this.target.equalsPoint(this.defaultTarget) )
@@ -141,7 +140,7 @@ class Unit extends GameObject
 	function findPath(targetX:Float, targetY:Float) : Void
 	{
 		Point2.disposeAll(this.path);
-		if( !this.movable )
+		if( this.card.speed <= 0 )
 			return;
 		
 		if( this.x == targetX && this.y == targetY )
@@ -179,7 +178,7 @@ class Unit extends GameObject
 //	var tracetime:Float;
 	function move() : Void
 	{
-		if( !this.movable || this.path == null || this.path.length == 0 )
+		if( this.card.speed <= 0 || this.path == null || this.path.length == 0 )
 			return;
 		
 		var cx:Float = this.deltaX * this.battleField.deltaTime;
@@ -235,9 +234,11 @@ class Unit extends GameObject
 			if( u == null || u.disposed() || u.summonTime != 0 )
 				continue;
 
+			// prevent axis units for building target cards 
 			if( !this.card.focusUnit && CardTypes.isTroop(u.card.type) )
 				continue;
 			
+			// configure vertical angle vision 
 			if( this.card.focusHeight < u.z )
 				continue;
 
@@ -269,20 +270,25 @@ class Unit extends GameObject
 		if( this.disposed() || ( this.battleField.now < this.immortalTime && !this.card.explosive ) )
 			return;
 		
-		setHealth(this.health - damage);
+		this.setHealth(this.health - damage);
 		//trace("type:" + this.card.type + " id:" + id + " damage:" + damage + " health:" + health);
-		fireEvent(id, BattleEvent.HIT, damage);
+		this.fireEvent(id, BattleEvent.HIT, damage);
 	}
 
-	function setHealth(health:Float) : Void
+	function setHealth(health:Float) : Float
 	{
 		if( health > this.card.health )
 			health = this.card.health;
 		
+		var diff = this.health - health;
+		if( diff == 0 )
+			return diff;
 		this.health = health;
 		
 		if( this.health <= 0 )
 			this.dispose();
+
+		return diff;
 	}
 
 	public override function dispose() : Void
@@ -291,7 +297,7 @@ class Unit extends GameObject
 			return;
 		Point2.disposeAll(this.path);
 		if( this.card.explosive && !this.isDump )
-			attack(this);
+			this.attack(this);
 		super.dispose();
 	}
 	

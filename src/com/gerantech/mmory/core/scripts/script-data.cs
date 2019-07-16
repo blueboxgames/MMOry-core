@@ -222,7 +222,7 @@ if( __type == 11 )
 		case	223	:	1.30;
 		
 		
-		default		:	1.00;
+		default		:	0.00;
 	}
 	return ret * 0.085 * 1.1;
 }

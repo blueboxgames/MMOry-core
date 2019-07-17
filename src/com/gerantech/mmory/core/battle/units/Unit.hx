@@ -235,7 +235,7 @@ class Unit extends GameObject
 				continue;
 
 			// prevent axis units for building target cards 
-			if( !this.card.focusUnit && CardTypes.isTroop(u.card.type) )
+			if( !this.card.focusUnit && u.card.speed > 0 && CardTypes.isTroop(u.card.type) )
 				continue;
 			
 			// configure vertical angle vision 

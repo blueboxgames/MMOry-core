@@ -15,6 +15,7 @@ class ScriptEngine
 	static public var T04_SUMMON_TIME = 4;
 	//static public var T05_BIRTH_RATE = 5;
 	
+	static public var T10_Z:Int = 10;
 	static public var T11_SPEED:Int = 11;
 	static public var T12_HEALTH:Int = 12;
 	static public var T13_SIZE_H:Int = 13;

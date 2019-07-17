@@ -25,8 +25,9 @@ class Card
 	public var quantity:Int = 1;
 	public var summonTime:Int = 500;
 	
-	public var health:Float = 1;
+	public var z:Int = 0;
 	public var speed:Float = 1;
+	public var health:Float = 1;
 	public var sizeH:Float = 50;
 	public var sizeV:Float = 50;
 	public var focusRange:Float = 150;
@@ -52,7 +53,7 @@ class Card
 		this.type = type;
 		this.level = level;// Math.floor(Math.max(1, level));
 		//trace("t:" + type + " l:" + level);
-		setFeatures();
+		this.setFeatures();
 	}
 	
 	private function setFeatures() : Void
@@ -64,6 +65,7 @@ class Card
 		summonTime = ScriptEngine.getInt(ScriptEngine.T04_SUMMON_TIME, type);
 		
 		// troops data
+		z = ScriptEngine.get(ScriptEngine.T10_Z, type);
 		speed = ScriptEngine.get(ScriptEngine.T11_SPEED, type);
 		health = ScriptEngine.get(ScriptEngine.T12_HEALTH, type, level);
 		sizeH = ScriptEngine.get(ScriptEngine.T13_SIZE_H, type);

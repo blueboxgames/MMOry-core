@@ -194,6 +194,16 @@ if( __type == 4 )
 	return ret;
 }
 
+// z
+if( __type == 10 )
+{
+	return ret = switch( __arg0 )
+	{
+		case	101	:	300;
+		default		:	0;
+	}
+}
+
 // speed
 if( __type == 11 )
 {

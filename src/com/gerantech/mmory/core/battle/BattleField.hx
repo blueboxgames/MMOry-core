@@ -94,8 +94,6 @@ class BattleField
 		if( singleMode )
 		{
 			var winRate = game_0.player.getResource(com.gerantech.mmory.core.constants.ResourceType.R16_WIN_RATE);
-			if( winRate < -100000 )
-				winRate = 21474836;
 			arena = game_0.player.get_arena(0);
 			if( winRate > 2 )
 				this.difficulty = arena + winRate - 2;
@@ -120,7 +118,15 @@ class BattleField
 						ep = 100000;
 					game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R2_POINT, ep);
 				}
+				else if (this.field.mode == 2)
+				{
+					var ep:Int = game_0.player.get_point() + Math.round(Math.pow(1.2, Math.abs(this.difficulty) ) * 25 * this.difficulty / Math.abs(this.difficulty) + this.difficulty * 0.04);
+					if( ep > 100000 )
+						ep = 100000;
+					game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R2_POINT, ep);
+				}
 			}
+			
 			//game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R1_XP, game_1.player.get_point() * 6 + 1);
 			// game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R1_XP, game_0.player.get_xp() + (game_1.player.get_point() - game_0.player.get_point())* 6 + 1);
 			game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R1_XP, game_0.player.get_xp());

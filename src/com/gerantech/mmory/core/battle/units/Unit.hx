@@ -13,6 +13,7 @@ import com.gerantech.mmory.core.utils.Point2;
 class Unit extends GameObject
 {
 	public var health:Float;
+	public var cardHealth:Float;
 	public var bulletId:Int = 0;
 	var target:Point2;
 	var defaultTarget:Point2;
@@ -29,10 +30,11 @@ class Unit extends GameObject
 		this.immortalTime = this.summonTime;
 		
 		// fake health for tutorial
-		if( side == 1 )
-			this.health = this.card.health * 0.5 + Math.min(0.5, (battleField.games[0].player.get_battleswins() + 1) / 10) * this.card.health;
-		else
-			this.health = this.card.health;
+		var h:Float = this.card.health;
+		if( side > 0 && battleField.games[0].player.get_battleswins() < 5 )
+			h = h * 0.5 + ((battleField.games[0].player.get_battleswins() + 1) / 10) * h;
+		this.cardHealth = h;
+		this.setHealth(h);
 		
 		this.bulletId = id * 10000;
 		if( this.card.speed <= 0 )
@@ -53,7 +55,8 @@ class Unit extends GameObject
 		if( this.summonTime > this.battleField.now )
 			return;
 		
-		this.setHealth(this.health - this.card.selfDammage);
+		if( this.card.selfDammage != 0 )
+			this.setHealth(this.health - this.card.selfDammage);
 		this.finalizeDeployment();
 		this.finalizeImmortal();
 		this.decide();
@@ -277,8 +280,8 @@ class Unit extends GameObject
 
 	function setHealth(health:Float) : Float
 	{
-		if( health > this.card.health )
-			health = this.card.health;
+		if( health > this.cardHealth )
+			health = this.cardHealth;
 		
 		var diff = this.health - health;
 		if( diff == 0 )

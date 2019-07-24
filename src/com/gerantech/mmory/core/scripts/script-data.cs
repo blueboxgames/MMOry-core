@@ -205,7 +205,6 @@ if( __type == 10 )
 {
 	return ret = switch( __arg0 )
 	{
-		case	101	:	300;
 		default		:	0;
 	}
 }
@@ -404,13 +403,12 @@ if( __type == 17 )
 	}
 }
 
-// focus height ()
+// focus height
 if( __type == 18 )
 {
 	return switch( __arg0 )
 	{
-		// case	106	:	10;
-		default		:	1000;
+		default		:	-1;
 	}
 }
 

@@ -242,7 +242,7 @@ class Unit extends GameObject
 				continue;
 			
 			// configure vertical angle vision 
-			if( this.card.focusHeight < u.z )
+			if( this.card.focusHeight > u.z )
 				continue;
 
 			if( (this.card.bulletDamage >= 0 && this.side != u.side) || (this.card.bulletDamage < 0 && this.side == u.side && u.card.type != CardTypes.C109 && u.card.type < CardTypes.C201 && u.health < u.card.health) )

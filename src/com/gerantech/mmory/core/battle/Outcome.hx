@@ -1,8 +1,8 @@
 package com.gerantech.mmory.core.battle;
 
 
-import com.gerantech.mmory.core.exchanges.ExchangeItem;
 import com.gerantech.mmory.core.scripts.ScriptEngine;
+import com.gerantech.mmory.core.exchanges.ExchangeItem;
 import com.gerantech.mmory.core.constants.ExchangeType;
 import com.gerantech.mmory.core.others.Arena;
 import com.gerantech.mmory.core.utils.maps.IntIntMap;
@@ -84,8 +84,7 @@ class Outcome
 			return 1;
 		if( lastPoint < 20 && ratio <= 1 )
 			return 0;
-		var challengeCoef:Float = ScriptEngine.get(ScriptEngine.T48_CHALLENGE_REWARDCOEF, type);
-		return Math.round((MIN_POINTS + stars * COE_POINTS) * challengeCoef * (ratio > 1 ? 1 : -1));
+		return ScriptEngine.getInt(ScriptEngine.T48_CHALLENGE_REWARDCOEF, type) * (ratio > 1 ? 8 : -3);
 	}
 	
   static function getWinRate(game:Game, league:Arena, stars:Int, ratio:Float) : Int

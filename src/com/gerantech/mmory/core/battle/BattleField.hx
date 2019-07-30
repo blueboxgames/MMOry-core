@@ -106,20 +106,17 @@ class BattleField
 			
 			if( this.difficulty != 0 )
 			{
-				if (this.field.mode == 0)
-				{
-					var ep:Int = game_0.player.get_point() + Math.round(Math.pow(1.2, Math.abs(this.difficulty) ) * 30 * this.difficulty / Math.abs(this.difficulty) + this.difficulty * 0.04);
-					if( ep > 100000 )
-						ep = 100000;
-					game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R2_POINT, ep);
-				}
-				else if (this.field.mode == 1)
-				{
-					var ep:Int = game_0.player.get_point() + Math.round(Math.pow(1.2, Math.abs(this.difficulty) ) * 15 * this.difficulty / Math.abs(this.difficulty) + this.difficulty * 0.04);
-					if( ep > 100000 )
-						ep = 100000;
-					game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R2_POINT, ep);
-				}
+				var botPoint:Int = game_0.player.get_point();
+				if( this.field.mode == 0 )
+					botPoint += Math.round(Math.pow(1.2, Math.abs(this.difficulty) ) * 20 * this.difficulty / Math.abs(this.difficulty) + this.difficulty * 0.04);
+				else if( this.field.mode == 1 )
+					botPoint += Math.round(Math.pow(1.2, Math.abs(this.difficulty) ) * 10 * this.difficulty / Math.abs(this.difficulty) + this.difficulty * 0.04);
+				else if( this.field.mode == 2 )
+					botPoint += Math.round(Math.pow(1.2, Math.abs(this.difficulty) ) * 15 * this.difficulty / Math.abs(this.difficulty) + this.difficulty * 0.04);
+				
+				if( botPoint > 100000 )
+					botPoint = 100000;
+				game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R2_POINT, botPoint);
 			}
 			//game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R1_XP, game_1.player.get_point() * 6 + 1);
 			// game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R1_XP, game_0.player.get_xp() + (game_1.player.get_point() - game_0.player.get_point())* 6 + 1);

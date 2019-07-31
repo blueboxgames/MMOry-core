@@ -14,8 +14,8 @@ import com.gerantech.mmory.core.constants.ResourceType;
 class Outcome
 {
 #if java
-	static var MIN_POINTS:Int = 2;
-	static var COE_POINTS:Int = 2;
+	static var LOSE_PONT:Int = -3;
+	static var WIN_POINT:Int = 8;
 
 	static public function get(game:Game, type:Int, mode:Int, friendlyMode:Int, stars:Int, ratio:Float, now:Int) : IntIntMap
   	{
@@ -84,7 +84,7 @@ class Outcome
 			return 1;
 		if( lastPoint < 20 && ratio <= 1 )
 			return 0;
-		return ScriptEngine.getInt(ScriptEngine.T48_CHALLENGE_REWARDCOEF, type) * (ratio > 1 ? 8 : -3);
+		return ScriptEngine.getInt(ScriptEngine.T48_CHALLENGE_REWARDCOEF, type) * (ratio > 1 ? WIN_POINT : LOSE_PONT);
 	}
 	
   static function getWinRate(game:Game, league:Arena, stars:Int, ratio:Float) : Int

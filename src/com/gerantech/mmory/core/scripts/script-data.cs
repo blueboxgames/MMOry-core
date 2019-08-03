@@ -57,6 +57,7 @@ if( __type == -1 )
 		case	115	:	0	;
 		case	116	:	0	;
 		case	117	:	0	;
+		case	118	:	0	;
 
 		case	151	:	8	;
 		case	152	:	10	;
@@ -87,6 +88,8 @@ if( __type == 0 )
 		case	115	:	 1	;
 		case	116	:	 1	;
 		case	117	:	 1	;
+		case	118	:  2	;
+
 		
 		case	151	:	 1	;
 		case	152	:	 0	;
@@ -124,6 +127,8 @@ if( __type == 2 )
 		case 115 :  5	;
 		case 116 :  5	;	
 		case 117 :  4 ;
+		case 118 :  3	;
+
 
 		case 151 :  4	;
 		case 152 :  3	;
@@ -159,11 +164,10 @@ if( __type == 3 )
 		case	115	:	 1	;
 		case	116	:	 1	;
 		case	117	:  12	;
+		case  118 :  1	;
 	
-		
 		case	151	:	 1	;
 		case	152	:	 1	;
-		
 		case	201	:	 1	;
 		
 		default: 		 1	;
@@ -193,7 +197,7 @@ if( __type == 4 )
 		case	115	:	 2.0	;
 		case	116	:	 2.0	;	
 		case	117	:  0.7	;
-
+		case  118 :  1.0	;
 		
 		case	151	:	 2.0	;
 		case	152	:	 0.7	;
@@ -210,11 +214,16 @@ if( __type == 10 )
 	return ret = switch( __arg0 )
 	{
 		case	117	: -100;
+		case	118	: -100;
+
 		default		:	0;
 	}
 }
 
 // speed
+// H = min 1.6 , max ~    
+// M = min 0.8 , max 1.5  
+// L = min 0.5 , max 0.7
 if( __type == 11 )
 {
 	var ret = switch( __arg0 )
@@ -236,8 +245,8 @@ if( __type == 11 )
 		case	115	:	0.60;
 		case	116	:	0.00;
 		case	117	: 1.10;
+		case	118	: 0.70;
 
-		
 		case	201	:	0.00;
 		case	221	:	1.20;
 		case	222	:	1.10;
@@ -274,6 +283,7 @@ if( __type == 12 )
 		case	115	:	3.50;
 		case	116	:	1.80;
 		case	117	: 0.15;
+		case	118	: 1.40;
 
 		
 		case	201	:	5.00;
@@ -309,6 +319,7 @@ if( __type == 13 )
 		case	115	:	25	;
 		case	116	:	50	;	
 		case	117	: 5		;
+		case	118	: 35	;
 
 		
 		case	201	:	40	;
@@ -344,6 +355,7 @@ if( __type == 14 )
 		case	115	:	0.50;
 		case	116	:	0.55;	
 		case	117	: 0.35;
+		case	118	: 0.45;
 
 		case	151	:	1.00;
 
@@ -379,6 +391,7 @@ if( __type == 15 )
 		case	115	:	1.0	;
 		case	116	:	1.6	;
 		case	117	: 1.0 ;
+		case	118	: 1.0 ;
 
 		
 		case 	201 : 1.5 ;
@@ -398,6 +411,7 @@ if( __type == 16 )
 	return switch( __arg0 )
 	{
 		case	107	:	true;
+		case	118	: true;
 		default		:	false;
 	}
 }
@@ -410,6 +424,7 @@ if( __type == 17 )
 		case	107	:	false;
 		case	115	:	false;
 		case	102	:	false;
+		case	118	: false;
 		default		:	true;
 	}
 }
@@ -436,6 +451,7 @@ if( __type == 18 )
 		case	115	:	-30	;
 		case	116	:	-30	;
 		case	117	: -30 ;
+		case	118	: -30 ;
 
 		case  151 : -30 ;
 		case  152 : -105;
@@ -450,7 +466,7 @@ if( __type == 18 )
 	}
 }
 
-// self damage. Buildings are self damage
+// self damage. Buildings that has self damage
 if( __type == 19 )
 {
 	return switch( __arg0 )
@@ -484,6 +500,7 @@ if( __type == 21 )
 		case	115	:	1.0	;
 		case	116	:	0.5	;
 		case	117	: 1.3 ;
+		case	118	: 1.0 ;
 
 		
 		case	151	:	1.2 ;
@@ -526,6 +543,7 @@ if( __type == 22 )
 		case	115	:	0.24	;
 		case	116	:	0.20	;	
 		case	117	: 0.10	;
+		case	118	: 0.50  ; 
 		
 		case	151	:	0.70	;
 		case	152	:	0.40 	;
@@ -563,6 +581,7 @@ if( __type == 23 )
 		case	115	:	1.3	;
 		case	116	:	1.7	;
 		case	117	: 0.5 ;
+		case	118	: 1.0 ;
 
 		
 		case 	201 :	1.2 ;
@@ -597,6 +616,7 @@ if( __type == 24 )
 		case	115	:	0.2	;
 		case	116	:	0.6	;	
 		case	117	: 0.7 ;
+		case	118	: 0.0 ;
 
 		case	201	:	0.5	;
 		case	221	:	0.5	;
@@ -640,13 +660,12 @@ if( __type == 26 )
 		case	115	:	0.5		;
 		case	116	:	1.3		;	
 		case	117	: 0.4		;
+		case	118	: 0.1		;
 
-		
 		case 	201 : 1.5 	;
 		case 	221 : 0.5 	;
 		case 	222 : 1.4 	;
 		case 	223 : 0.4 	;
-		
 		
 		default		:	1.0;
 	}
@@ -678,6 +697,7 @@ if( __type == 27 )
 		case	115	:	0.50	;
 		case	116	:	13.0	;	
 		case	117	: 0.50  ;
+		case	118	: 10.0  ;
 		
 		case	151	:	17.0	;
 		case	152	:	20.0	;
@@ -992,6 +1012,8 @@ if( __type == -3 || __type == 68 )
 		case	115	:[	105 ,  101 , 108 , 113 , 102 , 104 , 111 , 106 , 107 , 103 , 110 , 112 , 109 , 151 , 152	];
 		case	116	:[	105 ,  101 , 108 , 113 , 102 , 104 , 111 , 106 , 107 , 103 , 110 , 112 , 109 , 151 , 152	];
 		case	117	:[	152 ,  104 , 101 , 111 , 110 , 108 , 112 , 105 , 102 , 113 , 109 , 151 , 106 , 107 , 103	];
+		case	118	:[	104 , 101  , 111 , 110 , 108 , 152 , 112 , 105 , 102 , 113 , 109 , 151 , 106 , 107 , 103	];
+
 
 		default   :[ -1 ];
 	}

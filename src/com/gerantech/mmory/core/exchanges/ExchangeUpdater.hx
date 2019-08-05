@@ -1,4 +1,5 @@
 package com.gerantech.mmory.core.exchanges;
+import com.gerantech.mmory.core.constants.PrefsTypes;
 import com.gerantech.mmory.core.Game;
 import com.gerantech.mmory.core.constants.ExchangeType;
 import com.gerantech.mmory.core.constants.ResourceType;
@@ -24,6 +25,15 @@ class ExchangeUpdater
 		this.arena = game.player.get_arena(0);
 		this.changes = new java.util.ArrayList();
 		this.now = cast(java.lang.System.currentTimeMillis() / 1000, Int);
+		this.add();
+	}
+
+	public function add() : Void
+	{
+		if( game.player.getResource(ResourceType.R13_BATTLES_WINS) > 10 && !game.player.prefs.exists(PrefsTypes.OFFER_51_START) && !game.exchanger.items.exists(ExchangeType.C31_BUNDLE) )
+		{
+			game.exchanger.items.set(ExchangeType.C31_BUNDLE,  new ExchangeItem(ExchangeType.C31_BUNDLE, 1, now + 8 * 3600, "5:1999", "6:123"));
+		}
 	}
 
 	public function update( item:ExchangeItem ) : Void

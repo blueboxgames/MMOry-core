@@ -1,33 +1,3 @@
-//trace("__type:" + __type + " __arg0:" + __arg0 + " __arg1:" + __arg1);
-// __arg0 => card-type : int
-// __arg1 => card-level : int
-
-// To change each unit stat refer to this table :
-// range - splash - quantity - health - damage - speed
-//
-//      r - s - q - h - d - s
-// 101	H - 0 - 0 - L - L - L
-// 102	L - 0 - 0 - H - L - L
-// 103	0 - 0 - H - L - L - M
-// 104	L - H - 0 - M - L - L
-// 105	0 - 0 - 0 - M - H - L
-// 106	H - M - 0 - L - L - L
-// 107	L - H - 0 - L - L - M
-// 108	M - 0 - L - L - L - M
-// 109	M - M - 0 - L - L - M
-// 110	L - 0 - M - L - L - M
-// 111	L - H - L - M - L - L
-// 112	L - 0 - H - M - L - L
-// 113	L - 0 - 0 - M - M - L
-// 114	0 - 0 - M - L - L - M
-//
-// 151  0 - M - 0 - 0 - M - 0	
-// 152	0 - H - 0 - 0 - L - 0
-//
-// 201	
-// 221	
-// 222 
-
 
 // version
 if( __type == -2 )
@@ -122,7 +92,7 @@ if( __type == 2 )
 		case 110 :  2	;
 		case 111 :  6	;
 		case 112 :  4	;
-		case 113 :  2	;
+		case 113 :  3	;
 		case 114 :  3	;
 		case 115 :  5	;
 		case 116 :  5	;	
@@ -196,7 +166,7 @@ if( __type == 4 )
 		case	114	:	 1.0	;
 		case	115	:	 2.0	;
 		case	116	:	 2.0	;	
-		case	117	:  0.7	;
+		case	117	:  1.0	;
 		case  118 :  1.0	;
 		
 		case	151	:	 2.0	;
@@ -240,7 +210,7 @@ if( __type == 11 )
 		case	110	:	1.10;
 		case	111	:	1.00;
 		case	112	:	0.70;
-		case	113	:	0.60;
+		case	113	:	0.70;
 		case	114	:	1.10;
 		case	115	:	0.60;
 		case	116	:	0.00;
@@ -278,7 +248,7 @@ if( __type == 12 )
 		case	110	:	0.30;
 		case	111	:	1.00;
 		case	112	:	1.00;
-		case	113	:	1.30;
+		case	113	:	1.40;
 		case	114	:	0.80;
 		case	115	:	3.50;
 		case	116	:	1.80;
@@ -516,11 +486,7 @@ if( __type == 21 )
 	return ret * 22.0;
 }
 
-// bulletDamage
-// (Damage/s). Inform amin if you heading to change this one. Becuase "Damage" related to "Gap".
-// H = min 0.30 , max 0.50  
-// M = min 0.20 , max 0.29  
-// L = min 0.05 , max 0.19 
+// bulletDamage (Damage/Gap = Damage per second)
 // Spells must divide by 3 
 if( __type == 22 )
 {
@@ -533,7 +499,7 @@ if( __type == 22 )
 		case	105	:	0.68	;
 		case	106	:	0.16	;
 		case	107	:	0.50	;
-		case	108	:	0.14  ;
+		case	108	:	0.11  ;
 		case	109	:	-0.1	;
 		case	110	: 0.171	;
 		case	111	: 0.24	;
@@ -541,8 +507,8 @@ if( __type == 22 )
 		case	113	:	0.3		;
 		case	114	:	0.206	;
 		case	115	:	0.24	;
-		case	116	:	0.20	;	
-		case	117	: 0.10	;
+		case	116	:	0.10	;	
+		case	117	: 0.19	;
 		case	118	: 0.50  ; 
 		
 		case	151	:	0.70	;
@@ -579,8 +545,8 @@ if( __type == 23 )
 		case	113	:	1.2	;
 		case	114	:	1.2	;
 		case	115	:	1.3	;
-		case	116	:	1.7	;
-		case	117	: 0.5 ;
+		case	116	:	1.6	;
+		case	117	: 1.0 ;
 		case	118	: 1.0 ;
 
 		
@@ -652,13 +618,13 @@ if( __type == 26 )
 		case	107	:	0.1		;
 		case	108	:	1.4		;
 		case	109	:	1.0		;
-		case	110	:	0.8		;
+		case	110	:	0.9		;
 		case	111	:	0.9		;
 		case	112	:	0.4 	;
 		case	113	:	0.4 	;
 		case	114	:	0.4		;
 		case	115	:	0.5		;
-		case	116	:	1.3		;	
+		case	116	:	1.6		;	
 		case	117	: 0.4		;
 		case	118	: 0.1		;
 
@@ -673,9 +639,9 @@ if( __type == 26 )
 }
 
 // bulletDamageArea
-//H = min 12 , max ~
-//M = min 5.0 , max 10 
-//L = min 0.7 , max 1.0
+//H = min 14 , max ~
+//M = min 8.0 , max 13 
+//L = min 0.7 , max 4.0
 if( __type == 27 )
 {
 	var ret =  switch( __arg0 )
@@ -683,21 +649,21 @@ if( __type == 27 )
 		case	101	:	0.50	;
 		case	102	:	0.50	;
 		case	103	:	0.50	;
-		case	104	:	10.0	;
+		case	104	:	11.0	;
 		case	105	:	0.50	;
-		case	106	:	18.0	;
+		case	106	:	16.0	;
 		case	107	:	14.0	;
 		case	108	:	0.50	;
 		case	109	:	9.00	;
 		case	110	:	0.50	;
-		case	111	:	12.0	;
+		case	111	:	11.0	;
 		case	112	:	0.50	;
 		case	113	:	0.50	;
 		case	114	:	0.50	;
 		case	115	:	0.50	;
-		case	116	:	13.0	;	
+		case	116	:	16.0	;	
 		case	117	: 0.50  ;
-		case	118	: 10.0  ;
+		case	118	: 13.0  ;
 		
 		case	151	:	17.0	;
 		case	152	:	20.0	;

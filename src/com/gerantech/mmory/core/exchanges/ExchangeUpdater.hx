@@ -1,5 +1,4 @@
 package com.gerantech.mmory.core.exchanges;
-import com.gerantech.mmory.core.constants.PrefsTypes;
 import com.gerantech.mmory.core.Game;
 import com.gerantech.mmory.core.constants.ExchangeType;
 import com.gerantech.mmory.core.constants.ResourceType;
@@ -19,13 +18,12 @@ class ExchangeUpdater
 	var game:Game;
 	public var changes:java.util.List<ExchangeItem>;
 
-	public function new(game:Game) 
+	public function new(game:Game, now:Int) 
 	{
 		this.game = game;
 		this.arena = game.player.get_arena(0);
 		this.changes = new java.util.ArrayList();
-		this.now = cast(java.lang.System.currentTimeMillis() / 1000, Int);
-		this.add();
+		this.now = now;
 	}
 
 	function addItems() : Void
@@ -75,11 +73,35 @@ class ExchangeUpdater
 
 	public function add(type:Int, numExchanges:Int, expireAt:Int, reqStr:String, outStr:String) : Void
 	{
-			game.exchanger.items.set(ExchangeType.C31_BUNDLE,  new ExchangeItem(ExchangeType.C31_BUNDLE, 1, now + 8 * 3600, "5:1999", "6:123"));
-		}
+		var item = new ExchangeItem(type, numExchanges, expireAt, reqStr, outStr);
+		update(item);
+		this.game.exchanger.items.set(type, item);
 	}
 
-	public function update( item:ExchangeItem ) : Void
+	function addBundle(step:Int, type:Int, numExchanges:Int, expireAt:Int, reqStr:String, outStr:String) : Void
+	{
+		var outcomes = new IntIntMap(outStr);
+		var requirements = new IntIntMap(reqStr);
+		var offerStep = this.game.player.getResource(ResourceType.R26_OFFER_STEP);
+		// trace("offerStep " + offerStep + " step " + step);
+		if( offerStep >= step )
+			return;
+		var item = this.game.exchanger.items.exists(type) ? this.game.exchanger.items.get(type) : new ExchangeItem(type, 0);
+		// trace("item.expiredAt " + item.expiredAt + " this.now " + this.now + " item.numExchanges " + item.numExchanges + " numExchanges " +  numExchanges);
+		if( item.expiredAt >= this.now  )
+			return;
+
+		this.game.player.resources.increase(ResourceType.R26_OFFER_STEP, 1);
+
+		item.expiredAt = expireAt;
+		item.numExchanges = numExchanges;
+		item.requirements = requirements;
+		item.outcomes = outcomes;
+		this.game.exchanger.items.set(type,  item);
+		this.changes.add(item);
+	}
+
+	function update( item:ExchangeItem ) : Void
 	{
 		if( item.category == ExchangeType.C20_SPECIALS )
 			updateSpecials(item);
@@ -91,13 +113,13 @@ class ExchangeUpdater
 		{
 			if( item.expiredAt < now )
 			{
-				item.expiredAt = now + 86400;
+				item.expiredAt = this.now + 86400;
 				item.numExchanges = 0;
 			}
 			return;
 		}
 		
-		if( item.expiredAt < now )
+		if( item.expiredAt < this.now )
 		{
 			if( item.type == ExchangeType.C23_SPECIAL )
 			{
@@ -134,7 +156,7 @@ class ExchangeUpdater
 	function createOutcomeString(item:ExchangeItem) : Void
 	{
 		item.createMapsStr();
-		changes.add(item);
+		this.changes.add(item);
 	}
 	
 	function getOutcomeQuantity(item:ExchangeItem):Int 

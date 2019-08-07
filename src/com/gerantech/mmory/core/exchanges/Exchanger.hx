@@ -260,7 +260,7 @@ class Exchanger
 	{
 		return count * 2;
 	}
-	static function hardToTicket(count:Int):Int
+	static public function hardToTicket(count:Int):Int
 	{
 		return Math.ceil(count * 0.5);
 	}
@@ -327,7 +327,7 @@ class Exchanger
 		return game.player.getResource(ResourceType.R21_BOOK_OPENED_BATTLE) + numClosed;
 	}
 	
-	static function estimateBookOutcome(type:Int, arena:Int, coef:Float) : IntIntMap
+	static public function estimateBookOutcome(type:Int, arena:Int, coef:Float) : IntIntMap
 	{
 		var ret = new IntIntMap();
 		ret.set( CardTypes.C101, ExchangeType.getNumTotalCards(type, arena, coef, 0) );

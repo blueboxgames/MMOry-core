@@ -28,10 +28,53 @@ class ExchangeUpdater
 		this.add();
 	}
 
-	public function add() : Void
+	function addItems() : Void
 	{
-		if( game.player.getResource(ResourceType.R13_BATTLES_WINS) > 10 && !game.player.prefs.exists(PrefsTypes.OFFER_51_START) && !game.exchanger.items.exists(ExchangeType.C31_BUNDLE) )
-		{
+		// _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_- GEM -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+		this.add(ExchangeType.C0_HARD, 0, 0, ResourceType.R5_CURRENCY_REAL + ":1",			ResourceType.R4_CURRENCY_HARD + ":1");
+		this.add(ExchangeType.C1_HARD, 0, 0, ResourceType.R5_CURRENCY_REAL + ":2000",		ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.realToHard(2000)		* 0.750);
+		this.add(ExchangeType.C2_HARD, 0, 0, ResourceType.R5_CURRENCY_REAL + ":10000",	ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.realToHard(10000)		* 0.875);
+		this.add(ExchangeType.C3_HARD, 0, 0, ResourceType.R5_CURRENCY_REAL + ":20000",	ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.realToHard(20000)		* 1.000);
+		this.add(ExchangeType.C4_HARD, 0, 0, ResourceType.R5_CURRENCY_REAL + ":40000",	ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.realToHard(40000)		* 1.125);
+		this.add(ExchangeType.C5_HARD, 0, 0, ResourceType.R5_CURRENCY_REAL + ":100000",	ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.realToHard(100000)	* 1.200);
+		this.add(ExchangeType.C6_HARD, 0, 0, ResourceType.R5_CURRENCY_REAL + ":200000",	ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.realToHard(200000)	* 1.250);
+
+		// _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_- MONEY -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+		this.add(ExchangeType.C11_SOFT, 0, 0, ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.softToHard(1000) * 1.2, 	ResourceType.R3_CURRENCY_SOFT + ":1000");
+		this.add(ExchangeType.C12_SOFT, 0, 0, ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.softToHard(5000) * 1.0, 	ResourceType.R3_CURRENCY_SOFT + ":5000");
+		this.add(ExchangeType.C13_SOFT, 0, 0, ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.softToHard(50000) * 0.9,	ResourceType.R3_CURRENCY_SOFT + ":50000");
+
+		// -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_- TICKETS -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+		this.add(ExchangeType.C71_TICKET, 0, 0, ResourceType.R4_CURRENCY_HARD + ":10",	ResourceType.R6_TICKET + ":" + Exchanger.hardToTicket(10)     * 1.00);
+		this.add(ExchangeType.C72_TICKET, 0, 0, ResourceType.R4_CURRENCY_HARD + ":50",	ResourceType.R6_TICKET + ":" + Exchanger.hardToTicket(50)     * 1.20);
+		this.add(ExchangeType.C73_TICKET, 0, 0, ResourceType.R4_CURRENCY_HARD + ":100",	ResourceType.R6_TICKET + ":" + Exchanger.hardToTicket(100)    * 1.40);
+
+		// -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_- EMOTES -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+		/*
+		this.add(ExchangeType.C81_EMOTE, 0, 0, ResourceType.R5_CURRENCY_REAL + ":1000",	"0:1");
+		this.add(ExchangeType.C82_EMOTE, 0, 0, ResourceType.R5_CURRENCY_REAL + ":1000",	"1:1");
+		this.add(ExchangeType.C83_EMOTE, 0, 0, ResourceType.R5_CURRENCY_REAL + ":1000",	"2:1"); */
+
+		// _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_- OTHER -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+		if( !game.exchanger.items.exists(ExchangeType.C42_RENAME) )
+			this.add(ExchangeType.C42_RENAME,	0, 0,		"",	"" );
+		if( !game.exchanger.items.exists(ExchangeType.C43_ADS) )
+			this.add(ExchangeType.C43_ADS,			0, 0,		"",	"51:" + arena);
+		if( !game.exchanger.items.exists(ExchangeType.C104_STARS) )
+			this.add(ExchangeType.C104_STARS, 	0, now,	"",	"");
+
+		// _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_- MAGIC -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
+		this.add(ExchangeType.C121_MAGIC, 0, 0, ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.fixedRound(Exchanger.toHard(Exchanger.estimateBookOutcome(ExchangeType.BOOK_55_PIRATE,	arena, game.player.splitTestCoef))),	ExchangeType.BOOK_55_PIRATE	+ ":" + arena);
+		this.add(ExchangeType.C122_MAGIC, 0, 0, ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.fixedRound(Exchanger.toHard(Exchanger.estimateBookOutcome(ExchangeType.BOOK_56_JUNGLE,	arena, game.player.splitTestCoef))),	ExchangeType.BOOK_56_JUNGLE	+ ":" + arena);
+		this.add(ExchangeType.C123_MAGIC, 0, 0, ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.fixedRound(Exchanger.toHard(Exchanger.estimateBookOutcome(ExchangeType.BOOK_58_AMBER,	arena, game.player.splitTestCoef))),	ExchangeType.BOOK_58_AMBER	+ ":" + arena);
+
+		this.addBundle(1, ExchangeType.C31_BUNDLE, 0, this.now + (8 * 3600), "5:1999", "6:123");
+		// this.addBundle(2, ExchangeType.C31_BUNDLE, 1, this.now + (8 * 3600), "5:1999", "6:123");
+	}
+
+
+	public function add(type:Int, numExchanges:Int, expireAt:Int, reqStr:String, outStr:String) : Void
+	{
 			game.exchanger.items.set(ExchangeType.C31_BUNDLE,  new ExchangeItem(ExchangeType.C31_BUNDLE, 1, now + 8 * 3600, "5:1999", "6:123"));
 		}
 	}

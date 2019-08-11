@@ -20,7 +20,10 @@ class PrefsTypes
 	public static var AUTH_41_GOOGLE:Int = 41;
 	public static var AUTH_42_GAMECENTER:Int = 42;
 	public static var AUTH_43_TELEGRAM:Int = 43;
-	
+
+	public static var OFFER_51_START:Int = 51;
+	public static var OFFER_52_START:Int = 52;
+
 	public static var OTHERS_91_LOBBY:Int = 91;
 	
 	public static var TUTOR:Int = 101;

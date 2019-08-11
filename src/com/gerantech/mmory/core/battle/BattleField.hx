@@ -131,21 +131,22 @@ class BattleField
 			}
 			trace("startAt:" + this.startAt + " now:" + this.now + " difficulty:" + this.difficulty + " winRate:" + winRate + " mode:" + this.field.mode);
 
-			// bot elixir is easier and player elixir is faster in tutorial
+			// in tutorial, bot elixir is easier and player elixir is faster 
 			this.elixirUpdater.normalSpeeds[0] *= games[0].player.get_battleswins() < 3 ? 2 : 1;
 			if( games[0].player.get_battleswins() < 5 )
 			{
-				this.elixirUpdater.normalSpeeds[1] *= Math.min(1, games[0].player.get_battleswins() / 5);
+				this.elixirUpdater.normalSpeeds[1] *= Math.min(1, games[0].player.get_battleswins() / 4);
 			}
-			else
-			{
-				// battleField.elixirSpeeds.__set(1, battleRoom.endCalculator.ratio() > 1 ? 1 + battleField.difficulty * 0.04 : 1);
-				this.elixirUpdater.normalSpeeds[1]	+= difficulty * 0.00001;
-				this.elixirUpdater.finalSpeeds[1]	+= difficulty * 0.00001;
-			}
+			else 
+				return;
+			// else
+			// {
+			// 	// battleField.elixirSpeeds.__set(1, battleRoom.endCalculator.ratio() > 1 ? 1 + battleField.difficulty * 0.04 : 1);
+			// 	this.elixirUpdater.normalSpeeds[1]	+= difficulty * 0.00001;
+			// 	this.elixirUpdater.finalSpeeds[1]	+= difficulty * 0.00001;
+			// }
 		}
-		// trace(normalElixirSpeeds.toString());
-		// trace(finalElixirSpeeds.toString());
+
 		
 		// create castles
 		if( field.mode != Challenge.MODE_1_TOUCHDOWN )

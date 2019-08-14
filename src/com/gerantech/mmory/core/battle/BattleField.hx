@@ -136,8 +136,6 @@ class BattleField
 			{
 				this.elixirUpdater.normalSpeeds[1] *= Math.min(1, games[0].player.get_battleswins() / 4);
 			}
-			else 
-				return;
 			// else
 			// {
 			// 	// battleField.elixirSpeeds.__set(1, battleRoom.endCalculator.ratio() > 1 ? 1 + battleField.difficulty * 0.04 : 1);
@@ -145,6 +143,7 @@ class BattleField
 			// 	this.elixirUpdater.finalSpeeds[1]	+= difficulty * 0.00001;
 			// }
 		}
+		
 
 		
 		// create castles

@@ -403,6 +403,25 @@ class BattleField
 	}
 	#end
 	
+	public function killPioneers(side:Int) : Void
+	{
+		if( state > STATE_2_STARTED )
+			return;
+		var keys = units.keys();
+		var i = keys.length - 1;
+		while ( i >= 0 )
+		{
+			if( units.get(keys[i]).side == side )
+			{
+				if( side == 0 && units.get(keys[i]).y < 400 )
+						units.get(keys[i]).dispose();
+				else if( side == 1 && units.get(keys[i]).y > 880 )
+						units.get(keys[i]).dispose();
+			}
+			i --;
+		}
+	}
+
 	public function requestReset() : Void
 	{
 		if( state > STATE_2_STARTED )

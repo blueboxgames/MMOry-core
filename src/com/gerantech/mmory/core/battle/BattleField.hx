@@ -393,7 +393,7 @@ class BattleField
 			return com.gerantech.mmory.core.constants.MessageTypes.RESPONSE_NOT_ENOUGH_REQS;
 		
 		var index = decks.get(side).queue_indexOf(type);
-		if ( index < 0 || index > 3 )
+		if( index < 0 || index > 3 )
 		{
 			trace(decks.get(side).queue_String());
 			return com.gerantech.mmory.core.constants.MessageTypes.RESPONSE_MUST_WAIT;
@@ -409,13 +409,13 @@ class BattleField
 			return;
 		var keys = units.keys();
 		var i = keys.length - 1;
-		while ( i >= 0 )
+		while( i >= 0 )
 		{
 			if( units.get(keys[i]).side == side )
 			{
-				if( side == 0 && units.get(keys[i]).y < 400 )
+				if( side == 0 && units.get(keys[i]).y < 640 )
 						units.get(keys[i]).dispose();
-				else if( side == 1 && units.get(keys[i]).y > 880 )
+				else if( side == 1 && units.get(keys[i]).y > 640 )
 						units.get(keys[i]).dispose();
 			}
 			i --;

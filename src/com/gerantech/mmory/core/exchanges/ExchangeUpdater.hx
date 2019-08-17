@@ -14,6 +14,7 @@ import com.gerantech.mmory.core.utils.maps.IntIntMap;
 class ExchangeUpdater 
 {
 	var now:Int;
+	var expireTime:Int;
 	var arena:Int;
 	var game:Game;
 	public var changes:java.util.List<ExchangeItem>;
@@ -24,6 +25,7 @@ class ExchangeUpdater
 		this.arena = game.player.get_arena(0);
 		this.changes = new java.util.ArrayList();
 		this.now = now;
+		this.expireTime = this.getExpireTime();
 	}
 
 	function addItems() : Void
@@ -113,7 +115,7 @@ class ExchangeUpdater
 		{
 			if( item.expiredAt < now )
 			{
-				item.expiredAt = this.now + 86400;
+				item.expiredAt = this.expireTime;
 				item.numExchanges = 0;
 			}
 			return;
@@ -137,7 +139,7 @@ class ExchangeUpdater
 				item.outcome = ResourceType.R3_CURRENCY_SOFT;
 			}
 			
-			item.expiredAt = now + 86400;
+			item.expiredAt = this.expireTime;
 			item.numExchanges = 0;
 			item.outcomes = new IntIntMap();
 			item.outcomes.set(item.outcome, getOutcomeQuantity(item));
@@ -159,6 +161,13 @@ class ExchangeUpdater
 		this.changes.add(item);
 	}
 	
+	function getExpireTime() : Int
+	{
+		var date = Date.now();
+		trace(date.toString() + " " + now);
+		return now + (24 - date.getHours()) * 3600 - date.getMinutes() * 60 - date.getSeconds();	
+	}
+
 	function getOutcomeQuantity(item:ExchangeItem):Int 
 	{
 		if( ResourceType.isCard(item.outcome) )

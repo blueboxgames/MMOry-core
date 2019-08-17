@@ -5,7 +5,6 @@ import com.gerantech.mmory.core.battle.GameObject;
 import com.gerantech.mmory.core.battle.units.Card;
 import com.gerantech.mmory.core.constants.CardTypes;
 import com.gerantech.mmory.core.events.BattleEvent;
-import com.gerantech.mmory.core.socials.Challenge;
 import com.gerantech.mmory.core.utils.Point2;
 
 /**

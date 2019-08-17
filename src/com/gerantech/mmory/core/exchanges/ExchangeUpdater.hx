@@ -68,8 +68,7 @@ class ExchangeUpdater
 		this.add(ExchangeType.C122_MAGIC, 0, 0, ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.fixedRound(Exchanger.toHard(Exchanger.estimateBookOutcome(ExchangeType.BOOK_56_JUNGLE,	arena, game.player.splitTestCoef))),	ExchangeType.BOOK_56_JUNGLE	+ ":" + arena);
 		this.add(ExchangeType.C123_MAGIC, 0, 0, ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.fixedRound(Exchanger.toHard(Exchanger.estimateBookOutcome(ExchangeType.BOOK_58_AMBER,	arena, game.player.splitTestCoef))),	ExchangeType.BOOK_58_AMBER	+ ":" + arena);
 
-		this.addBundle(1, ExchangeType.C31_BUNDLE, 0, this.now + (8 * 3600), "5:1999", "6:123");
-		// this.addBundle(2, ExchangeType.C31_BUNDLE, 1, this.now + (8 * 3600), "5:1999", "6:123");
+		// this.addBundle(1, ExchangeType.C31_BUNDLE, 0, this.expireTime + (3 * 24 * 3600), "5:1999", "6:123");
 	}
 
 
@@ -206,7 +205,7 @@ class ExchangeUpdater
 		return switch ( item.outcome )
 		{
 			case 3	: ResourceType.R4_CURRENCY_HARD;
-			case 4	: ResourceType.R5_CURRENCY_REAL;
+			case 4	: ResourceType.R4_CURRENCY_HARD;
 			case 5	: ResourceType.R4_CURRENCY_HARD;
 			default	: ResourceType.R3_CURRENCY_SOFT;
 		}

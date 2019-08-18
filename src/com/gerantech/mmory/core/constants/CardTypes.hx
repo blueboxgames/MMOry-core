@@ -141,5 +141,33 @@ class CardTypes
 			default: 1;
 		}
 	}
+
+	static public function getName(type:Int):String
+	{
+		return switch (type)
+		{
+			case 101: "Bad Stache";
+			case 102: "Firooz";
+			case 103: "Dwarves";
+			case 104: "Khan";
+			case 105: "Firooz's Son";
+			case 106: "The Grenader";
+			case 107: "Tank";
+			case 108: "X-bow Boy";
+			case 109: "Sinoha";
+			case 110: "Dwarf";
+			case 111: "Khans";
+			case 112: "Iranian Soldier";
+			case 113: "Cyclist";
+			case 114: "Karate";
+			case 115: "Zombie";
+
+			case 151: "Falling Bomb";
+			case 152: "Arrows";
+			case 153: "Frost";
+			case 154: "Moloter";
+			default: "Card";
+		}
+	}
 // #end
 }

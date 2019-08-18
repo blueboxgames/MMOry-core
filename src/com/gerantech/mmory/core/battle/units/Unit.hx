@@ -1,4 +1,5 @@
 package com.gerantech.mmory.core.battle.units;
+import com.gerantech.mmory.core.socials.Challenge;
 import com.gerantech.mmory.core.utils.CoreUtils;
 import com.gerantech.mmory.core.battle.BattleField;
 import com.gerantech.mmory.core.battle.GameObject;
@@ -43,7 +44,7 @@ class Unit extends GameObject
 		if( CardTypes.isHero(card.type) )
 			this.defaultTarget = new Point2(returnigPosition.x, returnigPosition.y);
 		else
-			this.defaultTarget = new Point2(CoreUtils.clamp(returnigPosition.x, 320, 640), side == 0 ? 0 : BattleField.HEIGHT);
+			this.defaultTarget = new Point2(battleField.field.mode == Challenge.MODE_0_HQ ? BattleField.WIDTH * 0.5 : CoreUtils.clamp(returnigPosition.x, 320, 640), side == 0 ? 0 : BattleField.HEIGHT);
 	}
 	
 	override public function update() : Void

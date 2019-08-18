@@ -781,14 +781,12 @@ if( __type == 64 )
 		if( __arg0 == 0 )
 		return switch( __arg1 )
 		{
-			case 2	: 1300;
 			default	:	0;
 		}
 
 		// mode 1
 		return switch( __arg1 )
 		{
-			case 2	: 1300;
 			default	:	0;
 		}
 	}
@@ -819,9 +817,8 @@ if( __type == 66 )
 		{
 			case 1	: 	[2, 350, 1350, 500];
 			case 2	: 	[2, 200, 1200, 500];
-			case 11	:	[3, 300, 1300, 500];
+			case 11	:		[3, 300, 1300, 500];
 			case 21	: 	[2, 300, 1350, 500];
-			case 22	: 	[2, 200, 1200, 500];
 			default:	null;
 		}
 
@@ -829,7 +826,7 @@ if( __type == 66 )
 		return switch( __arg2 )
 		{
 			case 0	: 	[1, 450, 850, 200];
-			case 1	:	[1, 450, 900, 200];
+			case 1	:		[1, 450, 900, 200];
 			case 2	: 	[1, 450, 900, 200];
 			default:	null;
 		}
@@ -852,7 +849,6 @@ if( __type == 66 )
 		case 2	: 	[1, 300, 1250, 500];
 		case 11	:		[1, 335, 1400, 500];
 		case 21	: 	[3, 610, 1400, 500];
-		case 22	: 	[2, 450, 1400, 500];
 		default:	null;
 	}
 

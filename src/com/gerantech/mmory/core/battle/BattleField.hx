@@ -58,6 +58,7 @@ class BattleField
 	public var pauseTime:Float;
 	public var elixirUpdater:ElixirUpdater;
 	var garbage:IntList;
+	var pioneerSide:Int;
 	var resetTime:Float = -1;
 #if java 
 	public var unitsHitCallback:com.gerantech.mmory.core.interfaces.IUnitHitCallback;
@@ -140,8 +141,8 @@ class BattleField
 			else
 			{
 				// battleField.elixirSpeeds.__set(1, battleRoom.endCalculator.ratio() > 1 ? 1 + battleField.difficulty * 0.04 : 1);
-				this.elixirUpdater.normalSpeeds[1]	+= difficulty * 0.00001;
-				this.elixirUpdater.finalSpeeds[1]	+= difficulty * 0.00001;
+				// this.elixirUpdater.normalSpeeds[1]	+= difficulty * 0.00001;
+				// this.elixirUpdater.finalSpeeds[1]	+= difficulty * 0.00001;
 			}
 		}
 		// trace(normalElixirSpeeds.toString());
@@ -209,7 +210,7 @@ class BattleField
 		
 		// -=-=-=-=-=-=-=-  UPDATE TIME-STATE  -=-=-=-=-=-=-=-=-=-
 		if( resetTime <= this.now )
-			reset();
+			killPioneers();
 		
 		// trace((resetTime - now) + " delta " + (pauseTime - now) + " state " + state);
 		if( pauseTime > now )
@@ -403,39 +404,35 @@ class BattleField
 	}
 	#end
 	
-	public function killPioneers(side:Int) : Void
+	public function requestKillPioneers(side:Int) : Void
 	{
 		if( state > STATE_2_STARTED )
 			return;
-		var keys = units.keys();
-		var i = keys.length - 1;
-		while( i >= 0 )
-		{
-			if( units.get(keys[i]).side == side )
-			{
-				if( side == 0 && units.get(keys[i]).y < 640 )
-						units.get(keys[i]).dispose();
-				else if( side == 1 && units.get(keys[i]).y > 640 )
-						units.get(keys[i]).dispose();
-			}
-			i --;
-		}
-	}
-
-	public function requestReset() : Void
-	{
-		if( state > STATE_2_STARTED )
-			return;
+		pioneerSide = side;
 		resetTime = now + 2000;
 		pauseTime = now;
 		state = STATE_3_PAUSED;
 	}
-	function reset() : Void
+
+	function killPioneers() : Void
 	{
 		pauseTime = now + 2000000; 
 		resetTime = now + 2000000;
-		dispose();
-		elixirUpdater.init();
+		var keys = units.keys();
+		var i = keys.length - 1;
+		while( i >= 0 )
+		{
+			if( units.get(keys[i]).side == pioneerSide )
+			{
+				if( pioneerSide == 0 && units.get(keys[i]).y < 640 )
+						units.get(keys[i]).dispose();
+				else if( pioneerSide == 1 && units.get(keys[i]).y > 640 )
+						units.get(keys[i]).dispose();
+			}
+			i --;
+		}
+		// dispose();
+		// elixirUpdater.init();
 		state = STATE_2_STARTED;
 	}
 	

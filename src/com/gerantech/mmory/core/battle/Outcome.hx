@@ -52,7 +52,7 @@ class Outcome
 			// soft-currency
 			var sc = Math.max(0, stars) + Math.min(league.index * 2, Math.max(0, game.player.get_point() - game.player.get_softs())) * mode;
 			var softs:Int = 2 * cast(sc, Int);
-			if( softs != 0 )
+			if( softs != 0 && game.player.get_battleswins() > 4 )
 				ret.set(ResourceType.R3_CURRENCY_SOFT, softs);
 
 			/*int dailyBattles = game.exchanger.items.exists(ExchangeType.C29_DAILY_BATTLES) ? game.exchanger.items.get(ExchangeType.C29_DAILY_BATTLES).numExchanges : 0;
@@ -61,7 +61,7 @@ class Outcome
 					point = (int) (point * Math.pow(10f / dailyBattles, 0.2));
 					soft = (int) (soft * Math.pow(10f / dailyBattles, 0.8));
 			}*/
-			ret.set(ResourceType.R3_CURRENCY_SOFT, softs);
+			// ret.set(ResourceType.R3_CURRENCY_SOFT, softs);
 
 			// random book
 			var emptySlotsType = getEmptySlots(game, now);

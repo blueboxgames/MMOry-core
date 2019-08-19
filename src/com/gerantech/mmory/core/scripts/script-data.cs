@@ -863,6 +863,33 @@ if( __type == 66 )
 	return null;
 }
 
+//elixirSpeedRatio(mode:Int, side:Int, battleWins:Int) : Float
+if( __type == 69 )
+{
+	// mode 0
+	if( __arg0 == 0 )
+	return switch( __arg2 )
+	{
+		case 0	: (__arg1 == 0 ? 1.5 : 0.00);
+		case 1	: (__arg1 == 0 ? 1.5 : 0.35);
+		case 2	: (__arg1 == 0 ? 1.5 : 0.40);
+		case 3	: (__arg1 == 0 ? 1.2 : 0.70);
+
+		default	:	1;
+	}
+
+	// mode 1
+	return switch( __arg2 )
+	{
+		case 0	: (__arg1 == 0 ? 1.5 : 0.20);
+		case 1	: (__arg1 == 0 ? 1.5 : 0.35);
+		case 2	: (__arg1 == 0 ? 1.5 : 0.50);
+		case 3	: (__arg1 == 0 ? 1.2 : 0.70);
+
+		default	:	1;
+	}
+}
+
 // bot troops enemy list
 if( __type == -3 || __type == 68 )
 {

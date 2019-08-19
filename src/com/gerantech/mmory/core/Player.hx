@@ -75,6 +75,7 @@ class Player
 		prefs.set(com.gerantech.mmory.core.constants.PrefsTypes.SETTINGS_2_SFX, "true");
 		prefs.set(com.gerantech.mmory.core.constants.PrefsTypes.SETTINGS_3_NOTIFICATION, "true");
 		prefs.set(com.gerantech.mmory.core.constants.PrefsTypes.SETTINGS_4_LOCALE, "0");
+		prefs.set(com.gerantech.mmory.core.constants.PrefsTypes.SETTINGS_5_ADS, "true");
 		
 		prefs.set(com.gerantech.mmory.core.constants.PrefsTypes.OFFER_30_RATING, "15");
 		prefs.set(com.gerantech.mmory.core.constants.PrefsTypes.OFFER_31_TELEGRAM , "20");

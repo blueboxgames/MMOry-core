@@ -132,20 +132,12 @@ class BattleField
 			}
 			trace("startAt:" + this.startAt + " now:" + this.now + " difficulty:" + this.difficulty + " winRate:" + winRate + " mode:" + this.field.mode);
 
-			// in tutorial, bot elixir is easier and player elixir is faster 
-			this.elixirUpdater.normalSpeeds[0] *= games[0].player.get_battleswins() < 3 ? 2 : 1;
-			if( games[0].player.get_battleswins() < 5 )
-			{
-				this.elixirUpdater.normalSpeeds[1] *= Math.min(1, games[0].player.get_battleswins() / 4);
-			}
-			else 
-				return;
-			// else
-			// {
-			// 	// battleField.elixirSpeeds.__set(1, battleRoom.endCalculator.ratio() > 1 ? 1 + battleField.difficulty * 0.04 : 1);
-			// 	this.elixirUpdater.normalSpeeds[1]	+= difficulty * 0.00001;
-			// 	this.elixirUpdater.finalSpeeds[1]	+= difficulty * 0.00001;
-			// }
+			// bot elixir is easier and player elixir is faster in tutorial
+			this.elixirUpdater.normalSpeeds[0] *= ScriptEngine.get(ScriptEngine.T69_BATTLE_ELIXIR_RATIO, field.mode, 0, game_0.player.get_battleswins());
+			this.elixirUpdater.normalSpeeds[1] *= ScriptEngine.get(ScriptEngine.T69_BATTLE_ELIXIR_RATIO, field.mode, 1, game_0.player.get_battleswins());
+
+			trace ("es 0:" + ScriptEngine.get(ScriptEngine.T69_BATTLE_ELIXIR_RATIO, field.mode, 0, game_0.player.get_battleswins()) + " field.mode:" + field.mode + " battleswins" + game_0.player.get_battleswins());
+			trace ("es 1:" + ScriptEngine.get(ScriptEngine.T69_BATTLE_ELIXIR_RATIO, field.mode, 1, game_0.player.get_battleswins()) + " field.mode:" + field.mode + " battleswins" + game_0.player.get_battleswins());
 		}
 
 		

@@ -14,6 +14,7 @@ import com.gerantech.mmory.core.utils.maps.IntIntMap;
 class ExchangeUpdater 
 {
 	var now:Int;
+	var expireTime:Int;
 	var arena:Int;
 	var game:Game;
 	public var changes:java.util.List<ExchangeItem>;
@@ -24,6 +25,7 @@ class ExchangeUpdater
 		this.arena = game.player.get_arena(0);
 		this.changes = new java.util.ArrayList();
 		this.now = now;
+		this.expireTime = this.getExpireTime();
 	}
 
 	function addItems() : Void
@@ -66,8 +68,7 @@ class ExchangeUpdater
 		this.add(ExchangeType.C122_MAGIC, 0, 0, ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.fixedRound(Exchanger.toHard(Exchanger.estimateBookOutcome(ExchangeType.BOOK_56_JUNGLE,	arena, game.player.splitTestCoef))),	ExchangeType.BOOK_56_JUNGLE	+ ":" + arena);
 		this.add(ExchangeType.C123_MAGIC, 0, 0, ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.fixedRound(Exchanger.toHard(Exchanger.estimateBookOutcome(ExchangeType.BOOK_58_AMBER,	arena, game.player.splitTestCoef))),	ExchangeType.BOOK_58_AMBER	+ ":" + arena);
 
-		this.addBundle(1, ExchangeType.C31_BUNDLE, 0, this.now + (8 * 3600), "5:1999", "6:123");
-		// this.addBundle(2, ExchangeType.C31_BUNDLE, 1, this.now + (8 * 3600), "5:1999", "6:123");
+		// this.addBundle(1, ExchangeType.C31_BUNDLE, 0, this.expireTime + (3 * 24 * 3600), "5:1999", "6:123");
 	}
 
 
@@ -113,7 +114,7 @@ class ExchangeUpdater
 		{
 			if( item.expiredAt < now )
 			{
-				item.expiredAt = this.now + 86400;
+				item.expiredAt = this.expireTime;
 				item.numExchanges = 0;
 			}
 			return;
@@ -137,7 +138,7 @@ class ExchangeUpdater
 				item.outcome = ResourceType.R3_CURRENCY_SOFT;
 			}
 			
-			item.expiredAt = now + 86400;
+			item.expiredAt = this.expireTime;
 			item.numExchanges = 0;
 			item.outcomes = new IntIntMap();
 			item.outcomes.set(item.outcome, getOutcomeQuantity(item));
@@ -159,6 +160,13 @@ class ExchangeUpdater
 		this.changes.add(item);
 	}
 	
+	function getExpireTime() : Int
+	{
+		var date = Date.now();
+		trace(date.toString() + " " + now);
+		return now + (24 - date.getHours()) * 3600 - date.getMinutes() * 60 - date.getSeconds();	
+	}
+
 	function getOutcomeQuantity(item:ExchangeItem):Int 
 	{
 		if( ResourceType.isCard(item.outcome) )
@@ -197,7 +205,7 @@ class ExchangeUpdater
 		return switch ( item.outcome )
 		{
 			case 3	: ResourceType.R4_CURRENCY_HARD;
-			case 4	: ResourceType.R5_CURRENCY_REAL;
+			case 4	: ResourceType.R4_CURRENCY_HARD;
 			case 5	: ResourceType.R4_CURRENCY_HARD;
 			default	: ResourceType.R3_CURRENCY_SOFT;
 		}

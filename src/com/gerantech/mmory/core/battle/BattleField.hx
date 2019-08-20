@@ -58,6 +58,7 @@ class BattleField
 	public var pauseTime:Float;
 	public var elixirUpdater:ElixirUpdater;
 	var garbage:IntList;
+	var pioneerSide:Int;
 	var resetTime:Float = -1;
 #if java 
 	public var unitsHitCallback:com.gerantech.mmory.core.interfaces.IUnitHitCallback;
@@ -210,7 +211,7 @@ class BattleField
 		
 		// -=-=-=-=-=-=-=-  UPDATE TIME-STATE  -=-=-=-=-=-=-=-=-=-
 		if( resetTime <= this.now )
-			reset();
+			killPioneers();
 		
 		// trace((resetTime - now) + " delta " + (pauseTime - now) + " state " + state);
 		if( pauseTime > now )
@@ -394,30 +395,45 @@ class BattleField
 			return com.gerantech.mmory.core.constants.MessageTypes.RESPONSE_NOT_ENOUGH_REQS;
 		
 		var index = decks.get(side).queue_indexOf(type);
-		if ( index < 0 || index > 3 )
+		/* if( index < 0 || index > 3 )
 		{
 			trace(decks.get(side).queue_String());
 			return com.gerantech.mmory.core.constants.MessageTypes.RESPONSE_MUST_WAIT;
-		}
+		} */
 		
 		return index;
 	}
 	#end
 	
-	public function requestReset() : Void
+	public function requestKillPioneers(side:Int) : Void
 	{
 		if( state > STATE_2_STARTED )
 			return;
+		pioneerSide = side;
 		resetTime = now + 2000;
 		pauseTime = now;
 		state = STATE_3_PAUSED;
 	}
-	function reset() : Void
+
+	function killPioneers() : Void
 	{
 		pauseTime = now + 2000000; 
 		resetTime = now + 2000000;
-		dispose();
-		elixirUpdater.init();
+		var keys = units.keys();
+		var i = keys.length - 1;
+		while( i >= 0 )
+		{
+			if( units.get(keys[i]).side == pioneerSide )
+			{
+				if( pioneerSide == 0 && units.get(keys[i]).y < 640 )
+						units.get(keys[i]).dispose();
+				else if( pioneerSide == 1 && units.get(keys[i]).y > 640 )
+						units.get(keys[i]).dispose();
+			}
+			i --;
+		}
+		// dispose();
+		// elixirUpdater.init();
 		state = STATE_2_STARTED;
 	}
 	

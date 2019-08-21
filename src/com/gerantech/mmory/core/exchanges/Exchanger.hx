@@ -364,7 +364,7 @@ class Exchanger
 			//else if( item.getState(now) == ExchangeItem.CHEST_STATE_WAIT )
 			//	ret.set(ResourceType.KEY, ExchangeType.getKeyRequierement(item.outcome));
 		}
-		else if( ( item.category == ExchangeType.C100_FREES ) && item.expiredAt > now )
+		else if( ( item.type == ExchangeType.C43_ADS || item.category == ExchangeType.C100_FREES ) && item.expiredAt > now )
 		{
 			ret.set(ResourceType.R4_CURRENCY_HARD, timeToHard(item.expiredAt - now) * item.numExchanges);
 		}

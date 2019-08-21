@@ -45,9 +45,9 @@ class ExchangeUpdater
 		this.add(ExchangeType.C13_SOFT, 0, 0, ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.softToHard(50000) * 0.9,	ResourceType.R3_CURRENCY_SOFT + ":50000");
 
 		// -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_- TICKETS -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-		this.add(ExchangeType.C71_TICKET, 0, 0, ResourceType.R4_CURRENCY_HARD + ":10",	ResourceType.R6_TICKET + ":" + Exchanger.hardToTicket(10)     * 1.00);
-		this.add(ExchangeType.C72_TICKET, 0, 0, ResourceType.R4_CURRENCY_HARD + ":50",	ResourceType.R6_TICKET + ":" + Exchanger.hardToTicket(50)     * 1.20);
-		this.add(ExchangeType.C73_TICKET, 0, 0, ResourceType.R4_CURRENCY_HARD + ":100",	ResourceType.R6_TICKET + ":" + Exchanger.hardToTicket(100)    * 1.40);
+		this.add(ExchangeType.C71_TICKET, 0, 0, ResourceType.R4_CURRENCY_HARD + ":0",		ResourceType.R6_TICKET		+ ":1");
+		this.add(ExchangeType.C72_TICKET, 0, 0, ResourceType.R4_CURRENCY_HARD + ":50",	ResourceType.R6_TICKET		+ ":" + Exchanger.hardToTicket(50)    	* 1.20);
+		this.add(ExchangeType.C73_TICKET, 0, 0, ResourceType.R4_CURRENCY_HARD + ":100",	ResourceType.R6_TICKET		+ ":" + Exchanger.hardToTicket(100)    	* 1.40);
 
 		// -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_- EMOTES -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 		/*
@@ -166,7 +166,6 @@ class ExchangeUpdater
 	function getExpireTime() : Int
 	{
 		var date = Date.now();
-		trace(date.toString() + " " + now);
 		return now + (24 - date.getHours()) * 3600 - date.getMinutes() * 60 - date.getSeconds();	
 	}
 

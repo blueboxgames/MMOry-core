@@ -163,7 +163,6 @@ class ExchangeUpdater
 	function getExpireTime() : Int
 	{
 		var date = Date.now();
-		trace(date.toString() + " " + now);
 		return now + (24 - date.getHours()) * 3600 - date.getMinutes() * 60 - date.getSeconds();	
 	}
 

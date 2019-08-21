@@ -68,7 +68,10 @@ class ExchangeUpdater
 		this.add(ExchangeType.C122_MAGIC, 0, 0, ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.fixedRound(Exchanger.toHard(Exchanger.estimateBookOutcome(ExchangeType.BOOK_56_JUNGLE,	arena, game.player.splitTestCoef))),	ExchangeType.BOOK_56_JUNGLE	+ ":" + arena);
 		this.add(ExchangeType.C123_MAGIC, 0, 0, ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.fixedRound(Exchanger.toHard(Exchanger.estimateBookOutcome(ExchangeType.BOOK_58_AMBER,	arena, game.player.splitTestCoef))),	ExchangeType.BOOK_58_AMBER	+ ":" + arena);
 
-		// this.addBundle(1, ExchangeType.C31_BUNDLE, 0, this.expireTime + (3 * 24 * 3600), "5:1999", "6:123");
+		if (this.game.player.get_point() > 80 && this.game.player.getResource(ResourceType.R6_TICKET) < 6)
+		{
+			this.addBundle(1, ExchangeType.C31_BUNDLE, 0, this.expireTime + (3 * 24 * 3600), "5:1999", "6:123, 4:50");
+		}
 	}
 
 

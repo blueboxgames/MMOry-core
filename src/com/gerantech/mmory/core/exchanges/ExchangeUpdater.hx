@@ -209,6 +209,7 @@ class ExchangeUpdater
 			case 3	: ResourceType.R4_CURRENCY_HARD;
 			case 4	: ResourceType.R4_CURRENCY_HARD;
 			case 5	: ResourceType.R4_CURRENCY_HARD;
+			case 6	: ResourceType.R4_CURRENCY_HARD;
 			default	: ResourceType.R3_CURRENCY_SOFT;
 		}
 	}

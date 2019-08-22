@@ -241,6 +241,7 @@ class Exchanger
 				hards += toHard(estimateBookOutcome(reqKeys[i], map.get(reqKeys[i]), 1));
 			i ++;
 		}
+		//trace("tickets " + tickets + " => " + ticketToHard(tickets));
 		return softToHard(softs) + realToHard(reals) + ticketToHard(tickets) + hards ;
 	}
 	

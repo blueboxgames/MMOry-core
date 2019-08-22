@@ -386,11 +386,13 @@ class BattleField
 			return com.gerantech.mmory.core.constants.MessageTypes.RESPONSE_NOT_ENOUGH_REQS;
 		
 		var index = decks.get(side).queue_indexOf(type);
-		/* if( index < 0 || index > 3 )
+		
+		// deck vallidation for bots
+		if( side == 1 && games[1].player.isBot() && (index < 0 || index > 3) )
 		{
 			trace(decks.get(side).queue_String());
 			return com.gerantech.mmory.core.constants.MessageTypes.RESPONSE_MUST_WAIT;
-		} */
+		}
 		
 		return index;
 	}

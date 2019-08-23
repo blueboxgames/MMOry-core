@@ -13,7 +13,7 @@ import com.gerantech.mmory.core.utils.Point2;
  */
 class Unit extends GameObject
 {
-    public var health:Float;
+	public var health:Float;
 	public var bulletId:Int = 0;
 	var target:Point2;
 	var defaultTarget:Point2;

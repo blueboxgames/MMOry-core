@@ -53,6 +53,7 @@ class ScriptEngine
 	static public var T64_BATTLE_PAUSE_TIME:Int = 64;
 	static public var T66_BATTLE_SUMMON_POS:Int = 66;
 	static public var T68_BATTLE_UNIT_ENEMIES:Int = 68;
+	static public var T69_BATTLE_ELIXIR_RATIO:Int = 69;
 
 	static public var T81_TROPHY_ROAD:Int = 81;
 

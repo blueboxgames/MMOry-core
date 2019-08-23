@@ -10,13 +10,18 @@ import com.gerantech.mmory.core.exchanges.ExchangeItem;
 import com.gerantech.mmory.core.scripts.ScriptEngine;
 import com.gerantech.mmory.core.utils.maps.IntIntMap;
 import com.gerantech.mmory.core.utils.maps.IntShopMap;
-
 /**
  * ...
  * @author Mansour Djawadi
  */
+#if flash
+import com.gerantech.mmory.core.events.ExchangeEvent;
+class Exchanger extends flash.events.EventDispatcher
+{
+#elseif java
 class Exchanger 
 {
+#end
 	var game:Game;
 	public var items:IntShopMap;
 #if java
@@ -26,6 +31,9 @@ class Exchanger
 
 	public function new(game:Game) 
 	{
+		#if flash
+		super();
+		#end
 		this.game = game;
 		items = new IntShopMap();
 	}
@@ -114,6 +122,10 @@ class Exchanger
 		
 		// consume reqs
 		game.player.resources.reduceMap(item.requirements);
+
+#if flash
+		dispatchEvent(new com.gerantech.mmory.core.events.ExchangeEvent("complete", item));
+#end
 		
 		// reset item
 		if( item.category == ExchangeType.C100_FREES )
@@ -229,6 +241,7 @@ class Exchanger
 				hards += toHard(estimateBookOutcome(reqKeys[i], map.get(reqKeys[i]), 1));
 			i ++;
 		}
+		//trace("tickets " + tickets + " => " + ticketToHard(tickets));
 		return softToHard(softs) + realToHard(reals) + ticketToHard(tickets) + hards ;
 	}
 	

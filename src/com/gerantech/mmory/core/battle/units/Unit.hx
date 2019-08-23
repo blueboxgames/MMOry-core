@@ -1,10 +1,11 @@
 package com.gerantech.mmory.core.battle.units;
+import com.gerantech.mmory.core.socials.Challenge;
+import com.gerantech.mmory.core.utils.CoreUtils;
 import com.gerantech.mmory.core.battle.BattleField;
 import com.gerantech.mmory.core.battle.GameObject;
 import com.gerantech.mmory.core.battle.units.Card;
 import com.gerantech.mmory.core.constants.CardTypes;
 import com.gerantech.mmory.core.events.BattleEvent;
-import com.gerantech.mmory.core.socials.Challenge;
 import com.gerantech.mmory.core.utils.Point2;
 
 /**
@@ -44,7 +45,7 @@ class Unit extends GameObject
 		if( CardTypes.isHero(card.type) )
 			this.defaultTarget = new Point2(returnigPosition.x, returnigPosition.y);
 		else
-			this.defaultTarget = new Point2(this.battleField.field.mode == Challenge.MODE_0_HQ ? BattleField.WIDTH * 0.5 : returnigPosition.x, side == 0 ? 0 : BattleField.HEIGHT);
+			this.defaultTarget = new Point2(battleField.field.mode == Challenge.MODE_0_HQ ? BattleField.WIDTH * 0.5 : CoreUtils.clamp(returnigPosition.x, 320, 640), side == 0 ? 0 : BattleField.HEIGHT);
 	}
 	
 	override public function update() : Void

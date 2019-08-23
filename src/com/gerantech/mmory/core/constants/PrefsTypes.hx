@@ -10,7 +10,7 @@ class PrefsTypes
 	public static var SETTINGS_2_SFX:Int = 2;
 	public static var SETTINGS_3_NOTIFICATION:Int = 3;
 	public static var SETTINGS_4_LOCALE:Int = 4;
-	public static var SETTINGS_5_REMOVE_ADS:Int = 5;
+	public static var SETTINGS_5_ADS:Int = 5;
 	
 	public static var OFFER_30_RATING:Int = 30;
 	public static var OFFER_31_TELEGRAM:Int = 31;
@@ -20,7 +20,10 @@ class PrefsTypes
 	public static var AUTH_41_GOOGLE:Int = 41;
 	public static var AUTH_42_GAMECENTER:Int = 42;
 	public static var AUTH_43_TELEGRAM:Int = 43;
-	
+
+	public static var OFFER_51_START:Int = 51;
+	public static var OFFER_52_START:Int = 52;
+
 	public static var OTHERS_91_LOBBY:Int = 91;
 	
 	public static var TUTOR:Int = 101;

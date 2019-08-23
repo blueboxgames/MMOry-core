@@ -58,6 +58,7 @@ class BattleField
 	public var pauseTime:Float;
 	public var elixirUpdater:ElixirUpdater;
 	var garbage:IntList;
+	var pioneerSide:Int;
 	var resetTime:Float = -1;
 #if java 
 	public var unitsHitCallback:com.gerantech.mmory.core.interfaces.IUnitHitCallback;
@@ -104,27 +105,17 @@ class BattleField
 			
 			if( this.difficulty != 0 )
 			{
-				if (this.field.mode == 0)
-				{
-					var ep:Int = game_0.player.get_point() + Math.round(Math.pow(1.2, Math.abs(this.difficulty) ) * 30 * this.difficulty / Math.abs(this.difficulty) + this.difficulty * 0.04);
-					if( ep > 100000 )
-						ep = 100000;
-					game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R2_POINT, ep);
-				}
-				else if (this.field.mode == 1)
-				{
-					var ep:Int = game_0.player.get_point() + Math.round(Math.pow(1.2, Math.abs(this.difficulty) ) * 15 * this.difficulty / Math.abs(this.difficulty) + this.difficulty * 0.04);
-					if( ep > 100000 )
-						ep = 100000;
-					game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R2_POINT, ep);
-				}
-				else if (this.field.mode == 2)
-				{
-					var ep:Int = game_0.player.get_point() + Math.round(Math.pow(1.2, Math.abs(this.difficulty) ) * 25 * this.difficulty / Math.abs(this.difficulty) + this.difficulty * 0.04);
-					if( ep > 100000 )
-						ep = 100000;
-					game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R2_POINT, ep);
-				}
+				var botPoint:Int = game_0.player.get_point();
+				if( this.field.mode == 0 )
+					botPoint += Math.round(Math.pow(1.2, Math.abs(this.difficulty) ) * 20 * this.difficulty / Math.abs(this.difficulty) + this.difficulty * 0.04);
+				else if( this.field.mode == 1 )
+					botPoint += Math.round(Math.pow(1.2, Math.abs(this.difficulty) ) * 10 * this.difficulty / Math.abs(this.difficulty) + this.difficulty * 0.04);
+				else if( this.field.mode == 2 )
+					botPoint += Math.round(Math.pow(1.2, Math.abs(this.difficulty) ) * 15 * this.difficulty / Math.abs(this.difficulty) + this.difficulty * 0.04);
+				
+				if( botPoint > 100000 )
+					botPoint = 100000;
+				game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R2_POINT, botPoint);
 			}
 			
 			//game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R1_XP, game_1.player.get_point() * 6 + 1);
@@ -141,20 +132,12 @@ class BattleField
 			trace("startAt:" + this.startAt + " now:" + this.now + " difficulty:" + this.difficulty + " winRate:" + winRate + " mode:" + this.field.mode);
 
 			// bot elixir is easier and player elixir is faster in tutorial
-			this.elixirUpdater.normalSpeeds[0] *= games[0].player.get_battleswins() < 3 ? 2 : 1;
-			if( games[0].player.get_battleswins() < 5 )
-			{
-				this.elixirUpdater.normalSpeeds[1] *= Math.min(1, games[0].player.get_battleswins() / 5);
-			}
-			else
-			{
-				// battleField.elixirSpeeds.__set(1, battleRoom.endCalculator.ratio() > 1 ? 1 + battleField.difficulty * 0.04 : 1);
-				this.elixirUpdater.normalSpeeds[1]	+= difficulty * 0.00001;
-				this.elixirUpdater.finalSpeeds[1]	+= difficulty * 0.00001;
-			}
+			this.elixirUpdater.normalSpeeds[0] *= ScriptEngine.get(ScriptEngine.T69_BATTLE_ELIXIR_RATIO, field.mode, 0, game_0.player.get_battleswins());
+			this.elixirUpdater.normalSpeeds[1] *= ScriptEngine.get(ScriptEngine.T69_BATTLE_ELIXIR_RATIO, field.mode, 1, game_0.player.get_battleswins());
+
+			trace ("es 0:" + ScriptEngine.get(ScriptEngine.T69_BATTLE_ELIXIR_RATIO, field.mode, 0, game_0.player.get_battleswins()) + " field.mode:" + field.mode + " battleswins" + game_0.player.get_battleswins());
+			trace ("es 1:" + ScriptEngine.get(ScriptEngine.T69_BATTLE_ELIXIR_RATIO, field.mode, 1, game_0.player.get_battleswins()) + " field.mode:" + field.mode + " battleswins" + game_0.player.get_battleswins());
 		}
-		// trace(normalElixirSpeeds.toString());
-		// trace(finalElixirSpeeds.toString());
 		
 		// create castles
 		if( field.mode != Challenge.MODE_1_TOUCHDOWN )
@@ -218,7 +201,7 @@ class BattleField
 		
 		// -=-=-=-=-=-=-=-  UPDATE TIME-STATE  -=-=-=-=-=-=-=-=-=-
 		if( resetTime <= this.now )
-			reset();
+			killPioneers();
 		
 		// trace((resetTime - now) + " delta " + (pauseTime - now) + " state " + state);
 		if( pauseTime > now )
@@ -402,7 +385,9 @@ class BattleField
 			return com.gerantech.mmory.core.constants.MessageTypes.RESPONSE_NOT_ENOUGH_REQS;
 		
 		var index = decks.get(side).queue_indexOf(type);
-		if ( index < 0 || index > 3 )
+		
+		// deck vallidation for bots
+		if( side == 1 && games[1].player.isBot() && (index < 0 || index > 3) )
 		{
 			trace(decks.get(side).queue_String());
 			return com.gerantech.mmory.core.constants.MessageTypes.RESPONSE_MUST_WAIT;
@@ -412,20 +397,35 @@ class BattleField
 	}
 	#end
 	
-	public function requestReset() : Void
+	public function requestKillPioneers(side:Int) : Void
 	{
 		if( state > STATE_2_STARTED )
 			return;
+		pioneerSide = side;
 		resetTime = now + 2000;
 		pauseTime = now;
 		state = STATE_3_PAUSED;
 	}
-	function reset() : Void
+
+	function killPioneers() : Void
 	{
 		pauseTime = now + 2000000; 
 		resetTime = now + 2000000;
-		dispose();
-		elixirUpdater.init();
+		var keys = units.keys();
+		var i = keys.length - 1;
+		while( i >= 0 )
+		{
+			if( units.get(keys[i]).side == pioneerSide )
+			{
+				if( pioneerSide == 0 && units.get(keys[i]).y < 640 )
+						units.get(keys[i]).dispose();
+				else if( pioneerSide == 1 && units.get(keys[i]).y > 640 )
+						units.get(keys[i]).dispose();
+			}
+			i --;
+		}
+		// dispose();
+		// elixirUpdater.init();
 		state = STATE_2_STARTED;
 	}
 	

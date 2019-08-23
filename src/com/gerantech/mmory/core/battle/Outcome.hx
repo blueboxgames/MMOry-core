@@ -1,8 +1,8 @@
 package com.gerantech.mmory.core.battle;
 
 
-import com.gerantech.mmory.core.exchanges.ExchangeItem;
 import com.gerantech.mmory.core.scripts.ScriptEngine;
+import com.gerantech.mmory.core.exchanges.ExchangeItem;
 import com.gerantech.mmory.core.constants.ExchangeType;
 import com.gerantech.mmory.core.others.Arena;
 import com.gerantech.mmory.core.utils.maps.IntIntMap;
@@ -14,8 +14,8 @@ import com.gerantech.mmory.core.constants.ResourceType;
 class Outcome
 {
 #if java
-	static var MIN_POINTS:Int = 2;
-	static var COE_POINTS:Int = 2;
+	static var LOSE_PONT:Int = -3;
+	static var WIN_POINT:Int = 8;
 
 	static public function get(game:Game, type:Int, mode:Int, friendlyMode:Int, stars:Int, ratio:Float, now:Int) : IntIntMap
   	{
@@ -52,7 +52,7 @@ class Outcome
 			// soft-currency
 			var sc = Math.max(0, stars) + Math.min(league.index * 2, Math.max(0, game.player.get_point() - game.player.get_softs())) * mode;
 			var softs:Int = 2 * cast(sc, Int);
-			if( softs != 0 )
+			if( softs != 0 && game.player.get_battleswins() > 4 )
 				ret.set(ResourceType.R3_CURRENCY_SOFT, softs);
 
 			/*int dailyBattles = game.exchanger.items.exists(ExchangeType.C29_DAILY_BATTLES) ? game.exchanger.items.get(ExchangeType.C29_DAILY_BATTLES).numExchanges : 0;
@@ -61,7 +61,7 @@ class Outcome
 					point = (int) (point * Math.pow(10f / dailyBattles, 0.2));
 					soft = (int) (soft * Math.pow(10f / dailyBattles, 0.8));
 			}*/
-			ret.set(ResourceType.R3_CURRENCY_SOFT, softs);
+			// ret.set(ResourceType.R3_CURRENCY_SOFT, softs);
 
 			// random book
 			var emptySlotsType = getEmptySlots(game, now);
@@ -84,8 +84,7 @@ class Outcome
 			return 1;
 		if( lastPoint < 20 && ratio <= 1 )
 			return 0;
-		var challengeCoef:Float = ScriptEngine.get(ScriptEngine.T48_CHALLENGE_REWARDCOEF, type);
-		return Math.round((MIN_POINTS + stars * COE_POINTS) * challengeCoef * (ratio > 1 ? 1 : -1));
+		return ScriptEngine.getInt(ScriptEngine.T48_CHALLENGE_REWARDCOEF, type) * (ratio > 1 ? WIN_POINT : LOSE_PONT);
 	}
 	
   static function getWinRate(game:Game, league:Arena, stars:Int, ratio:Float) : Int

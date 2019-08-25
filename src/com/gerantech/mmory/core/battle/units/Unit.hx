@@ -32,10 +32,12 @@ class Unit extends GameObject
 		
 		// fake health for tutorial
 		var h:Float = this.card.health;
-		if( side > 0 && battleField.games[0].player.get_battleswins() < 5 )
-			h = h * 0.5 + ((battleField.games[0].player.get_battleswins() + 1) / 10) * h;
+		if( card.game.player.isBot() && battleField.games[0].player.get_battleswins() < 5 )
+			h = h * 0.5 + Math.min(0.5, (battleField.games[0].player.get_battleswins() + 1) / 10 * h);
 		this.cardHealth = h;
 		this.setHealth(h);
+		// trace("isBot:" + card.game.player.isBot() + " get_battleswins:" + battleField.games[0].player.get_battleswins());
+		// trace(card.type + " => this.health:" + this.health + " this.card.health:" + this.card.health + " cardHealth:" + cardHealth + " h:" + h + " level:" + card.level + " side:" + side);
 		
 		this.bulletId = id * 10000;
 		if( this.card.speed <= 0 )
@@ -152,7 +154,7 @@ class Unit extends GameObject
 			this.path = null;
 			return;
 		}
-		this.path = this.battleField.field.tileMap.findPath(this.x, this.y, targetX, targetY, side == 0 ? 1 : -1);
+		this.path = this.battleField.field.tileMap.findPath(this.x, this.y, this.z, targetX, targetY, side == 0 ? 1 : -1);
 		if( this.path == null || this.path.length == 0 )
 			return;
 		if( BattleField.DEBUG_MODE )

@@ -20,6 +20,7 @@ class TileMap
 	public var tileHeight:Int;
 	var map:Array<Array<Int>>;
 	var target:Tile;
+	var onGround:Bool;
 	var stack:Array<Tile>;
 	var coordinates:Array<Int>;
 	public function new() 
@@ -125,10 +126,11 @@ class TileMap
 		disposeTile(tile);
 		stack[tile.i + tile.j * width] = null;
 	}
-	public function findPath(sourceX:Float, sourceY:Float, destX:Float, destY:Float, side:Int , removeWrongs:Bool = true):Array<Point2>
+	public function findPath(sourceX:Float, sourceY:Float, sourceZ:Float, destX:Float, destY:Float, side:Int , removeWrongs:Bool = true):Array<Point2>
 	{
 		var srcTile = getTile(sourceX, sourceY);
 		var desTile = getTile(destX, destY);
+		onGround = sourceZ == 0;
 		if( srcTile.i == desTile.i && srcTile.j == desTile.j )
 			return null;
 		set(desTile.i,	desTile.j,	STATE_START);
@@ -185,13 +187,13 @@ class TileMap
 		while( i < lastCoordinatesSize )
 		{
 			c = coordinates[i];
-			checkTile(stack[c].i,			stack[c].j - side,	cost + 0.00, c); // top
+			checkTile(stack[c].i,					stack[c].j - side,	cost + 0.00, c); // top
 			checkTile(stack[c].i + side,	stack[c].j - side,	cost + 0.42, c); // top-right
-			checkTile(stack[c].i + side,	stack[c].j,			cost + 0.00, c); // right
+			checkTile(stack[c].i + side,	stack[c].j,					cost + 0.00, c); // right
 			checkTile(stack[c].i + side,	stack[c].j + side,	cost + 0.42, c); // right-bottom
-			checkTile(stack[c].i,			stack[c].j + side,	cost + 0.00, c); // bottom
+			checkTile(stack[c].i,					stack[c].j + side,	cost + 0.00, c); // bottom
 			checkTile(stack[c].i - side,	stack[c].j + side,	cost + 0.42, c); // left-bottom
-			checkTile(stack[c].i - side,	stack[c].j, 		cost + 0.00, c); // left
+			checkTile(stack[c].i - side,	stack[c].j, 				cost + 0.00, c); // left
 			checkTile(stack[c].i - side,	stack[c].j - side,	cost + 0.42, c); // left-top
 			i ++;
 		}
@@ -202,7 +204,7 @@ class TileMap
 		
 	function checkTile(i:Int, j:Int, cost:Float, last:Int) : Void
 	{
-		if( i < 0 || j < 0 || i >= width || j >= height || map[i][j] == STATE_OCCUPIED )
+		if( i < 0 || j < 0 || i >= width || j >= height || (onGround && map[i][j] == STATE_OCCUPIED) )
 			return;
 		
 		//if this coordinate is the start finish algorythm as the shortest path was just found

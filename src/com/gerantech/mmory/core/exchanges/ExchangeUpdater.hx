@@ -125,12 +125,14 @@ class ExchangeUpdater
 		
 		if( item.expiredAt < this.now )
 		{
+			var ticketNeeds = 0;
 			if( item.type == ExchangeType.C23_SPECIAL )
 			{
-				if( game.player.cards.keys().length > 0 && game.player.getResource(ResourceType.R6_TICKET) > 15 )
-					item.outcome = game.player.cards.getRandomKey();
-				else
+				ticketNeeds = ScriptEngine.getInt(ScriptEngine.T53_CHALLENGE_TICKET_CAPACITY, Challenge.getLastIndex(game));
+				if( ticketNeeds > 0 )
 					item.outcome = ResourceType.R6_TICKET;
+				else
+					item.outcome = game.player.cards.getRandomKey();
 			}
 			else if( item.type == ExchangeType.C22_SPECIAL )
 			{
@@ -144,12 +146,12 @@ class ExchangeUpdater
 			item.expiredAt = this.expireTime;
 			item.numExchanges = 0;
 			item.outcomes = new IntIntMap();
-			item.outcomes.set(item.outcome, getOutcomeQuantity(item));
+			item.outcomes.set(item.outcome, getOutcomeQuantity(item, ticketNeeds));
 			createOutcomeString(item);
 		}
 		else if( item.outcomes.values()[0] <= 0 )
 		{
-			item.outcomes.set(item.outcome, getOutcomeQuantity(item));
+			item.outcomes.set(item.outcome, getOutcomeQuantity(item, 0));
 			createOutcomeString(item);
 		}
 		
@@ -169,7 +171,7 @@ class ExchangeUpdater
 		return now + (24 - date.getHours()) * 3600 - date.getMinutes() * 60 - date.getSeconds();	
 	}
 
-	function getOutcomeQuantity(item:ExchangeItem):Int 
+	function getOutcomeQuantity(item:ExchangeItem, tickets:Int):Int 
 	{
 		if( ResourceType.isCard(item.outcome) )
 			return Math.ceil(arena / (ScriptEngine.getInt(0, item.outcome) * 2 + 1) );
@@ -178,15 +180,7 @@ class ExchangeUpdater
 			return 1;
 		
 		if( item.outcome == ResourceType.R6_TICKET )
-		{
-			var rand = Math.ceil(Math.random() * 2);
-			
-			if( Challenge.getUnlockAt(game, 3) <= game.player.get_point() )
-				return 15 + rand;
-			if( Challenge.getUnlockAt(game, 2) <= game.player.get_point() )
-				return 12 + rand;
-			return 10 + rand;
-		}
+			return Math.ceil(Math.random() * 2) + tickets;
 		
 		return switch ( item.outcome )
 		{

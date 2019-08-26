@@ -165,6 +165,19 @@ class Challenge
 					return game.arenas.get(l).rewards[r].point;
 		}
 		return -10;
+		}
+	
+	static public function getLastIndex(game:Game) : Int
+	{
+		var len = game.arenas.keys().length;
+		for (l in 0...len)
+		{
+			var rLen = game.arenas.get(l).rewards.length;
+			for (r in 0...rLen)
+				if( game.arenas.get(l).rewards[r].point < game.player.get_point() && Math.floor(game.arenas.get(l).rewards[r].key/10) == 3 )
+					return game.arenas.get(l).rewards[r].key % 10;
+		}
+		return 0;
 	}
 
 	static public function getlowestJoint(player:Player) : Int

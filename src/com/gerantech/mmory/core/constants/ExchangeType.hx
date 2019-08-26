@@ -89,7 +89,7 @@ class ExchangeType
 		{
 			case 41		: 24	* 3600;
 			case 43		: 2		* 3600;
-			case 51		: 10		  ;
+			case 51		: 5				  ;
 			case 52		: 3		* 3600;
 			case 53		: 8		* 3600;
 			case 54		: 12	* 3600;
@@ -97,7 +97,7 @@ class ExchangeType
 			case 59		: 24	* 3600;
 			case 101	: 3		* 3600;
 			case 104	: 24	* 3600;
-			default : 0;
+			default 	: 0					;
 		}
 	}
 

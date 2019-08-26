@@ -340,7 +340,7 @@ class BattleField
 		//var res = "Bullet=> type: " + bullet.card.type + ", id:" + bullet.id + ", damage:" + bullet.card.bulletDamage;
 		var hitUnits:java.util.List<java.lang.Integer> = new java.util.ArrayList();
 		var iterator : java.util.Iterator < java.util.Map.Map_Entry<Int, com.gerantech.mmory.core.battle.units.Unit> > = units._map.entrySet().iterator();
-        while ( iterator.hasNext() )
+		while( iterator.hasNext() )
 		{
 			u = iterator.next().getValue();
 			if( u.disposed() )

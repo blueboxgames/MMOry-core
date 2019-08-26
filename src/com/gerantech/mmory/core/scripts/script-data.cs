@@ -488,7 +488,7 @@ if( __type == 22 )
 		case	115	:	0.24	;
 		case	116	:	0.10	;	
 		case	117	: 0.19	;
-		case	118	: 0.50  ; 
+		case	118	: 0.60  ;
 		case	119	: 0.30  ; 
 		
 		case	151	:	0.70	;
@@ -838,6 +838,18 @@ if( __type == 52 )
 		default:	"6:0";
 	}
 }
+
+// challengeBasedTicketCapacity(type:Int):Int
+if( __type == 53 )
+{
+	return switch( __arg0 )
+	{
+		case 0:		10;
+		case 1:		15;
+		case 2:		20;
+		default:	20;
+	}
+}
 // =================== BATTLES ====================== 
 
 //numtutorBattles(mode:Int) : Int
@@ -943,8 +955,8 @@ if( __type == 66 )
 		return switch( __arg2 )
 		{
 			case 0	: 	[1, 450, 850, 200];
-			case 1	:		[1, 450, 900, 200];
-			case 2	: 	[1, 450, 900, 200];
+			// case 1	:		[1, 450, 900, 200];
+			// case 2	: 	[1, 450, 900, 200];
 			default:	null;
 		}
 	}
@@ -973,8 +985,8 @@ if( __type == 66 )
 	return switch( __arg2 )
 	{
 		case 0	: [1, 540, 1400, 3000];
-		case 1	:	[3, 540, 1500, 3000];
-		case 2	: [2, 540, 1500, 3000];
+		// case 1	:	[3, 540, 1500, 3000];
+		// case 2	: [2, 540, 1500, 3000];
 		default:	null;
 	}
 	return null;

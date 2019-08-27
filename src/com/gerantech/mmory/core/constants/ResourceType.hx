@@ -38,6 +38,7 @@ class ResourceType
 		else if( type == R3_CURRENCY_SOFT ) return "Coins";
 		else if( type == R4_CURRENCY_HARD ) return "Gems";
 		else if( type == R5_CURRENCY_REAL ) return "Real";
+		else if( type == R6_TICKET ) return "Ticket";
 		else if( type == R17_STARS )		return "Stars";
 		else return "TYPE_" + type;
 	}

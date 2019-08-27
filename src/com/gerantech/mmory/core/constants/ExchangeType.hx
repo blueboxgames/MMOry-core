@@ -167,4 +167,21 @@ class ExchangeType
 	{
 		return type == BOOK_55_PIRATE || type == BOOK_56_JUNGLE || type == BOOK_58_AMBER ;
 	}
+
+	static public function getName(type:Int) : String
+	{
+		var cate = getCategory(type);
+				 if( cate == C0_HARD )			return "Ex_Gem";
+		else if( cate == C10_SOFT )			return "Ex_Coin";
+		else if( cate == C20_SPECIALS ) return "Ex_Special";
+		else if( cate == C30_BUNDLES ) 	return "Ex_Bundle";
+		else if( cate == C40_OTHERS ) 	return "Ex_Other";
+		else if( cate == C70_TICKETS )	return "Ex_Ticket";
+		else if( cate == C80_EMOTES )		return "Ex_Emote";
+		else if( cate == C100_FREES )		return "Ex_Free";
+		else if( cate == C110_BATTLES )	return "Ex_Battle";
+		else if( cate == C120_MAGICS )	return "Ex_Magic";
+		else return "Ex_" + cate;
+	}
+
 }

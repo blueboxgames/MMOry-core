@@ -41,7 +41,7 @@ class LoginData
 		resources.set(CardTypes.C104, 1);
 		resources.set(CardTypes.C105, 1);
 		resources.set(CardTypes.C106, 1);
-		resources.set(CardTypes.C107, 1);
+		resources.set(CardTypes.C119, 1);
 		resources.set(CardTypes.C108, 1);
 		
 		exchanges = new IntList();
@@ -54,7 +54,7 @@ class LoginData
 		exchanges.push(ExchangeType.C113_BATTLE);
 		exchanges.push(ExchangeType.C114_BATTLE);
 		
-		deck = [CardTypes.C102, CardTypes.C104, CardTypes.C108, CardTypes.C101, CardTypes.C105, CardTypes.C106, CardTypes.C103, CardTypes.C107];
+		deck = [CardTypes.C101, CardTypes.C102, CardTypes.C103, CardTypes.C104, CardTypes.C105, CardTypes.C106, CardTypes.C119, CardTypes.C108];
 #if java
 		// initialDecks = new IntIntIntMap();
 		// initialDecks.set(0, new IntIntMap("0:101, 1:105, 2:104, 3:102, 4:106, 5:103, 5:107, 5:108"));

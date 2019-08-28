@@ -115,6 +115,8 @@ class BattleField
 				
 				if( botPoint > 100000 )
 					botPoint = 100000;
+				else if( botPoint < 0 )
+					botPoint = 0;	
 				game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R2_POINT, botPoint);
 			}
 			

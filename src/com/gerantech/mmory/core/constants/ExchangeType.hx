@@ -170,7 +170,8 @@ class ExchangeType
 
 	static public function getName(type:Int) : String
 	{
-		switch (type) {
+		switch (type)
+		{
 			case 0: return "Gem";
 			case 1: return "GemI";
 			case 2: return "GemII";
@@ -220,7 +221,7 @@ class ExchangeType
 			case 121: return "MagicI";
 			case 122: return "MagicII";
 			case 123: return "MagicIII";
-			default: return "";
+			default: return null;
 		}
 	}
 }

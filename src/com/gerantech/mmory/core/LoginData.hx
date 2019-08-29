@@ -11,7 +11,7 @@ import com.gerantech.mmory.core.utils.maps.IntIntMap;
 class LoginData
 {
 	public static var coreSize:Int = 0;
-	public var coreVersion:String = "2200.0829134311";//do not change len.
+	public var coreVersion:String = "2200.0829160614";//do not change len.
 	public var noticeVersion:Int = 2200;
 	public var forceVersion:Int = 2100;
 	public var resources:IntIntMap;
@@ -41,7 +41,7 @@ class LoginData
 		resources.set(CardTypes.C104, 1);
 		resources.set(CardTypes.C105, 1);
 		resources.set(CardTypes.C106, 1);
-		resources.set(CardTypes.C119, 1);
+		resources.set(CardTypes.C107, 1);
 		resources.set(CardTypes.C108, 1);
 		
 		exchanges = new IntList();
@@ -54,12 +54,6 @@ class LoginData
 		exchanges.push(ExchangeType.C113_BATTLE);
 		exchanges.push(ExchangeType.C114_BATTLE);
 		
-		deck = [CardTypes.C102, CardTypes.C104, CardTypes.C108, CardTypes.C101, CardTypes.C105, CardTypes.C106, CardTypes.C103, CardTypes.C119];
-#if java
-		// initialDecks = new IntIntIntMap();
-		// initialDecks.set(0, new IntIntMap("0:101, 1:105, 2:104, 3:102, 4:106, 5:103, 5:107, 5:108"));
-		// initialDecks.set(1, new IntIntMap("0:104, 1:105, 2:106, 3:102, 4:101, 5:103, 5:107, 5:108"));
-		// initialDecks.set(2, new IntIntMap("0:105, 1:102, 2:106, 3:104, 4:101, 5:103, 6:107, 5:108"));
-#end
+		deck = [CardTypes.C102, CardTypes.C104, CardTypes.C108, CardTypes.C101, CardTypes.C105, CardTypes.C106, CardTypes.C103, CardTypes.C107];
 	}
 }

@@ -170,18 +170,57 @@ class ExchangeType
 
 	static public function getName(type:Int) : String
 	{
-		var cate = getCategory(type);
-				 if( cate == C0_HARD )			return "Ex_Gem";
-		else if( cate == C10_SOFT )			return "Ex_Coin";
-		else if( cate == C20_SPECIALS ) return "Ex_Special";
-		else if( cate == C30_BUNDLES ) 	return "Ex_Bundle";
-		else if( cate == C40_OTHERS ) 	return "Ex_Other";
-		else if( cate == C70_TICKETS )	return "Ex_Ticket";
-		else if( cate == C80_EMOTES )		return "Ex_Emote";
-		else if( cate == C100_FREES )		return "Ex_Free";
-		else if( cate == C110_BATTLES )	return "Ex_Battle";
-		else if( cate == C120_MAGICS )	return "Ex_Magic";
-		else return "Ex_" + cate;
+		switch (type) {
+			case 0: return "Gem";
+			case 1: return "GemI";
+			case 2: return "GemII";
+			case 3: return "GemIII";
+			case 4: return "GemIV";
+			case 5: return "GemV";
+			case 6: return "GemVI";
+			case 10: return "Coin";
+			case 11: return "CoinI";
+			case 12: return "CoinII";
+			case 13: return "CoinIII";
+			case 20: return "Special";
+			case 21: return "SpecialI";
+			case 22: return "SpecialII";
+			case 23: return "SpecialIII";
+			case 30: return "Bundle";
+			case 31: return "BundleI";
+			case 32: return "BundleII";
+			case 40: return "Others";
+			case 41: return "Keys";
+			case 42: return "Rename";
+			case 43: return "AD";
+			case 50: return "Books";
+			case 51: return "BookMetal";
+			case 52: return "BookKnight";
+			case 53: return "BookStars";
+			case 54: return "BookSea";
+			case 55: return "BookPirate";
+			case 56: return "BookJungle";
+			case 57: return "BookTreasure";
+			case 58: return "BookAmber";
+			case 59: return "BookDragon";
+			case 70: return "Ticket";
+			case 71: return "TicketI";
+			case 72: return "TicketII";
+			case 73: return "TicketIII";
+			case 80: return "Emote";
+			case 81: return "EmoteI";
+			case 82: return "EmoteII";
+			case 83: return "EmoteIII";
+			case 110: return "Battle";
+			case 111: return "BattleI";
+			case 112: return "BattleII";
+			case 113: return "BattleIII";
+			case 114: return "BattleIV";
+			case 120: return "Magic";
+			case 121: return "MagicI";
+			case 122: return "MagicII";
+			case 123: return "MagicIII";
+			default: return "";
+		}
 	}
-
 }

@@ -172,17 +172,17 @@ class ExchangeType
 	{
 		switch (type)
 		{
-			case 0: return "Gem";
-			case 1: return "GemI";
-			case 2: return "GemII";
-			case 3: return "GemIII";
-			case 4: return "GemIV";
-			case 5: return "GemV";
-			case 6: return "GemVI";
-			case 10: return "Coin";
-			case 11: return "CoinI";
-			case 12: return "CoinII";
-			case 13: return "CoinIII";
+			case 0: return "Gems";
+			case 1: return "GemsI";
+			case 2: return "GemsII";
+			case 3: return "GemsIII";
+			case 4: return "GemsIV";
+			case 5: return "GemsV";
+			case 6: return "GemsVI";
+			case 10: return "Coins";
+			case 11: return "CoinsI";
+			case 12: return "CoinsII";
+			case 13: return "CoinsIII";
 			case 20: return "Special";
 			case 21: return "SpecialI";
 			case 22: return "SpecialII";
@@ -212,6 +212,10 @@ class ExchangeType
 			case 81: return "EmoteI";
 			case 82: return "EmoteII";
 			case 83: return "EmoteIII";
+			case 100: return "Frees";
+			case 101: return "FreesI";
+			case 102: return "FreesII";
+			case 103: return "FreesIII";
 			case 110: return "Battle";
 			case 111: return "BattleI";
 			case 112: return "BattleII";

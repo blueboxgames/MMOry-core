@@ -993,10 +993,10 @@ if( __type == 66 )
 }
 
 // bot prefered unit coefficents
-// [position, damage, health, targetType]
+// [position, damage, health, targetType, speed]
 if( __type == 67 )
 {
-	return [1.0, 1.0, 1.0, 1.0];
+	return [1.0, 1.0, 1.0, 1.0, 1.0];
 }
 
 

@@ -94,7 +94,7 @@ class BattleField
 		
 		if( singleMode )
 		{
-			var winRate = game_0.player.getResource(com.gerantech.mmory.core.constants.ResourceType.R16_WIN_RATE);
+			/* var winRate = game_0.player.getResource(com.gerantech.mmory.core.constants.ResourceType.R16_WIN_RATE);
 			arena = game_0.player.get_arena(0);
 			if( winRate > 2 )
 				this.difficulty = arena + winRate - 2;
@@ -116,13 +116,13 @@ class BattleField
 				if( botPoint > 100000 )
 					botPoint = 100000;
 				else if( botPoint < 0 )
-					botPoint = 0;	
-				game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R2_POINT, botPoint);
-			}
-			
+					botPoint = 0;	 */
+				game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R2_POINT, game_0.player.get_point() + Math.round(Math.random() * 20 - 10));
+			//}
+			difficulty = game_1.player.get_arena(0);
 			//game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R1_XP, game_1.player.get_point() * 6 + 1);
 			// game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R1_XP, game_0.player.get_xp() + (game_1.player.get_point() - game_0.player.get_point())* 6 + 1);
-			game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R1_XP, game_0.player.get_xp());
+			game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R1_XP, game_0.player.get_xp() + Math.round(Math.random() * 60 - 30));
 
 			game_1.player.fillCards();
 			
@@ -131,7 +131,7 @@ class BattleField
 				var arenaScope = game_0.arenas.get(arena).max - game_0.arenas.get(arena).min;
 				game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R2_POINT,	Math.round( Math.max(0, game_0.player.get_point() + Math.random() * arenaScope - arenaScope * 0.5) ) );
 			}
-			trace("startAt:" + this.startAt + " now:" + this.now + " difficulty:" + this.difficulty + " winRate:" + winRate + " mode:" + this.field.mode);
+			trace("startAt:" + this.startAt + " now:" + this.now + " difficulty:" + this.difficulty + " mode:" + this.field.mode);
 
 			// bot elixir is easier and player elixir is faster in tutorial
 			this.elixirUpdater.normalSpeeds[0] *= ScriptEngine.get(ScriptEngine.T69_BATTLE_ELIXIR_RATIO, field.mode, 0, game_0.player.get_battleswins());

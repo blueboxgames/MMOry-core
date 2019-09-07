@@ -128,8 +128,9 @@ class ExchangeUpdater
 			var ticketNeeds = 0;
 			if( item.type == ExchangeType.C23_SPECIAL )
 			{
-				ticketNeeds = ScriptEngine.getInt(ScriptEngine.T53_CHALLENGE_TICKET_CAPACITY, Challenge.getLastIndex(game));
-				if( ticketNeeds > 0 )
+				ticketNeeds = ScriptEngine.getInt(ScriptEngine.T53_CHALLENGE_TICKET_REWARD, Challenge.getLastIndex(game));
+
+				if( ticketNeeds > 0 && game.player.getResource(ResourceType.R6_TICKET) < ticketNeeds )
 					item.outcome = ResourceType.R6_TICKET;
 				else
 					item.outcome = game.player.cards.getRandomKey();

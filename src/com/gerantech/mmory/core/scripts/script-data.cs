@@ -235,7 +235,7 @@ if( __type == 11 )
 
 // health
 // H = min 2.0 , max ~    
-// M = min 1.0 , max 1.8  
+// M = min 1.0 , max 1.9  
 // L = min 0.1 , max 0.8
 if( __type == 12 )
 {
@@ -256,10 +256,10 @@ if( __type == 12 )
 		case	113	:	1.40;
 		case	114	:	0.80;
 		case	115	:	3.50;
-		case	116	:	1.80;
+		case	116	:	1.90;
 		case	117	: 0.15;
 		case	118	: 1.40;
-		case	119	: 1.40;
+		case	119	: 1.50;
 
 		
 		case	201	:	5.00;
@@ -416,13 +416,16 @@ if( __type == 18 )
 // self damage. Buildings that has self damage
 if( __type == 19 )
 {
-	return switch( __arg0 )
+	var coef = switch( __arg0 )
 	{
-		case	116	:	0.002;
-		case	119	: 0.002;
+		case	116	:	35; 	// unit life time
+		case	119	: 30;		// unit life time
 
 		default		:	0;
 	}
+	if( coef == 0 )
+		return 0;
+	return __arg1 / (1000 * coef);
 }
 
 
@@ -849,7 +852,7 @@ if( __type == 52 )
 	}
 }
 
-// challengeBasedTicketCapacity(type:Int):Int
+// challengeBasedTicketReward(type:Int):Int
 if( __type == 53 )
 {
 	return switch( __arg0 )
@@ -1067,9 +1070,9 @@ if( __type == 81 )
 {
 	return [
 		[-1,	 	  0,			"-8:101,-7:102:,-6:103,-5:104,-4:105,-3:106,-2:107,-1:108"],
-		[30,	 	  0,			"8:53:10,						20:31:0,																										35:118:1"],
-		[90,	 	  0, 			"55:6:5,						75:3:10,																										100:112:1"],
-		[300,	 	  0,	 		"160:6:5,						225:3:10,																										300:152:1"],
+		[35,	 	  0,			"8:53:10,						20:31:0,																										35:152:1"],
+		[100,	 	  0, 			"55:6:5,						75:3:10,																										100:112:1"],
+		[300,	 	  0,	 		"160:6:5,						225:3:10,																										300:119:1"],
 		[525,	 	  0, 			"375:4:10,					450:53:1,																										525:111:1"],
 		[825,	  	0,			"600:32:0,					675:3:25,						750:53:1,																825:119:1"],
 		[1125,	  0, 			"900:3:30,		  		975:54:1,			 		 	1050:3:30,						 									1125:109:1"],

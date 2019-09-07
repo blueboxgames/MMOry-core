@@ -30,7 +30,7 @@ class TrophyReward
 
   public function reached() : Bool
   {
-    return this.point < this.game.player.get_point(); 
+    return this.point <= this.game.player.get_point(); 
   }
 
   public function collectible() : Bool

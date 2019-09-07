@@ -74,7 +74,7 @@ class Card
 		explosive = ScriptEngine.getBool(ScriptEngine.T16_EXPLOSIVE, type);
 		focusUnit = ScriptEngine.getBool(ScriptEngine.T17_FOCUS_UNIT, type);
 		focusHeight = ScriptEngine.getInt(ScriptEngine.T18_FOCUS_HEIGHT, type);
-		selfDammage = ScriptEngine.get(ScriptEngine.T19_SELF_DAMMAGE, type);
+		selfDammage = ScriptEngine.get(ScriptEngine.T19_SELF_DAMMAGE, type, health);
 		
 		// bullet data
 		bulletSpeed = ScriptEngine.get(ScriptEngine.T21_BULLET_SPEED, type, level);

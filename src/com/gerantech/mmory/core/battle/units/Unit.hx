@@ -59,7 +59,7 @@ class Unit extends GameObject
 			return;
 		
 		if( this.card.selfDammage != 0 )
-			this.setHealth(this.health - this.card.selfDammage);
+			this.setHealth(this.health - this.card.selfDammage * this.battleField.deltaTime);
 		this.finalizeDeployment();
 		this.finalizeImmortal();
 		this.decide();

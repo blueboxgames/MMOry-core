@@ -8,7 +8,7 @@ import haxe.Int64;
 class CoreUtils 
 {
 	public function new(){}
-	static public function round(value:Dynamic) : Int
+	static public function round(value:Float) : Int
 	{
 		if( value < 100 )
 			return Math.round(value);

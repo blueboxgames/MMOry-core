@@ -1,6 +1,6 @@
 #				_-_-_-_-_-_-      JAVA COMPILE      -_-_-_-_-_
 -cp src
-# -D jvm
+-D jvm
 -main Core
 -java bin\java
 # -cs bin\cs

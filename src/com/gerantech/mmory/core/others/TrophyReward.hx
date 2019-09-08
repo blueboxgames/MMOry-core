@@ -37,4 +37,9 @@ class TrophyReward
   {
     return this.reached() && this.game.player.getResource(ResourceType.R25_REWARD_STEP) < step; 
   }
+
+  public function toString() : String
+  {
+    return "league:" + league + " index:" + index + " point:" + point + " key:" + key + " value:" + value + " step:" + step;
+  }
 }

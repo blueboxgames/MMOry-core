@@ -280,6 +280,12 @@ class Player
 	public function achieveReward(league:Int, index:Int) : Int
 	{
 		var reward:TrophyReward = game.arenas.get(league).rewards[index];
+		if( get_point() < reward.point )
+		{
+			trace("reward [" + reward + "] can not achieve with " + get_point() + " point.");
+			return MessageTypes.RESPONSE_NOT_ALLOWED;
+		}
+
 		var lastRewardStep = getResource(ResourceType.R25_REWARD_STEP);
 		if( lastRewardStep != reward.step - 1 )
 		{

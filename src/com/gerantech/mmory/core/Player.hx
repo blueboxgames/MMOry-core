@@ -59,7 +59,7 @@ class Player
 		decks = initData.decks;
 		
 		// add player buildings data
-		cards = new IntCardMap();
+		cards = new IntCardMap(false);
 		var i:Int = 0;
 		var kies = initData.cardsLevel.keys();
 		while ( i < kies.length )
@@ -359,7 +359,7 @@ class Player
 		var ratio = baseLevel % 1;
 		var log = "BOT => point:" + get_point() + " base-level: " + baseLevel;
 		var i = 0;
-		cards = new IntCardMap();
+		cards = new IntCardMap(false);
 		while ( i < numCards )
 		{
 			var type:Int = cardTypes[i];

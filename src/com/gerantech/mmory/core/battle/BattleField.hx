@@ -180,7 +180,7 @@ class BattleField
 	
 	static function getDeckCards(game:Game, cardsTypes:Array<Int>, friendlyMode:Int) : IntCardMap
 	{
-		var ret = new IntCardMap(); 
+		var ret = new IntCardMap(true); 
 		var i:Int = 0;
 		//trace("id: " + game.player.id + "-> " + cardsTypes.toString() + " friendlyMode:" + friendlyMode);
 		while( i < cardsTypes.length )

@@ -8,20 +8,22 @@ class IntCardMap
 {
 	#if java
 	private var _map:java.util.Map<Int, Card>;
-	private var _queue:java.util.List<Int>;
+	private var _queue:java.NativeArray<Int>;
 	#elseif flash
 	private var _map:Map<Int, Card>;
 	private var _queue:flash.Vector<Int>;
 	#end
 
-	public function new()
+	public function new(hasQueue:Bool)
 	{
 		#if java
 		_map = new java.util.concurrent.ConcurrentHashMap<Int, Card>();
-		_queue = new java.util.ArrayList<Int>();
+		if( hasQueue )
+			_queue = new java.NativeArray<Int>(8);
 		#elseif flash
 		_map = new Map<Int, Card>();
-		_queue = new flash.Vector<Int>();
+		if( hasQueue )
+			_queue = new flash.Vector<Int>();
 		#end
 	}
 
@@ -34,10 +36,12 @@ class IntCardMap
 	{
 		#if java
 		_map.put(key, value);
-		_queue.add(key);
+		if( _queue != null )
+			_queue[_map.size() - 1] = key;
 		#elseif flash
 		_map.set(key, value);
-		_queue.push(key);
+		if( _queue != null )
+			_queue.push(key);
 		#end
 	}
 
@@ -154,42 +158,33 @@ class IntCardMap
 	}
 	**/
 	#end
-	
-	public function queue_get(index:Int) : Int
-	{
-		#if java
-		return _queue.get(index);
-		#elseif flash
-		return _queue[index];
-		#end
-	}
-	public function queue_size() : Int
-	{
-		#if java
-		return _queue.size();
-		#elseif flash
-		return _queue.length;
-		#end
-	}
+
 	public function queue_removeAt(index:Int) : Int
 	{
+		if( _queue == null )
+			return -1;
+		
 		#if java
-		return _queue.remove(index);
+		var ret = _queue[index];
+		var last = _queue.length - 1;
+		for( i in index...last )
+			_queue[i] = _queue[i+1];
+		_queue[last] = -1;
+		return ret;
 		#elseif flash
 		return _queue.splice(index, 1)[0];
 		#end
 	}
 	public function queue_indexOf(item:Int) : Int
 	{
+		if( _queue == null )
+			return -1;
+		
 		#if java
-		var iter:java.util.Iterator<Int> = _queue.iterator();
-		var i = 0;
-		while ( iter.hasNext() )
-		{
-			if( item == iter.next() )
+		var len:Int = _queue.length;
+		for( i in 0...len )
+			if( item == _queue[i] )
 				return i;
-			i ++;
-		}
 		return -1;
 		#elseif flash
 		return _queue.indexOf(item);
@@ -197,16 +192,22 @@ class IntCardMap
 	}
 	public function enqueue(item:Int) : Void
 	{
+		if( _queue == null )
+			return;
+		
 		#if java
-		_queue.add(item);
+		_queue[_queue.length - 1] = item;
 		#elseif flash
 		_queue.push(item);
 		#end
 	}
 	public function dequeue() : Int
 	{
+		if( _queue == null )
+			return -1;
+		
 		#if java
-		return _queue.remove(0);
+		return queue_removeAt(0);
 		#elseif flash
 		return _queue.shift();
 		#end
@@ -214,19 +215,17 @@ class IntCardMap
 	
 	public function queue_String() : String
 	{
+		if( _queue == null )
+			return "null queue!";
+		
 		#if java
-		var iter:java.util.Iterator<Int> = _queue.iterator();
-		var i = 0;
 		var ret = "";
-		while ( iter.hasNext() )
-		{
-			var item = iter.next();
+		var len:Int = _queue.length;
+		for( i in 0...len )
 			if( i == 0 )
-				ret += "" + item;
+				ret += "" + _queue[i];
 			else
-				ret += "," + item;
-			i ++;
-		}
+				ret += "," + _queue;
 		return ret;
 		#elseif flash
 		return _queue.toString();

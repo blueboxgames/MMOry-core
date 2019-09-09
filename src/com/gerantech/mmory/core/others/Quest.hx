@@ -37,6 +37,7 @@ class Quest
 #end
 		this.type = type;
 		this.key = key;
+		this.nextStep = nextStep;
 	}
 	
 	public function passed() : Bool
@@ -62,7 +63,7 @@ class Quest
 	static public inline var MAX_QUESTS:Int = 4;
 	static public var MAX_STEP:Array<Int> = [30, 30, 4, 100, 100, 100, 100, 100, 100, 100];
 
-	static public function instantiate(type:Int, player:Player) : Quest
+	static public function instantiate(player:Player, type:Int) : Quest
 	{
 		var key = Quest.getKey(player, type);
 		return new Quest(player, type, key, Quest.getNextStep(player, type, key));
@@ -107,15 +108,16 @@ class Quest
 	
 	static function getNextStep(player:Player, type:Int, key:Int) : Int 
 	{
-		var i = 1;
+		var step = 1;
 		var current = getCurrent(player, type, key);
-		while ( i <= MAX_STEP[type] )
+		while ( step <= MAX_STEP[type] )
 		{
-			if( getTarget(type, i) > current )
-				return i;
-			i ++;
+			// trace("getNextStep => t:" + type + " k:" + key + " current:" + current + " step:" + step + " target:" + getTarget(type, step));
+			if( getTarget(type, step) > current )
+				return step;
+			step ++;
 		}
-		return i;
+		return step;
 	}
 #end
 

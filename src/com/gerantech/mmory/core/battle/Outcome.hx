@@ -14,7 +14,7 @@ class Outcome
 {
 #if java
 	static var LOSE_PONT:Int = 2;
-	static var WIN_POINT:Int = 4;
+	static var WIN_POINT:Int = 3;
 
 	static public function get(battleField:BattleField, type:Int, alliseSide:Int, alliseStar:Int, axisStar:Int) : IntIntMap
 	{

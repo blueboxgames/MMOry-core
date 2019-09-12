@@ -1,6 +1,7 @@
 package com.gerantech.mmory.core.battle.units;
-import com.gerantech.mmory.core.socials.Challenge;
 import com.gerantech.mmory.core.utils.CoreUtils;
+import com.gerantech.mmory.core.socials.Challenge;
+import com.gerantech.mmory.core.utils.Int2;
 import com.gerantech.mmory.core.battle.BattleField;
 import com.gerantech.mmory.core.battle.GameObject;
 import com.gerantech.mmory.core.battle.units.Card;
@@ -22,6 +23,8 @@ class Unit extends GameObject
 	var cachedEnemy:Int = -1;
 	var path:Array<Point2>;
 	var immortalTime:Float;
+	var foundTime:Float = 0;
+	var foundTile:Int2;
 
 	public function new(id:Int, battleField:BattleField, card:Card, side:Int, x:Float, y:Float, z:Float) 
 	{
@@ -43,6 +46,7 @@ class Unit extends GameObject
 		if( this.card.speed <= 0 )
 			return;
 		this.target = new Point2(0, 0);
+		this.foundTile = new Int2(0, 0);
 		var returnigPosition = this.battleField.field.tileMap.getTile(this.x, this.y);
 		if( CardTypes.isHero(card.type) )
 			this.defaultTarget = new Point2(returnigPosition.x, returnigPosition.y);
@@ -88,14 +92,22 @@ class Unit extends GameObject
 	function decide() 
 	{
 		//var log = "decide => id:" + id + " type: " + this.card.type;
-		var enemyId = getNearestEnemy();
+		var enemyId = this.getNearestEnemy();
 		if( enemyId > -1 )
 		{
 			var enemy = this.battleField.units.get(enemyId);
 			var newEnemyFound = enemyId != this.cachedEnemy;
+			if( !newEnemyFound && enemy != null )
+			{
+				var t = this.battleField.field.tileMap.getTile(enemy.x, enemy.y);
+				if( t != null )
+					newEnemyFound = this.battleField.now > this.foundTime && !this.foundTile.equal(t);
+			}
+
 			if( newEnemyFound )
 				this.cachedEnemy = enemyId;
 			
+
 			//log += " enemyId:" + enemyId;
 			if( com.gerantech.mmory.core.utils.CoreUtils.getDistance(this.x, this.y, enemy.x, enemy.y) <= this.card.bulletRangeMax )
 			{
@@ -155,6 +167,8 @@ class Unit extends GameObject
 			return;
 		}
 		this.path = this.battleField.field.tileMap.findPath(this.x, this.y, this.z, targetX, targetY, side == 0 ? 1 : -1);
+		this.foundTile = this.battleField.field.tileMap.getTile(targetX, targetY);
+		this.foundTime = this.battleField.now + this.card.bulletShootGap;
 		if( this.path == null || this.path.length == 0 )
 			return;
 		if( BattleField.DEBUG_MODE )

@@ -96,18 +96,8 @@ class Unit extends GameObject
 		if( enemyId > -1 )
 		{
 			var enemy = this.battleField.units.get(enemyId);
-			var newEnemyFound = enemyId != this.cachedEnemy;
-			if( !newEnemyFound && enemy != null )
-			{
-				var t = this.battleField.field.tileMap.getTile(enemy.x, enemy.y);
-				if( t != null )
-					newEnemyFound = this.battleField.now > this.foundTime && !this.foundTile.equal(t);
-			}
-
-			if( newEnemyFound )
-				this.cachedEnemy = enemyId;
+			var newEnemyFound = this.isNewEnemy(enemy);
 			
-
 			//log += " enemyId:" + enemyId;
 			if( com.gerantech.mmory.core.utils.CoreUtils.getDistance(this.x, this.y, enemy.x, enemy.y) <= this.card.bulletRangeMax )
 			{
@@ -146,6 +136,21 @@ class Unit extends GameObject
 		this.move();
 	}
 	
+	function isNewEnemy(enemy:Unit):Bool
+	{
+		var ret = enemy.id != this.cachedEnemy;
+		if( !ret && enemy != null )
+		{
+			var t = this.battleField.field.tileMap.getTile(enemy.x, enemy.y);
+			if( t != null && this.foundTile != null )
+				ret = this.battleField.now > this.foundTime && !this.foundTile.equal(t);
+		}
+
+		if( ret )
+			this.cachedEnemy = enemy.id;
+		return ret;
+	}
+
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= movement -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	function changeMovingTarget(x:Float, y:Float) : Void
 	{

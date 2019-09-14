@@ -13,8 +13,8 @@ import com.gerantech.mmory.core.constants.ResourceType;
 class Outcome
 {
 #if java
-	static var LOSE_PONT:Int = 2;
-	static var WIN_POINT:Int = 3;
+	static var LOSE_PONT:Int = 3;
+	static var WIN_POINT:Int = 8;
 
 	static public function get(battleField:BattleField, type:Int, alliseSide:Int, alliseStar:Int, axisStar:Int) : IntIntMap
 	{
@@ -76,7 +76,7 @@ class Outcome
 		if( alliesGame.player.get_point() < 0 )
 		{
 			if( alliseStar > axisStar )
-				return 1;
+				return alliesGame.player.id % 2 == 0 ? 1 : 2;
 			else 
 				return 0;
 		}
@@ -87,8 +87,8 @@ class Outcome
 		if( alliesGame.player.get_point() < 20 && alliseStar < axisStar )
 			return 0;
 
-		var diff = alliseStar - axisStar;
-		return ScriptEngine.getInt(ScriptEngine.T48_CHALLENGE_REWARDCOEF, type ) * (alliseStar > axisStar ? WIN_POINT : LOSE_PONT) * diff;
+		// var diff = alliseStar - axisStar;
+		return ScriptEngine.getInt(ScriptEngine.T48_CHALLENGE_REWARDCOEF, type ) * (alliseStar > axisStar ? WIN_POINT : LOSE_PONT);
 	}
 
 	static  function getEmptySlots(alliesGame:Game, now:Int) : Array<Int>
@@ -100,7 +100,7 @@ class Outcome
  		while( i < keys.length )
 		{
       k = keys[i];
-      if (alliesGame.exchanger.items.get(k).category == ExchangeType.C110_BATTLES 	&& alliesGame.exchanger.items.get(k).getState(now) == ExchangeItem.CHEST_STATE_EMPTY)
+      if (alliesGame.exchanger.items.get(k).category == ExchangeType.C110_BATTLES	&& alliesGame.exchanger.items.get(k).getState(now) == ExchangeItem.CHEST_STATE_EMPTY )
         ret.push(alliesGame.exchanger.items.get(k).type);
       i ++;
     }

@@ -868,7 +868,7 @@ if( __type == 53 )
 //numtutorBattles(playerId:Int) : Int
 if( __type == 61 )
 {
-	return playerID % 2 == 0 ? 4 : 2;
+	return __arg0 % 2 == 0 ? 4 : 2;
 }
 
 //numCovers(mode:Int, battleWins:Int) : Int

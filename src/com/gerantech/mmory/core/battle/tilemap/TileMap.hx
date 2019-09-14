@@ -172,6 +172,8 @@ class TileMap
 
 	function removeWrongTiles(ret:Array<Point2>, tile:Tile) : Void
 	{
+		if( tile == null )
+			return;
 		ret.push(new Point2(tile.i * tileWidth + tileWidth * 0.5, tile.j * tileHeight + tileHeight * 0.5));
 		if( tile.last > 0 )
 			removeWrongTiles(ret, stack[tile.last]);

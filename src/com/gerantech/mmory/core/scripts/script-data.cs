@@ -756,8 +756,8 @@ if( __type == 41 )
 {
 	return switch( __arg0 )
 	{
-		case 0:		__arg1 % 2 == 0 ? 0 : 1;
-		case 1:		__arg1 % 2 == 0 ? 1 : 0;
+		case 0:		1;
+		case 1:		0;
 		case 2:		2;
 		case 3:		3;
 		default:	0;
@@ -865,14 +865,10 @@ if( __type == 53 )
 }
 // =================== BATTLES ====================== 
 
-//numtutorBattles(mode:Int) : Int
+//numtutorBattles(playerId:Int) : Int
 if( __type == 61 )
 {
-	return switch( __arg0 ) // mode
-	{
-		case 0	: 3;
-		default	:	3;
-	}
+	return playerID % 2 == 0 ? 4 : 2;
 }
 
 //numCovers(mode:Int, battleWins:Int) : Int

@@ -367,7 +367,7 @@ if( __type == 17 )
 	{
 		case	107	:	false;
 		case	115	:	false;
-		case	102	:	false;
+		// case	102	:	false;
 		case	118	: false;
 		default		:	true;
 	}
@@ -672,7 +672,7 @@ if( __type == 15 )
 		
 		default		:	1.0	;
 	}
-	return ret * 350;
+	return ret * 300;
 }
 
 
@@ -1054,10 +1054,10 @@ if( __type == 69 )
 	// mode 1
 	return switch( __arg2 )
 	{
-		case 0	: (__arg1 == 0 ? 1.5 : 0.20);
-		case 1	: (__arg1 == 0 ? 1.5 : 0.35);
-		case 2	: (__arg1 == 0 ? 1.5 : 0.50);
-		case 3	: (__arg1 == 0 ? 1.2 : 0.70);
+		case 0	: (__arg1 == 0 ? 1.5 : 0.45);
+		case 1	: (__arg1 == 0 ? 1.5 : 0.55);
+		case 2	: (__arg1 == 0 ? 1.5 : 0.70);
+		case 3	: (__arg1 == 0 ? 1.2 : 0.80);
 
 		default	:	1;
 	}

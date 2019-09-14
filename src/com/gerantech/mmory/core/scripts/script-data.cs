@@ -235,7 +235,7 @@ if( __type == 11 )
 
 // health
 // H = min 2.0 , max ~    
-// M = min 1.0 , max 1.9  
+// M = min 1 , max 1.9  
 // L = min 0.1 , max 0.8
 if( __type == 12 )
 {
@@ -475,13 +475,13 @@ if( __type == 22 )
 	var ret = switch( __arg0 )
 	{
 		case	101	:	0.30	;
-		case	102	:	0.30	;
+		case	102	:	0.25	;
 		case	103	:	0.057	;
-		case	104	:	0.24	;
+		case	104	:	0.20	;
 		case	105	:	0.68	;
 		case	106	:	0.16	;
 		case	107	:	0.50	;
-		case	108	:	0.11  ;
+		case	108	:	0.09  ;
 		case	109	:	-0.1	;
 		case	110	: 0.171	;
 		case	111	: 0.24	;

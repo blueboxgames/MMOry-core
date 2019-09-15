@@ -119,6 +119,7 @@ class CardTypes
 		ret.push(ScriptEngine.T04_SUMMON_TIME);
 		ret.push(ScriptEngine.T11_SPEED);
 		ret.push(ScriptEngine.T12_HEALTH);
+		ret.push(ScriptEngine.T17_FOCUS_UNIT);
 		ret.push(ScriptEngine.T26_BULLET_RANGE_MAX);
 		return ret;
 	}

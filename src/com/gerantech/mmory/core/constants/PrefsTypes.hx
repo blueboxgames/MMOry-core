@@ -46,6 +46,7 @@ class PrefsTypes
 	
 	public static var T_71_SELECT_NAME_FOCUS:Int = 71;
 	public static var T_72_NAME_SELECTED:Int = 72;
+	public static var T_75_TROPHY_ROAD:Int = 75;
 
 	public static var T_210_CHALLENGES_FOCUS:Int = 210;
 	public static var T_211_CHALLENGES_SELECTED:Int = 211;

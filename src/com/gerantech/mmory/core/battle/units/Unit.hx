@@ -36,7 +36,7 @@ class Unit extends GameObject
 		// fake health for tutorial
 		var h:Float = this.card.health;
 		if( card.game.player.isBot() && battleField.games[0].player.get_battleswins() < 5 )
-			h = h * 0.5 + Math.min(0.5, (battleField.games[0].player.get_battleswins() + 1) / 10 * h);
+			h = (0.3 + Math.min(0.5, (battleField.games[0].player.get_battleswins() + 1) / 10)) * h;
 		this.cardHealth = h;
 		this.setHealth(h);
 		// trace("isBot:" + card.game.player.isBot() + " get_battleswins:" + battleField.games[0].player.get_battleswins());

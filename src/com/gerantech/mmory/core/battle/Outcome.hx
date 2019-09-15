@@ -13,7 +13,7 @@ import com.gerantech.mmory.core.constants.ResourceType;
 class Outcome
 {
 #if java
-	static var LOSE_PONT:Int = 3;
+	static var LOSE_PONT:Int = -3;
 	static var WIN_POINT:Int = 8;
 
 	static public function get(battleField:BattleField, type:Int, alliseSide:Int, alliseStar:Int, axisStar:Int) : IntIntMap

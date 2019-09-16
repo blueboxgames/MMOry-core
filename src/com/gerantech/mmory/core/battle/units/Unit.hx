@@ -195,6 +195,7 @@ class Unit extends GameObject
 	function estimateAngle() : Void 
 	{
 		var angle:Float = Math.atan2(this.path[0].y - y, this.path[0].x - x);
+		// Use: CoreUtils.fix(this.card.speed * Math.cos(angle), 3);
 		this.deltaX = Math.round(this.card.speed * Math.cos(angle) * 1000) / 1000;
 		this.deltaY = Math.round(this.card.speed * Math.sin(angle) * 1000) / 1000;
 		//trace("side:" + side + "  x:" + x + " " + path[0].x + " ,  y:" + y + " " + path[0].y + " ,  delta:" + deltaX + " " + deltaY);
@@ -206,13 +207,13 @@ class Unit extends GameObject
 		if( this.card.speed <= 0 || this.path == null || this.path.length == 0 )
 			return;
 		
-		var cx:Float = this.deltaX * this.battleField.deltaTime;
-		var cy:Float = this.deltaY * this.battleField.deltaTime;
+		var cx:Float = CoreUtils.fix(this.deltaX * this.battleField.deltaTime, 3);
+		var cy:Float = CoreUtils.fix( this.deltaY * this.battleField.deltaTime, 3);
 		/*var log = "";
 		if( this.battleField.now > tracetime )
 			log = "move   id: " + id + " type: " + this.card.type + " path:" + this.path.length + "   px:" + path[0].x + " x:" + x + " cx:" + cx + "   py:" + path[0].y + " y:" + y + " cy:" + cy;*/
-		cx = (Math.abs(this.path[0].x - x) < Math.abs(cx) || cx == 0) ? GameObject.NaN : (x + cx);
-		cy = (Math.abs(this.path[0].y - y) < Math.abs(cy) || cy == 0) ? GameObject.NaN : (y + cy);
+		cx = (Math.abs(this.path[0].x - x) < Math.abs(cx) || cx == 0) ? GameObject.NaN : CoreUtils.fix(x + cx, 3);
+		cy = (Math.abs(this.path[0].y - y) < Math.abs(cy) || cy == 0) ? GameObject.NaN : CoreUtils.fix(y + cy, 3);
 		/*if( this.battleField.now > tracetime )
 		{
 			log += "   ccx:" + cx + " ccy:" + cy;

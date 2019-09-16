@@ -208,10 +208,9 @@ class CoreUtils
 		return "180";
 	}
 	
-	static public function fix(input:Float, num:Int = 2) : Float
+	static public function fix(input:Float, precision:Int = 2) : Float
 	{
-		var x = Math.pow(10, num);
-		return Math.round( input * x ) / x;
+		return Math.round( input * Math.pow(10, precision) ) / Math.pow(10, precision);
 	}
 	
 	static function getTimer() : Int64

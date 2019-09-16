@@ -37,6 +37,8 @@ class BattleField
 	static public var CAMERA_ANGLE:Float = 0.766;// sin of 50 angle
 	static public var DEBUG_MODE:Bool = false;
 	static public var DELTA_TIME:Int = 25;
+
+	// static public var LOW_NETWORK_CONNECTION_THRESHOLD:Int = 5000;
 	
 	public var state:Int = 0;
 	public var singleMode:Bool;
@@ -60,6 +62,7 @@ class BattleField
 	var garbage:IntList;
 	var pioneerSide:Int;
 	var resetTime:Float = -1;
+	// var startmili:Float = 0;
 #if java 
 	public var unitsHitCallback:com.gerantech.mmory.core.interfaces.IUnitHitCallback;
 	var unitId:Int = 0;
@@ -81,6 +84,7 @@ class BattleField
 		this.singleMode = game_1.player.cards.keys().length == 0;
 		this.friendlyMode = friendlyMode;
 		this.extraTime = hasExtraTime ? field.times.get(3) : 0;
+		// this.startmili = now;
 		
 		this.garbage = new IntList();
 		this.units = new IntUnitMap();
@@ -90,11 +94,12 @@ class BattleField
 		this.games = new Array<Game>();
 		this.games[0] = game_0;
 		this.games[1] = game_1;
-		#if java
 		
+		#if java
 		if( singleMode )
 		{
-			/* var winRate = game_0.player.getResource(com.gerantech.mmory.core.constants.ResourceType.R16_WIN_RATE);
+			/* Old winrate calculation.
+			var winRate = game_0.player.getResource(com.gerantech.mmory.core.constants.ResourceType.R16_WIN_RATE);
 			arena = game_0.player.get_arena(0);
 			if( winRate > 2 )
 				this.difficulty = arena + winRate - 2;
@@ -116,12 +121,18 @@ class BattleField
 				if( botPoint > 100000 )
 					botPoint = 100000;
 				else if( botPoint < 0 )
-					botPoint = 0;	 */
-				game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R2_POINT, game_0.player.get_point() + Math.round(Math.random() * 20 - 10) + 15);
-			//}
-			difficulty = Math.round(game_1.player.get_point() / 20);
-			//game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R1_XP, game_1.player.get_point() * 6 + 1);
-			// game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R1_XP, game_0.player.get_xp() + (game_1.player.get_point() - game_0.player.get_point())* 6 + 1);
+					botPoint = 0;
+			}
+			*/
+
+			/** 
+				Sets bot resources for deck filling calculation. 
+				Point formula: 15 + PlayerPoint + ROUND( (RAND * 20) - 10 ) = P
+				XP formula: 35 + PlayerXP + ROUND( (RAND * 60) - 30 ) = XP
+				Difficulty: ROUND( P / 20 );
+			**/
+			game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R2_POINT, game_0.player.get_point() + Math.round(Math.random() * 20 - 10) + 15);
+			this.difficulty = Math.round(game_1.player.get_point() / 20);
 			game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R1_XP, game_0.player.get_xp() + Math.round(Math.random() * 60 - 30) + 35);
 
 			game_1.player.fillCards();
@@ -201,6 +212,19 @@ class BattleField
 		this.deltaTime = deltaTime;
 		this.now += deltaTime;
 		
+		// var log = "";
+		// #if java
+		// log += cast( this.now, java.lang.Long);
+		// #else
+		// log += this.now;
+		// #end
+
+		// if( this.units.exists(0) && this.now < this.startmili + 10000 )
+		// {
+		// 	log += " x:" + this.units._map.get(0).x + " y:" + this.units._map.get(0).y;
+		// 	trace(log);
+		// }
+
 		// -=-=-=-=-=-=-=-  UPDATE TIME-STATE  -=-=-=-=-=-=-=-=-=-
 		if( resetTime <= this.now )
 			killPioneers();
@@ -267,7 +291,7 @@ class BattleField
 	}
 	
 	#if java
-	public function summonUnit(type:Int, side:Int, x:Float, y:Float) : Int
+	public function summonUnit(type:Int, side:Int, x:Float, y:Float, time:Float) : Int
 	{
 		var index = cardAvailabled(side, type);
 		// trace("summon  => side:" + side + " type:" + type + " index: " + index);
@@ -283,7 +307,15 @@ class BattleField
 			if( ptoffset > 0 )
 				pauseTime = now + ptoffset;
 		}
-		
+		// trace(this.now - time);
+		// if(this.now < time)
+		// 	return MessageTypes.RESPONSE_NOT_ALLOWED;
+		// if(this.now - time > LOW_NETWORK_CONNECTION_THRESHOLD)
+		// 	return MessageTypes.RESPONSE_NOT_ALLOWED;
+
+		var resTime:Float = this.now;
+		// trace("summonTime: " + time + " beforeRollback: " + this.now + " time diff: " + (time-this.now));
+		this.update(cast((time - this.now), Int));
 		var card = decks.get(side).get(type);
 		var log:String = null;
 		if( BattleField.DEBUG_MODE )
@@ -311,10 +343,13 @@ class BattleField
 				
 			var unit = new com.gerantech.mmory.core.battle.units.Unit(unitId, this, card, side, tile.x, tile.y, card.z);
 			units.set(unitId, unit);
+			// trace(unit.summonTime - unit.card.summonTime);
 			//trace("summon id:" + unitId + " type:" + type + " side:" + side + " x:" + x + " ux:" + unit.x + " y:" + y + " uy:" + unit.y );
 			unitId ++;
 			i --;
 		}
+		// trace("Now: " + this.now + " beforeRollback: " + resTime + " time diff: " + (resTime-this.now));
+		this.update(cast((resTime - this.now), Int));
 		return unitId - 1;
 	}
 	

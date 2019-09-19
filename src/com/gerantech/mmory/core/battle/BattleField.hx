@@ -11,6 +11,7 @@ import com.gerantech.mmory.core.utils.lists.IntList;
 import com.gerantech.mmory.core.utils.maps.IntBulletMap;
 import com.gerantech.mmory.core.utils.maps.IntIntCardMap;
 import com.gerantech.mmory.core.utils.maps.IntUnitMap;
+import com.gerantech.mmory.core.utils.CoreUtils;
 
 /**
  * ...
@@ -293,6 +294,7 @@ class BattleField
 	#if java
 	public function summonUnit(type:Int, side:Int, x:Float, y:Float, time:Float) : Int
 	{
+		trace( CoreUtils.getTimer() );
 		var index = cardAvailabled(side, type);
 		// trace("summon  => side:" + side + " type:" + type + " index: " + index);
 		if( index < 0 )
@@ -313,9 +315,8 @@ class BattleField
 		// if(this.now - time > LOW_NETWORK_CONNECTION_THRESHOLD)
 		// 	return MessageTypes.RESPONSE_NOT_ALLOWED;
 
-		var resTime:Float = this.now;
 		// trace("summonTime: " + time + " beforeRollback: " + this.now + " time diff: " + (time-this.now));
-		this.update(cast((time - this.now), Int));
+		this.update(cast((time - CoreUtils.getTimer()), Int));
 		var card = decks.get(side).get(type);
 		var log:String = null;
 		if( BattleField.DEBUG_MODE )
@@ -342,14 +343,15 @@ class BattleField
 				trace("tile not found!");
 				
 			var unit = new com.gerantech.mmory.core.battle.units.Unit(unitId, this, card, side, tile.x, tile.y, card.z);
+			trace("Now: " + this.now + " X: " + unit.x + " Y: " + unit.y);
 			units.set(unitId, unit);
 			// trace(unit.summonTime - unit.card.summonTime);
 			//trace("summon id:" + unitId + " type:" + type + " side:" + side + " x:" + x + " ux:" + unit.x + " y:" + y + " uy:" + unit.y );
 			unitId ++;
 			i --;
+			this.update(cast((CoreUtils.getTimer() - this.now), Int));
+			trace("Now: " + this.now + " X: " + unit.x + " Y: " + unit.y);
 		}
-		// trace("Now: " + this.now + " beforeRollback: " + resTime + " time diff: " + (resTime-this.now));
-		this.update(cast((resTime - this.now), Int));
 		return unitId - 1;
 	}
 	

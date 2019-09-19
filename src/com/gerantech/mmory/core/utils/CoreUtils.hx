@@ -213,7 +213,7 @@ class CoreUtils
 		return Math.round( input * Math.pow(10, precision) ) / Math.pow(10, precision);
 	}
 	
-	static function getTimer() : Int64
+	static public function getTimer() : Int64
 	{
 	#if java
 		return java.lang.System.currentTimeMillis();

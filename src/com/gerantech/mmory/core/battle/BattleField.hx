@@ -63,7 +63,7 @@ class BattleField
 	var garbage:IntList;
 	var pioneerSide:Int;
 	var resetTime:Float = -1;
-	var reserveDeltaTime:Int = 0;
+	var remainigTime:Int = 0;
 	// var startmili:Float = 0;
 #if java 
 	public var unitsHitCallback:com.gerantech.mmory.core.interfaces.IUnitHitCallback;
@@ -211,73 +211,87 @@ class BattleField
 		if( state < STATE_1_CREATED || state > STATE_3_PAUSED )
 			return;
 		
-		this.deltaTime = deltaTime + this.reserveDeltaTime;
-		var deltaCount:Int = Math.floor( this.deltaTime / DELTA_TIME );
-		this.reserveDeltaTime = this.deltaTime % DELTA_TIME;
-		while(deltaCount > 0)
+		if( deltaTime < DELTA_TIME )
 		{
-			deltaCount -= 1;
-			this.now += DELTA_TIME;
-
-			// -=-=-=-=-=-=-=-  UPDATE TIME-STATE  -=-=-=-=-=-=-=-=-=-
-			if( resetTime <= this.now )
-				killPioneers();
 			
-			// trace((resetTime - now) + " delta " + (pauseTime - now) + " state " + state);
-			if( pauseTime > now )
-			{
-				if( state == STATE_3_PAUSED )
-				{
-					state = STATE_2_STARTED;
-					fireEvent(0, BattleEvent.PAUSE, state);
-				}
-			}
-			else
-			{
-				if( state == STATE_2_STARTED )
-				{
-					state = STATE_3_PAUSED;
-					fireEvent(0, BattleEvent.PAUSE, state);
-				}
-			}
-
-			// -=-=-=-=-=-=-=-=-=-  UPDATE EXIXIR-BARS  -=-=-=-=-=-=-=-=-=-=-=-
-			elixirUpdater.update(deltaTime, getDuration() > getTime(1));
-
-			if( state > STATE_2_STARTED )
-				return;
-			
-			// -=-=-=-=-=-=-=-=-  UPDATE AND REMOVE UNITS  -=-=-=-=-=-=-=-=-=-=
-			garbage = new IntList();
-			var keys = units.keys();
-			var i = keys.length - 1;
-			while ( i >= 0 )
-			{
-				if( units.get(keys[i]).disposed() )
-					garbage.push(keys[i]);
-				else
-					units.get(keys[i]).update();
-				i --;
-			}
-			// remove dead units
-			while( garbage.size() > 0 )
-				units.remove(garbage.pop());
-			
-			// -=-=-=-=-=-=-=-=-  UPDATE AND REMOVE BULLETS  -=-=-=-=-=-=-=-=-
-			keys = bullets.keys();
-			i = keys.length - 1;
-			while ( i >= 0 )
-			{
-				if( bullets.get(keys[i]).disposed() )
-					garbage.push(keys[i]);
-				else
-					bullets.get(keys[i]).update();
-				i --;
-			}
-			// remove exploded bullets
-			while( garbage.size() > 0 )
-				bullets.remove(garbage.pop());
+			this.remainigTime += deltaTime;
+			this.performRemainig();
+			return;
 		}
+
+		this.remainigTime += deltaTime - DELTA_TIME;
+		this.deltaTime = DELTA_TIME;
+		this.now += DELTA_TIME;
+
+		// -=-=-=-=-=-=-=-  UPDATE TIME-STATE  -=-=-=-=-=-=-=-=-=-
+		if( resetTime <= this.now )
+			killPioneers();
+		
+		// trace((resetTime - now) + " delta " + (pauseTime - now) + " state " + state);
+		if( pauseTime > now )
+		{
+			if( state == STATE_3_PAUSED )
+			{
+				state = STATE_2_STARTED;
+				fireEvent(0, BattleEvent.PAUSE, state);
+			}
+		}
+		else
+		{
+			if( state == STATE_2_STARTED )
+			{
+				state = STATE_3_PAUSED;
+				fireEvent(0, BattleEvent.PAUSE, state);
+			}
+		}
+
+		// -=-=-=-=-=-=-=-=-=-  UPDATE EXIXIR-BARS  -=-=-=-=-=-=-=-=-=-=-=-
+		elixirUpdater.update(deltaTime, getDuration() > getTime(1));
+
+		if( state > STATE_2_STARTED )
+			return;
+		
+		// -=-=-=-=-=-=-=-=-  UPDATE AND REMOVE UNITS  -=-=-=-=-=-=-=-=-=-=
+		garbage = new IntList();
+		var keys = units.keys();
+		var i = keys.length - 1;
+		while ( i >= 0 )
+		{
+			if( units.get(keys[i]).disposed() )
+				garbage.push(keys[i]);
+			else
+				units.get(keys[i]).update();
+			i --;
+		}
+		// remove dead units
+		while( garbage.size() > 0 )
+			units.remove(garbage.pop());
+		
+		// -=-=-=-=-=-=-=-=-  UPDATE AND REMOVE BULLETS  -=-=-=-=-=-=-=-=-
+		keys = bullets.keys();
+		i = keys.length - 1;
+		while ( i >= 0 )
+		{
+			if( bullets.get(keys[i]).disposed() )
+				garbage.push(keys[i]);
+			else
+				bullets.get(keys[i]).update();
+			i --;
+		}
+		// remove exploded bullets
+		while( garbage.size() > 0 )
+			bullets.remove(garbage.pop());
+
+		this.performRemainig();
+	}
+
+	private function performRemainig () : Void
+	{
+		if( this.remainigTime < DELTA_TIME )
+			return;
+		var remaning:Int = this.remainigTime + 0;
+		this.remainigTime = 0;	
+		update(remaning);
 	}
 	
 	public function getDuration() : Float

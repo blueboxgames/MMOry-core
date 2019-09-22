@@ -63,6 +63,7 @@ class BattleField
 	var garbage:IntList;
 	var pioneerSide:Int;
 	var resetTime:Float = -1;
+	var reserveDeltaTime:Int = 0;
 	// var startmili:Float = 0;
 #if java 
 	public var unitsHitCallback:com.gerantech.mmory.core.interfaces.IUnitHitCallback;
@@ -210,80 +211,73 @@ class BattleField
 		if( state < STATE_1_CREATED || state > STATE_3_PAUSED )
 			return;
 		
-		this.deltaTime = deltaTime;
-		this.now += deltaTime;
-		
-		// var log = "";
-		// #if java
-		// log += cast( this.now, java.lang.Long);
-		// #else
-		// log += this.now;
-		// #end
-
-		// if( this.units.exists(0) && this.now < this.startmili + 10000 )
-		// {
-		// 	log += " x:" + this.units._map.get(0).x + " y:" + this.units._map.get(0).y;
-		// 	trace(log);
-		// }
-
-		// -=-=-=-=-=-=-=-  UPDATE TIME-STATE  -=-=-=-=-=-=-=-=-=-
-		if( resetTime <= this.now )
-			killPioneers();
-		
-		// trace((resetTime - now) + " delta " + (pauseTime - now) + " state " + state);
-		if( pauseTime > now )
+		this.deltaTime = deltaTime + this.reserveDeltaTime;
+		var deltaCount:Int = Math.floor( this.deltaTime / DELTA_TIME );
+		this.reserveDeltaTime = this.deltaTime % DELTA_TIME;
+		while(deltaCount > 0)
 		{
-			if( state == STATE_3_PAUSED )
+			deltaCount -= 1;
+			this.now += DELTA_TIME;
+
+			// -=-=-=-=-=-=-=-  UPDATE TIME-STATE  -=-=-=-=-=-=-=-=-=-
+			if( resetTime <= this.now )
+				killPioneers();
+			
+			// trace((resetTime - now) + " delta " + (pauseTime - now) + " state " + state);
+			if( pauseTime > now )
 			{
-				state = STATE_2_STARTED;
-				fireEvent(0, BattleEvent.PAUSE, state);
+				if( state == STATE_3_PAUSED )
+				{
+					state = STATE_2_STARTED;
+					fireEvent(0, BattleEvent.PAUSE, state);
+				}
 			}
-		}
-		else
-		{
-			if( state == STATE_2_STARTED )
+			else
 			{
-				state = STATE_3_PAUSED;
-				fireEvent(0, BattleEvent.PAUSE, state);
+				if( state == STATE_2_STARTED )
+				{
+					state = STATE_3_PAUSED;
+					fireEvent(0, BattleEvent.PAUSE, state);
+				}
 			}
-		}
 
-		// -=-=-=-=-=-=-=-=-=-  UPDATE EXIXIR-BARS  -=-=-=-=-=-=-=-=-=-=-=-
-		elixirUpdater.update(deltaTime, getDuration() > getTime(1));
+			// -=-=-=-=-=-=-=-=-=-  UPDATE EXIXIR-BARS  -=-=-=-=-=-=-=-=-=-=-=-
+			elixirUpdater.update(deltaTime, getDuration() > getTime(1));
 
-		if( state > STATE_2_STARTED )
-			return;
-		
-		// -=-=-=-=-=-=-=-=-  UPDATE AND REMOVE UNITS  -=-=-=-=-=-=-=-=-=-=
-		garbage = new IntList();
-		var keys = units.keys();
-		var i = keys.length - 1;
-		while ( i >= 0 )
-		{
-			if( units.get(keys[i]).disposed() )
-				garbage.push(keys[i]);
-			else
-				units.get(keys[i]).update();
-			i --;
+			if( state > STATE_2_STARTED )
+				return;
+			
+			// -=-=-=-=-=-=-=-=-  UPDATE AND REMOVE UNITS  -=-=-=-=-=-=-=-=-=-=
+			garbage = new IntList();
+			var keys = units.keys();
+			var i = keys.length - 1;
+			while ( i >= 0 )
+			{
+				if( units.get(keys[i]).disposed() )
+					garbage.push(keys[i]);
+				else
+					units.get(keys[i]).update();
+				i --;
+			}
+			// remove dead units
+			while( garbage.size() > 0 )
+				units.remove(garbage.pop());
+			
+			// -=-=-=-=-=-=-=-=-  UPDATE AND REMOVE BULLETS  -=-=-=-=-=-=-=-=-
+			keys = bullets.keys();
+			i = keys.length - 1;
+			while ( i >= 0 )
+			{
+				if( bullets.get(keys[i]).disposed() )
+					garbage.push(keys[i]);
+				else
+					bullets.get(keys[i]).update();
+				i --;
+			}
+			// remove exploded bullets
+			while( garbage.size() > 0 )
+				bullets.remove(garbage.pop());
 		}
-		// remove dead units
-		while( garbage.size() > 0 )
-			units.remove(garbage.pop());
-		
-		// -=-=-=-=-=-=-=-=-  UPDATE AND REMOVE BULLETS  -=-=-=-=-=-=-=-=-
-		keys = bullets.keys();
-		i = keys.length - 1;
-		while ( i >= 0 )
-		{
-			if( bullets.get(keys[i]).disposed() )
-				garbage.push(keys[i]);
-			else
-				bullets.get(keys[i]).update();
-			i --;
-		}
-		// remove exploded bullets
-		while( garbage.size() > 0 )
-			bullets.remove(garbage.pop());
 	}
 	
 	public function getDuration() : Float
@@ -294,7 +288,6 @@ class BattleField
 	#if java
 	public function summonUnit(type:Int, side:Int, x:Float, y:Float, time:Float) : Int
 	{
-		trace( CoreUtils.getTimer() );
 		var index = cardAvailabled(side, type);
 		// trace("summon  => side:" + side + " type:" + type + " index: " + index);
 		if( index < 0 )
@@ -309,7 +302,6 @@ class BattleField
 			if( ptoffset > 0 )
 				pauseTime = now + ptoffset;
 		}
-		// trace(this.now - time);
 		// if(this.now < time)
 		// 	return MessageTypes.RESPONSE_NOT_ALLOWED;
 		// if(this.now - time > LOW_NETWORK_CONNECTION_THRESHOLD)
@@ -343,14 +335,14 @@ class BattleField
 				trace("tile not found!");
 				
 			var unit = new com.gerantech.mmory.core.battle.units.Unit(unitId, this, card, side, tile.x, tile.y, card.z);
-			trace("Now: " + this.now + " X: " + unit.x + " Y: " + unit.y);
+			// trace("Now: " + this.now + " X: " + unit.x + " Y: " + unit.y);
 			units.set(unitId, unit);
 			// trace(unit.summonTime - unit.card.summonTime);
 			//trace("summon id:" + unitId + " type:" + type + " side:" + side + " x:" + x + " ux:" + unit.x + " y:" + y + " uy:" + unit.y );
 			unitId ++;
 			i --;
 			this.update(cast((CoreUtils.getTimer() - this.now), Int));
-			trace("Now: " + this.now + " X: " + unit.x + " Y: " + unit.y);
+			// trace("Now: " + this.now + " X: " + unit.x + " Y: " + unit.y);
 		}
 		return unitId - 1;
 	}

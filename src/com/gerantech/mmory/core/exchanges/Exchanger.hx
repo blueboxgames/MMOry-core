@@ -508,7 +508,7 @@ class Exchanger
 	private function getBattleBook(earnedBooks:Int) : Int
 	{
 		earnedBooks %= 240; 
-		if( earnedBooks < 4 )
+		if( earnedBooks < ScriptEngine.getInt(ScriptEngine.T61_BATTLE_NUM_TUTORS, game.player.id) )
 			return 51;//4
 		if( earnedBooks == 89 || earnedBooks == 157 || earnedBooks == 199 || earnedBooks == 229)
 			return 54;//4

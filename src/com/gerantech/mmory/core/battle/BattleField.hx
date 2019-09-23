@@ -205,7 +205,7 @@ class BattleField
 		trace("id: " + game.player.id + "-> " + ret.queue_String());
 		return ret;
 	}
-	
+
 	public function update(deltaTime:Int) : Void
 	{
 		if( state < STATE_1_CREATED || state > STATE_3_PAUSED )
@@ -213,16 +213,21 @@ class BattleField
 		
 		if( deltaTime < DELTA_TIME )
 		{
-			
 			this.remainigTime += deltaTime;
 			this.performRemainig();
 			return;
 		}
 
 		this.remainigTime += deltaTime - DELTA_TIME;
-		this.deltaTime = DELTA_TIME;
-		this.now += DELTA_TIME;
+		this.forceUpdate(DELTA_TIME);
 
+		this.performRemainig();
+	}
+	
+	public function forceUpdate(deltaTime:Int) : Void
+	{
+		this.deltaTime = deltaTime;
+		this.now += deltaTime;	
 		// -=-=-=-=-=-=-=-  UPDATE TIME-STATE  -=-=-=-=-=-=-=-=-=-
 		if( resetTime <= this.now )
 			killPioneers();
@@ -281,8 +286,6 @@ class BattleField
 		// remove exploded bullets
 		while( garbage.size() > 0 )
 			bullets.remove(garbage.pop());
-
-		this.performRemainig();
 	}
 
 	private function performRemainig () : Void
@@ -321,8 +324,7 @@ class BattleField
 		// if(this.now - time > LOW_NETWORK_CONNECTION_THRESHOLD)
 		// 	return MessageTypes.RESPONSE_NOT_ALLOWED;
 
-		// trace("summonTime: " + time + " beforeRollback: " + this.now + " time diff: " + (time-this.now));
-		this.update(cast((time - CoreUtils.getTimer()), Int));
+		this.forceUpdate(cast((time - CoreUtils.getTimer()), Int));
 		var card = decks.get(side).get(type);
 		var log:String = null;
 		if( BattleField.DEBUG_MODE )
@@ -349,15 +351,11 @@ class BattleField
 				trace("tile not found!");
 				
 			var unit = new com.gerantech.mmory.core.battle.units.Unit(unitId, this, card, side, tile.x, tile.y, card.z);
-			// trace("Now: " + this.now + " X: " + unit.x + " Y: " + unit.y);
 			units.set(unitId, unit);
-			// trace(unit.summonTime - unit.card.summonTime);
-			//trace("summon id:" + unitId + " type:" + type + " side:" + side + " x:" + x + " ux:" + unit.x + " y:" + y + " uy:" + unit.y );
 			unitId ++;
 			i --;
-			this.update(cast((CoreUtils.getTimer() - this.now), Int));
-			// trace("Now: " + this.now + " X: " + unit.x + " Y: " + unit.y);
 		}
+		this.update(cast((CoreUtils.getTimer() - this.now), Int));
 		return unitId - 1;
 	}
 	
@@ -391,17 +389,12 @@ class BattleField
 			if( u.disposed() )
 				continue;
 			distance = Math.abs(com.gerantech.mmory.core.utils.CoreUtils.getDistance(u.x, u.y, bullet.x, bullet.y)) - bullet.card.bulletDamageArea - u.card.sizeH;
-			//res += " ,  distance: " + distance + ", bulletDamageArea:" + bullet.card.bulletDamageArea + ", sizeH:" + u.card.sizeH;
 			if( ((bullet.card.bulletDamage < 0 && u.side == bullet.side) || (bullet.card.bulletDamage >= 0 && (u.side != bullet.side || bullet.card.explosive))) && distance <= 0 )
 			{
-				//res += "|" + u.id + " (" + u.health + ") => ";
 				u.hit(bullet.card.bulletDamage);
-				//res += "(" + u.health + ")";
 				hitUnits.add(u.id);
 			}
 		}
-		//if( bullet.card.type == 109 )
-		//trace(res);
 		if( unitsHitCallback != null )
 			unitsHitCallback.hit(bullet.id, hitUnits);
 	}

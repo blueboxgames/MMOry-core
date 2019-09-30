@@ -1,4 +1,5 @@
 package com.gerantech.mmory.core.utils.maps;
+import haxe.ds.ArraySort;
 import com.gerantech.mmory.core.constants.ResourceType;
 #if java
 class IntIntMap
@@ -286,31 +287,13 @@ class IntIntMap extends flash.events.EventDispatcher
 
 	public function toArray(randomly:Bool) : Array<Int>
 	{
-		var ret = new Array<Int>();
 		var keys = keys();
 		var values = new Array<Int>();
 		var len = keys.length;
-		var i:Int = 0;
-		while( i < len )
-		{
+		for(i in 0...len)
 			values.push(get(keys[i]));
-			i ++;
-		}
-		if( !randomly )
-			return values;
-		i = 0;
-		len = values.length;
-		while( i < len )
-		{
-			var a = keys[Std.random(len)];
-			if ( ret.indexOf(values[a]) > -1 )
-			{
-				continue;
-			}
-			ret.push(values[a]);				
-			i ++;
-		}
-		//trace( toString() + " <::> " + ret.toString() );
-		return ret;
+		if( randomly )
+			ArraySort.sort(values, (l,r) -> Math.random() > 0.5 ? 1 : -1);
+		return values;
 	}
 }

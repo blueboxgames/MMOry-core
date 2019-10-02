@@ -22,13 +22,13 @@ class FieldData
 		
 		// parse json layout and occupy tile map
 		this.tileMap = new TileMap();
-		this.json = Json.parse(mapData);
-		if( this.json.layout != null )
-		{
-			var obstacles:Array<Dynamic> = json.layout.children[1].children;
-			for( obs in obstacles )
-				this.tileMap.setTileState(obs.params.x - 25 * obs.params.scaleX, obs.params.y - 25 * obs.params.scaleY, 50 * obs.params.scaleX, 50 * obs.params.scaleY, TileMap.STATE_OCCUPIED);
-		}
+		// this.json = Json.parse(mapData);
+		// if( this.json.layout != null )
+		// {
+		// 	var obstacles:Array<Dynamic> = json.layout.children[1].children;
+		// 	for( obs in obstacles )
+		// 		this.tileMap.setTileState(obs.params.x - 25 * obs.params.scaleX, obs.params.y - 25 * obs.params.scaleY, 50 * obs.params.scaleX, 50 * obs.params.scaleY, TileMap.STATE_OCCUPIED);
+		// }
 	}
 	
 	public function isOperation() : Bool

@@ -1,4 +1,5 @@
 package com.gerantech.mmory.core.battle;
+import com.gerantech.mmory.core.constants.MessageTypes;
 import com.gerantech.mmory.core.events.BattleEvent;
 import com.gerantech.mmory.core.battle.tilemap.TileMap;
 import com.gerantech.mmory.core.scripts.ScriptEngine;
@@ -39,7 +40,8 @@ class BattleField
 	static public var DEBUG_MODE:Bool = false;
 	static public var DELTA_TIME:Int = 25;
 
-	// static public var LOW_NETWORK_CONNECTION_THRESHOLD:Int = 5000;
+	static public var BETWEEN_UPDATE_THRESHOLE:Int = 50;
+	static public var LOW_NETWORK_CONNECTION_THRESHOLD:Int = 5000;
 	
 	public var state:Int = 0;
 	public var singleMode:Bool;
@@ -64,7 +66,6 @@ class BattleField
 	var pioneerSide:Int;
 	var resetTime:Float = -1;
 	var remainigTime:Int = 0;
-	// var startmili:Float = 0;
 #if java 
 	public var unitsHitCallback:com.gerantech.mmory.core.interfaces.IUnitHitCallback;
 	var unitId:Int = 0;
@@ -86,7 +87,6 @@ class BattleField
 		this.singleMode = game_1.player.cards.keys().length == 0;
 		this.friendlyMode = friendlyMode;
 		this.extraTime = hasExtraTime ? field.times.get(3) : 0;
-		// this.startmili = now;
 		
 		this.garbage = new IntList();
 		this.units = new IntUnitMap();
@@ -306,7 +306,6 @@ class BattleField
 	public function summonUnit(type:Int, side:Int, x:Float, y:Float, time:Float) : Int
 	{
 		var index = cardAvailabled(side, type);
-		// trace("summon  => side:" + side + " type:" + type + " index: " + index);
 		if( index < 0 )
 		{
 			return index;
@@ -319,10 +318,11 @@ class BattleField
 			if( ptoffset > 0 )
 				pauseTime = now + ptoffset;
 		}
-		// if(this.now < time)
-		// 	return MessageTypes.RESPONSE_NOT_ALLOWED;
-		// if(this.now - time > LOW_NETWORK_CONNECTION_THRESHOLD)
-		// 	return MessageTypes.RESPONSE_NOT_ALLOWED;
+
+		if(this.now + BETWEEN_UPDATE_THRESHOLE < time)
+			return MessageTypes.RESPONSE_NOT_ALLOWED;
+		if(this.now - time > LOW_NETWORK_CONNECTION_THRESHOLD)
+			return MessageTypes.RESPONSE_NOT_ALLOWED;
 
 		this.forceUpdate(cast((time - CoreUtils.getTimer()), Int));
 		var card = decks.get(side).get(type);
@@ -380,7 +380,6 @@ class BattleField
 	{
 		var u:com.gerantech.mmory.core.battle.units.Unit;
 		var distance:Float = 0;
-		//var res = "Bullet=> type: " + bullet.card.type + ", id:" + bullet.id + ", damage:" + bullet.card.bulletDamage;
 		var hitUnits:java.util.List<java.lang.Integer> = new java.util.ArrayList();
 		var iterator : java.util.Iterator < java.util.Map.Map_Entry<Int, com.gerantech.mmory.core.battle.units.Unit> > = units._map.entrySet().iterator();
 		while( iterator.hasNext() )

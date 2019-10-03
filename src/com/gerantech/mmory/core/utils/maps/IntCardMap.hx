@@ -222,10 +222,10 @@ class IntCardMap
 		var ret = "";
 		var len:Int = _queue.length;
 		for( i in 0...len )
-			if( i == 0 )
+			if( i == len-1 )
 				ret += "" + _queue[i];
 			else
-				ret += "," + _queue;
+				ret += "," + _queue[i];
 		return ret;
 		#elseif flash
 		return _queue.toString();

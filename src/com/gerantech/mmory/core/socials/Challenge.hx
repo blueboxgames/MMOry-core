@@ -18,8 +18,8 @@ class Challenge
 
 	static public var MODE_0_HQ:Int = 0;
 	static public var MODE_1_TOUCHDOWN:Int = 1;
-	static public var MODE_2_CLUBS:Int = 2;
-	static public var MODE_3_SAFEBOX:Int = 3;
+	static public var MODE_2_BAZAAR:Int = 2;
+	static public var MODE_3_CLUB:Int = 3;
 
 	static public var TYPE_0_OPEN:Int = 0;
 	static public var TYPE_1_REWARD:Int = 1;

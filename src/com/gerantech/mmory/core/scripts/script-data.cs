@@ -850,13 +850,13 @@ if( __type == 51 )
 	}
 }
 
-// getRunRequiements(type:Int):IntIntMap
+// getRunRequiements(mode:Int):IntIntMap
 if( __type == 52 )
 {
 	return switch( __arg0 )
 	{
-		case 0:		"6:1";
-		case 1:		"6:2";
+		case 0:		"6:2";
+		case 1:		"6:1";
 		case 2:		"6:3";
 		case 3:		"6:4";
 		default:	"6:0";

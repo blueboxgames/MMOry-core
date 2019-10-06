@@ -1,4 +1,6 @@
 package com.gerantech.mmory.core.battle;
+import com.gerantech.mmory.core.utils.Point2;
+import com.gerantech.mmory.core.constants.CardTypes;
 import com.gerantech.mmory.core.constants.MessageTypes;
 import com.gerantech.mmory.core.events.BattleEvent;
 import com.gerantech.mmory.core.battle.tilemap.TileMap;
@@ -25,9 +27,10 @@ class BattleField extends flash.events.EventDispatcher
 class BattleField
 {
 #end
-	static public var WIDTH:Int = 960;
-	static public var HEIGHT:Int = 1280;
+	static public var WIDTH:Int = 900;
+	static public var HEIGHT:Int = 1200;
 	static public var PADDING:Int = 100;
+	static public var SUMMON_PADDING:Int = 15;
 	
 	static public var STATE_0_WAITING:Int = 0;
 	static public var STATE_1_CREATED:Int = 1;
@@ -36,6 +39,12 @@ class BattleField
 	static public var STATE_4_ENDED:Int = 4;
 	static public var STATE_5_DISPOSED:Int = 5;
 	
+	static public  var SUMMON_AREA_THIRD:Int = -1;
+	static public  var SUMMON_AREA_HALF:Int = 0;
+	static public  var SUMMON_AREA_RIGHT:Int = 1;
+	static public  var SUMMON_AREA_LEFT:Int = 2;
+	static public  var SUMMON_AREA_BOTH:Int = 3;
+
 	static public var CAMERA_ANGLE:Float = 0.766;// sin of 50 angle
 	static public var DEBUG_MODE:Bool = false;
 	static public var DELTA_TIME:Int = 25;
@@ -157,22 +166,24 @@ class BattleField
 		// create castles
 		if( field.mode != Challenge.MODE_1_TOUCHDOWN )
 		{
-			while( unitId < 6 )
+			var len = field.mode == Challenge.MODE_0_HQ ? 6 : 2;
+
+			while( unitId < len )
 			{
 				var side = unitId % 2;
-				var hqType = field.mode == Challenge.MODE_0_HQ ? 201 : 221;
+				var hqType = 201; if(field.mode == Challenge.MODE_1_TOUCHDOWN ) hqType = 221; else if( field.mode == Challenge.MODE_2_BAZAAR ) hqType = 202;
 				var heroType = field.mode == Challenge.MODE_0_HQ ? 222 : 223;
 				var card = new com.gerantech.mmory.core.battle.units.Card(games[side], unitId > 1 ? heroType : hqType, friendlyMode > 0 ? 9 : games[side].player.get_level(0));
-				var x = 480;
+				var x = WIDTH * 0.5;
 				var y = 70;
 				if( unitId > 3 )
 				{
-					x = 160;
+					x = 150;
 					y = 120;
 				}
 				else if( unitId > 1 )
 				{
-					x = 800;
+					x = WIDTH - 150;
 					y = 120;
 				}
 				units.set(unitId, new com.gerantech.mmory.core.battle.units.Unit(unitId, this, card, side, side == 0 ? BattleField.WIDTH - x : x, side == 0 ? BattleField.HEIGHT - y : y, 0));
@@ -510,5 +521,62 @@ class BattleField
 		#elseif flash
 		dispatchEvent(new com.gerantech.mmory.core.events.BattleEvent(type, data));
 		#end
+	}
+
+	public function getSummonState(side:Int):Int
+	{
+		if( field.mode == Challenge.MODE_1_TOUCHDOWN || field.mode == Challenge.MODE_2_BAZAAR )
+			return SUMMON_AREA_THIRD;
+		// trace(side + " e2: " + units.exists(2 + side)+ " e4: " + units.exists(4 + side) );
+		var hasLeft = units.exists(2 + side) && !units.get(2 + side).disposed();
+		var hasRight = units.exists(4 + side) && !units.get(4 + side).disposed();
+		if( hasLeft && hasRight )
+			return SUMMON_AREA_HALF;
+		if( hasRight )
+			return SUMMON_AREA_RIGHT;
+		if( hasLeft )
+			return SUMMON_AREA_LEFT;
+		return SUMMON_AREA_BOTH;
+	}
+
+	public function fixSummonPosition(point:Point2, cardType:Int, summonState:Int):Point2
+	{
+		if( point.x < SUMMON_PADDING )
+			point.x = SUMMON_PADDING;
+		if( point.x > WIDTH - SUMMON_PADDING )
+			point.x = WIDTH - SUMMON_PADDING;
+		if( point.y > HEIGHT - SUMMON_PADDING )
+			point.y = HEIGHT - SUMMON_PADDING;
+
+		var top:Float = SUMMON_PADDING;
+		if( !CardTypes.isSpell(cardType) )
+		{
+			if( field.mode == Challenge.MODE_1_TOUCHDOWN || field.mode == Challenge.MODE_2_BAZAAR )
+			{
+				top = HEIGHT * 0.6666;
+			}
+			else
+			{
+				if( summonState >= SUMMON_AREA_BOTH )
+					top = HEIGHT * 0.3333;
+				else if( point.x > WIDTH * 0.5 )
+					top = HEIGHT * (summonState == SUMMON_AREA_RIGHT ? 0.3333 : 0.5);
+				else
+					top = HEIGHT * (summonState == SUMMON_AREA_LEFT ? 0.3333 : 0.5);
+			}
+		}
+		if( point.y < top )
+			point.y = top;
+
+		return point;
+	}
+
+	public function validateSummonPosition(point:Point2):Bool
+	{
+		if( point.x < SUMMON_PADDING || point.x > WIDTH - SUMMON_PADDING )
+			return false;
+		if( point.y < SUMMON_PADDING || point.y > HEIGHT - SUMMON_PADDING )
+			return false;
+		return true;
 	}
 }

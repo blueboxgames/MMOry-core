@@ -51,7 +51,7 @@ class Unit extends GameObject
 		if( CardTypes.isHero(card.type) )
 			this.defaultTarget = new Point2(returnigPosition.x, returnigPosition.y);
 		else
-			this.defaultTarget = new Point2(battleField.field.mode == Challenge.MODE_0_HQ ? BattleField.WIDTH * 0.5 : CoreUtils.clamp(returnigPosition.x, 320, 640), side == 0 ? 0 : BattleField.HEIGHT);
+			this.defaultTarget = new Point2(battleField.field.mode == Challenge.MODE_0_HQ ? BattleField.WIDTH * 0.5 : CoreUtils.clamp(returnigPosition.x, BattleField.WIDTH / 3, BattleField.WIDTH / 1.5), side == 0 ? 0 : BattleField.HEIGHT);
 	}
 	
 	override public function update() : Void

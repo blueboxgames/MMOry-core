@@ -11,7 +11,7 @@ class PrefsTypes
 	public static var SETTINGS_3_NOTIFICATION:Int = 3;
 	public static var SETTINGS_4_LOCALE:Int = 4;
 	public static var SETTINGS_5_ADS:Int = 5;
-	public static var SETTINGS_6_MODE:Int = 6;
+	public static var SETTINGS_6_CHALLENGE_INDEX:Int = 6;
 
 	public static var OFFER_30_RATING:Int = 30;
 	public static var OFFER_31_TELEGRAM:Int = 31;

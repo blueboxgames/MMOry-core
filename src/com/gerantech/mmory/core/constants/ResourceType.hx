@@ -33,7 +33,7 @@ class ResourceType
 	public function new() {}
 	static public function getName(type:Int) : String
 	{
-			 if( type == R1_XP )			return "XP";
+			 	 if( type == R1_XP )			return "XP";
 		else if( type == R2_POINT )			return "Point";
 		else if( type == R3_CURRENCY_SOFT ) return "Coins";
 		else if( type == R4_CURRENCY_HARD ) return "Gems";

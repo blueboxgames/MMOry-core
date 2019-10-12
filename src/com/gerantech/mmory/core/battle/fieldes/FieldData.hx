@@ -9,9 +9,9 @@ import com.gerantech.mmory.core.utils.lists.IntList;
 class FieldData
 {
 	public var mode:Int;
+	public var json:Dynamic;
 	public var times:IntList;
 	public var mapData:String;
-	public var json:Dynamic;
 	public var tileMap:TileMap;
 
 	public function new(mode:Int, mapData:String, times:String) 
@@ -24,7 +24,6 @@ class FieldData
 		this.tileMap = new TileMap();
 		this.mapData = mapData;
 		this.json = Json.parse(mapData);
-		var children:Array<Dynamic> = this.json.children[0].artboard.children;
 		if( this.json.layout != null )
 		{
 			var obstacles:Array<Dynamic> = json.layout.children[1].children;
@@ -33,6 +32,7 @@ class FieldData
 		}
 		else
 		{
+			var children:Array<Dynamic> = this.json.children[0].artboard.children;
 			for( o in children )
 				if( o.name == "obstacle" )
 					this.tileMap.setTileState((o.transform.tx - 224), (o.transform.ty - 490), o.shape.width, o.shape.height, TileMap.STATE_OCCUPIED);

@@ -35,7 +35,7 @@ class FieldData
 			var children:Array<Dynamic> = this.json.children[0].artboard.children;
 			for( o in children )
 				if( o.name == "obstacle" )
-					this.tileMap.setTileState((o.transform.tx - 224), (o.transform.ty - 490), o.shape.width, o.shape.height, TileMap.STATE_OCCUPIED);
+					this.tileMap.setTileState((o.transform.tx), (o.transform.ty), o.shape.width, o.shape.height, TileMap.STATE_OCCUPIED);
 		}
 	}
 	

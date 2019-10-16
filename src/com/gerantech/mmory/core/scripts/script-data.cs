@@ -183,6 +183,18 @@ if( __type == 4 )
 	return ret;
 }
 
+// summon size
+if( __type == 5 )
+{
+	return switch( __arg0 )
+	{
+		case	103	: 120;
+		case	117	:	120;
+
+		default		:	0;
+	}
+}
+
 // z
 if( __type == 10 )
 {

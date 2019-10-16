@@ -553,16 +553,16 @@ class BattleField
 		{
 			if( field.mode == Challenge.MODE_1_TOUCHDOWN || field.mode == Challenge.MODE_2_BAZAAR )
 			{
-				top = HEIGHT * 0.6666;
+				top = HEIGHT * 0.74;
 			}
 			else
 			{
 				if( summonState >= SUMMON_AREA_BOTH )
-					top = HEIGHT * 0.3333;
+					top = HEIGHT * 0.4;
 				else if( point.x > WIDTH * 0.5 )
-					top = HEIGHT * (summonState == SUMMON_AREA_RIGHT ? 0.3333 : 0.5);
+					top = HEIGHT * (summonState == SUMMON_AREA_RIGHT ? 0.4 : 0.55);
 				else
-					top = HEIGHT * (summonState == SUMMON_AREA_LEFT ? 0.3333 : 0.5);
+					top = HEIGHT * (summonState == SUMMON_AREA_LEFT ? 0.4 : 0.55);
 			}
 		}
 		if( point.y < top )

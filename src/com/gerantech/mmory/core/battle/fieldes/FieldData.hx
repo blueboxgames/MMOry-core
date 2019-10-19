@@ -14,12 +14,18 @@ class FieldData
 	public var mapData:String;
 	public var tileMap:TileMap;
 
-	public function new(mode:Int, mapData:String, times:String) 
+	public function new(mode:Int, mapData:String, ?arg:Dynamic = null) 
 	{
 		this.mode = mode;
 		this.mapData = mapData;
-		this.times = IntList.parse(times);
+		this.times = new IntList();
+		this.times.push(60);
+		this.times.push(120);
+		this.times.push(180);
+		this.times.push(240);
 		
+		var version = cast(arg, Int);
+		trace("version==>" + version);
 		// parse json layout and occupy tile map
 		this.tileMap = new TileMap();
 		this.mapData = mapData;
@@ -35,7 +41,7 @@ class FieldData
 			var children:Array<Dynamic> = this.json.children[0].artboard.children;
 			for( o in children )
 				if( o.name == "obstacle" )
-					this.tileMap.setTileState((o.transform.tx), (o.transform.ty), o.shape.width, o.shape.height, TileMap.STATE_OCCUPIED);
+					this.tileMap.setTileState((version > 2500 ? 0 : 224) + o.transform.tx, (version > 2500 ? 0 : 490) + o.transform.ty, o.shape.width, o.shape.height, TileMap.STATE_OCCUPIED);
 		}
 	}
 	

@@ -219,20 +219,20 @@ class BattleField
 
 	public function update(deltaTime:Int) : Void
 	{
-		if( state < STATE_1_CREATED || state > STATE_3_PAUSED )
+		if( deltaTime == 0 || state < STATE_1_CREATED || state > STATE_3_PAUSED )
 			return;
 		
 		if( deltaTime < DELTA_TIME )
 		{
 			this.remainigTime += deltaTime;
-			this.performRemainig();
+			this.performRemaining();
 			return;
 		}
 
 		this.remainigTime += deltaTime - DELTA_TIME;
 		this.forceUpdate(DELTA_TIME);
 
-		this.performRemainig();
+		this.performRemaining();
 	}
 	
 	public function forceUpdate(deltaTime:Int) : Void
@@ -299,7 +299,7 @@ class BattleField
 			bullets.remove(garbage.pop());
 	}
 
-	private function performRemainig () : Void
+	private function performRemaining () : Void
 	{
 		if( this.remainigTime < DELTA_TIME )
 			return;

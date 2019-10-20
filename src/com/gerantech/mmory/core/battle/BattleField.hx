@@ -75,6 +75,7 @@ class BattleField
 	var resetTime:Float = -1;
 	var remainigTime:Int = 0;
 #if java 
+	public var unitsHitCallback:com.gerantech.mmory.core.interfaces.IUnitHitCallback;
 	var unitId:Int = 0;
 #end
 	public function new()
@@ -378,12 +379,14 @@ class BattleField
 		
 		return index;
 	}
-
 	#end
+
 	public function explodeBullet(bullet:Bullet) : Void
 	{
 		var distance:Float = 0;
-		// var hitUnits:java.util.List<java.lang.Integer> = new java.util.ArrayList();
+	#if java
+		var hitUnits:java.util.List<java.lang.Integer> = new java.util.ArrayList();
+	#end
 		for( u in this.units )
 		{
 			
@@ -393,11 +396,15 @@ class BattleField
 			if( ((bullet.card.bulletDamage < 0 && u.side == bullet.side) || (bullet.card.bulletDamage >= 0 && (u.side != bullet.side || bullet.card.explosive))) && distance <= 0 )
 			{
 				u.hit(bullet.card.bulletDamage);
-				// hitUnits.add(u.id);
+	#if java
+				hitUnits.add(u.id);
+	#end
 			}
 		}
-		// if( unitsHitCallback != null )
-		// 	unitsHitCallback.hit(bullet.id, hitUnits);
+	#if java
+		if( unitsHitCallback != null )
+			unitsHitCallback.hit(bullet.id, hitUnits);
+	#end
 	}
 	
 	public function requestKillPioneers(side:Int) : Void

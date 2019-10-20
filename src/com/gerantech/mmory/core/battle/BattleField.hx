@@ -75,7 +75,6 @@ class BattleField
 	var resetTime:Float = -1;
 	var remainigTime:Int = 0;
 #if java 
-	public var unitsHitCallback:com.gerantech.mmory.core.interfaces.IUnitHitCallback;
 	var unitId:Int = 0;
 #end
 	public function new()

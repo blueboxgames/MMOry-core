@@ -24,25 +24,16 @@ class FieldData
 		this.times.push(180);
 		this.times.push(240);
 		
-		var version = cast(arg, Int);
-		trace("version==>" + version);
+		// var version = cast(arg, Int);
+		// trace("version==>" + version);
 		// parse json layout and occupy tile map
 		this.tileMap = new TileMap();
 		this.mapData = mapData;
 		this.json = Json.parse(mapData);
-		if( this.json.layout != null )
-		{
-			var obstacles:Array<Dynamic> = json.layout.children[1].children;
-			for( obs in obstacles )
-				this.tileMap.setTileState(obs.params.x - 25 * obs.params.scaleX, obs.params.y - 25 * obs.params.scaleY, 50 * obs.params.scaleX, 50 * obs.params.scaleY, TileMap.STATE_OCCUPIED);
-		}
-		else
-		{
-			var children:Array<Dynamic> = this.json.children[0].artboard.children;
-			for( o in children )
-				if( o.name == "obstacle" )
-					this.tileMap.setTileState((version > 2500 ? 0 : 224) + o.transform.tx, (version > 2500 ? 0 : 490) + o.transform.ty, o.shape.width, o.shape.height, TileMap.STATE_OCCUPIED);
-		}
+		var children:Array<Dynamic> = this.json.children[0].artboard.children;
+		for( o in children )
+			if( o.name == "obstacle" )
+				this.tileMap.setTileState(o.transform.tx, o.transform.ty, o.shape.width, o.shape.height, TileMap.STATE_OCCUPIED);
 	}
 	
 	public function isOperation() : Bool

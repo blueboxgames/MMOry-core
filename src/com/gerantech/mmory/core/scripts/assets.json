@@ -153,5 +153,15 @@
 	"map-1.json":						{	"pre": false,	"initial": false,	"url": "http://localhost:8080/assets/map-1.json"	},
 	"map-2.atf":					{	"pre": false,	"initial": false,	"url": "http://localhost:8080/assets/map-2.atf"	},
 	"map-2.xml":					{	"pre": false,	"initial": false,	"url": "http://localhost:8080/assets/map-2.xml"	},
-	"map-2.json":						{	"pre": false,	"initial": false,	"url": "http://localhost:8080/assets/map-2.json"	}
+	"map-2.json":						{	"pre": false,	"initial": false,	"url": "http://localhost:8080/assets/map-2.json"	},
+
+	"field-0.atf":					{	"pre": false,	"initial": false,	"url": "http://localhost:8080/assets/field-0.atf"	},
+	"field-0.xml":					{	"pre": false,	"initial": false,	"url": "http://localhost:8080/assets/field-0.xml"	},
+	"field-0.json":						{	"pre": false,	"initial": false,	"url": "http://localhost:8080/assets/field-0.json"	},
+	"field-1.atf":					{	"pre": false,	"initial": false,	"url": "http://localhost:8080/assets/field-1.atf"	},
+	"field-1.xml":					{	"pre": false,	"initial": false,	"url": "http://localhost:8080/assets/field-1.xml"	},
+	"field-1.json":						{	"pre": false,	"initial": false,	"url": "http://localhost:8080/assets/field-1.json"	},
+	"field-2.atf":					{	"pre": false,	"initial": false,	"url": "http://localhost:8080/assets/field-2.atf"	},
+	"field-2.xml":					{	"pre": false,	"initial": false,	"url": "http://localhost:8080/assets/field-2.xml"	},
+	"field-2.json":						{	"pre": false,	"initial": false,	"url": "http://localhost:8080/assets/field-2.json"	}
 }

@@ -34,10 +34,6 @@ class CardTypes
 	public static var C113:Int = 113;
 	public static var C114:Int = 114;
 	public static var C115:Int = 115;
-	public static var C116:Int = 116;
-	public static var C117:Int = 117;
-	public static var C118:Int = 118;
-	public static var C119:Int = 119;
 	public static var C120:Int = 120;
 	public static var C121:Int = 121;
 	public static var C122:Int = 122;
@@ -48,6 +44,10 @@ class CardTypes
 	public static var C127:Int = 127;
 	public static var C128:Int = 128;
 	public static var C129:Int = 129;
+
+	// flying troop
+	public static var C117:Int = 117;
+	public static var C118:Int = 118;
 	
 	// spells
 	public static var C151:Int = 151;
@@ -61,9 +61,11 @@ class CardTypes
 	//public static var C159:Int = 159;
 
 	// buildings
+	public static var C116:Int = 116;
+	public static var C119:Int = 119;
 	public static var C201:Int = 201;
 
-	// heros
+	// heroes
 	public static var C221:Int = 221;
 	
 	public function new() {}
@@ -101,7 +103,18 @@ class CardTypes
 
 	static public function isBuilding(type:Int) : Bool
 	{
-		return type > 200 && type < 220;
+		var check:Bool = false;
+		if( type == C116 || type == C119 )
+			check = true;
+		return ( type > 200 && type < 220 ) || check;
+	}
+
+	static public function isFlying(type:Int): Bool
+	{
+		var check:Bool = false;
+		if( type == C117 || type == C118 )
+			check = true;
+		return check;
 	}
 
 	static public function isHero(type:Int) : Bool

@@ -88,15 +88,13 @@ class Bullet extends GameObject
 	{
 		if( explodeTime > -1 )
 			return;
-#if java
-		if( card.bulletForceKill && battleField.units.exists(targetId) )
+		if( card.bulletForceKill && this.battleField.units.exists(targetId) )
 		{
 			this.fx = battleField.units.get(targetId).x;
 			this.fy = battleField.units.get(targetId).y;
 			this.fz = battleField.units.get(targetId).z;
 			createPath();
 		}
-#end		
 		setPosition(dx != 0 ? x + deltaX : GameObject.NaN, dy != 0 ? y + deltaY : GameObject.NaN, dz != 0 ? z + deltaZ : GameObject.NaN);
 		if( (deltaX >= 0 && x >= fx || deltaX < 0 && x <= fx) && (deltaY >= 0 && y >= fy || deltaY < 0 && y <= fy) && (deltaZ >= 0 && z >= fz || deltaZ < 0 && z <= fz) )
 			hit();
@@ -114,9 +112,7 @@ class Bullet extends GameObject
 	function explode() 
 	{
 		setState(GameObject.STATE_5_SHOOTING);
-#if java
 		battleField.explodeBullet(this);
-#end
 		dispose();
 	}
 }

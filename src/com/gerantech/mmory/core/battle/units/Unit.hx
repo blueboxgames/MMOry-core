@@ -249,13 +249,8 @@ class Unit extends GameObject
 		
 		var distance:Float = this.card.focusRange;
 		var ret:Int = -1;
-		var u:Unit;
-		var i = 0;
-		var keys = this.battleField.units.keys();
-		var len = keys.length;
-		while ( i < len )
+		for( u in this.battleField.units )
 		{
-			u = this.battleField.units.get(keys[i++]);
 			if( u == null || u.disposed() || u.summonTime != 0 )
 				continue;
 

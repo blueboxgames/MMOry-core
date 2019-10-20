@@ -1,4 +1,6 @@
 package com.gerantech.mmory.core.battle;
+import com.gerantech.mmory.core.battle.units.Unit;
+import com.gerantech.mmory.core.battle.bullets.Bullet;
 import com.gerantech.mmory.core.utils.Point2;
 import com.gerantech.mmory.core.constants.CardTypes;
 import com.gerantech.mmory.core.constants.MessageTypes;
@@ -10,10 +12,7 @@ import com.gerantech.mmory.core.utils.maps.IntCardMap;
 import com.gerantech.mmory.core.socials.Challenge;
 import com.gerantech.mmory.core.Game;
 import com.gerantech.mmory.core.battle.fieldes.FieldData;
-import com.gerantech.mmory.core.utils.lists.IntList;
-import com.gerantech.mmory.core.utils.maps.IntBulletMap;
 import com.gerantech.mmory.core.utils.maps.IntIntCardMap;
-import com.gerantech.mmory.core.utils.maps.IntUnitMap;
 import com.gerantech.mmory.core.utils.CoreUtils;
 
 /**
@@ -60,8 +59,8 @@ class BattleField
 	public var arena:Int;
 	public var extraTime:Int = 0;
 	public var decks:IntIntCardMap;
-	public var units:IntUnitMap;
-	public var bullets:IntBulletMap;
+	public var units:Map<Int, Unit>;
+	public var bullets:Map<Int, Bullet>;
 	public var now:Float = 0;
 	public var startAt:Int = 0;
 	public var deltaTime:Int = 25;
@@ -71,7 +70,7 @@ class BattleField
 	public var numSummonedUnits:Int;
 	public var pauseTime:Float;
 	public var elixirUpdater:ElixirUpdater;
-	var garbage:IntList;
+	var garbage:Array<Int>;
 	var pioneerSide:Int;
 	var resetTime:Float = -1;
 	var remainigTime:Int = 0;
@@ -97,9 +96,8 @@ class BattleField
 		this.friendlyMode = friendlyMode;
 		this.extraTime = hasExtraTime ? field.times.get(3) : 0;
 		
-		this.garbage = new IntList();
-		this.units = new IntUnitMap();
-		this.bullets = new IntBulletMap();
+		this.units = new Map<Int, Unit>();
+		this.bullets = new Map<Int, Bullet>();
 		this.elixirUpdater = new ElixirUpdater(field.mode);
 
 		this.games = new Array<Game>();
@@ -109,39 +107,6 @@ class BattleField
 		#if java
 		if( singleMode )
 		{
-			/* Old winrate calculation.
-			var winRate = game_0.player.getResource(com.gerantech.mmory.core.constants.ResourceType.R16_WIN_RATE);
-			arena = game_0.player.get_arena(0);
-			if( winRate > 2 )
-				this.difficulty = arena + winRate - 2;
-			else if( winRate < -2 )
-				this.difficulty = arena + winRate + 2;
-			else
-				this.difficulty = arena;
-			
-			if( this.difficulty != 0 )
-			{
-				var botPoint:Int = game_0.player.get_point();
-				if( this.field.mode == 0 )
-					botPoint += Math.round(Math.pow(1.2, Math.abs(this.difficulty) ) * 20 * this.difficulty / Math.abs(this.difficulty) + this.difficulty * 0.04);
-				else if( this.field.mode == 1 )
-					botPoint += Math.round(Math.pow(1.2, Math.abs(this.difficulty) ) * 10 * this.difficulty / Math.abs(this.difficulty) + this.difficulty * 0.04);
-				else if( this.field.mode == 2 )
-					botPoint += Math.round(Math.pow(1.2, Math.abs(this.difficulty) ) * 15 * this.difficulty / Math.abs(this.difficulty) + this.difficulty * 0.04);
-				
-				if( botPoint > 100000 )
-					botPoint = 100000;
-				else if( botPoint < 0 )
-					botPoint = 0;
-			}
-			*/
-
-			/** 
-				Sets bot resources for deck filling calculation. 
-				Point formula: 15 + PlayerPoint + ROUND( (RAND * 20) - 10 ) = P
-				XP formula: 35 + PlayerXP + ROUND( (RAND * 60) - 30 ) = XP
-				Difficulty: ROUND( P / 20 );
-			**/
 			game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R2_POINT, game_0.player.get_point() + Math.round(Math.random() * 20 - 10) + 15);
 			this.difficulty = Math.round(game_1.player.get_point() / 20);
 			game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R1_XP, game_0.player.get_xp() + Math.round(Math.random() * 60 - 30) + 35);
@@ -268,35 +233,27 @@ class BattleField
 			return;
 		
 		// -=-=-=-=-=-=-=-=-  UPDATE AND REMOVE UNITS  -=-=-=-=-=-=-=-=-=-=
-		garbage = new IntList();
-		var keys = units.keys();
-		var i = keys.length - 1;
-		while ( i >= 0 )
-		{
-			if( units.get(keys[i]).disposed() )
-				garbage.push(keys[i]);
+		this.garbage = new Array<Int>();
+		for( uid => unit in this.units )
+			if( unit.disposed() )
+				this.garbage.push(uid);
 			else
-				units.get(keys[i]).update();
-			i --;
-		}
+				unit.update();
+
 		// remove dead units
-		while( garbage.size() > 0 )
-			units.remove(garbage.pop());
+		while( this.garbage.length > 0 )
+			this.units.remove(this.garbage.pop());
 		
 		// -=-=-=-=-=-=-=-=-  UPDATE AND REMOVE BULLETS  -=-=-=-=-=-=-=-=-
-		keys = bullets.keys();
-		i = keys.length - 1;
-		while ( i >= 0 )
-		{
-			if( bullets.get(keys[i]).disposed() )
-				garbage.push(keys[i]);
+		for( bid => bullet in this.bullets )
+			if( bullet.disposed() )
+				this.garbage.push(bid);
 			else
-				bullets.get(keys[i]).update();
-			i --;
-		}
+				bullet.update();
+
 		// remove exploded bullets
-		while( garbage.size() > 0 )
-			bullets.remove(garbage.pop());
+		while( this.garbage.length > 0 )
+			this.bullets.remove(this.garbage.pop());
 	}
 
 	private function performRemaining () : Void
@@ -378,7 +335,7 @@ class BattleField
 		spellId ++;
 		return spellId - 1;
 	}
-	
+
 	public function addBullet(unit:com.gerantech.mmory.core.battle.units.Unit, side:Int, x:Float, y:Float, target:com.gerantech.mmory.core.battle.units.Unit) : Void 
 	{
 		var b = new com.gerantech.mmory.core.battle.bullets.Bullet(this, unit.bulletId, unit.card, side, x, y, 0, target.x, target.y, 0);
@@ -387,27 +344,6 @@ class BattleField
 		unit.bulletId ++;
 	}
 	
-	public function explodeBullet(bullet:com.gerantech.mmory.core.battle.bullets.Bullet) : Void
-	{
-		var u:com.gerantech.mmory.core.battle.units.Unit;
-		var distance:Float = 0;
-		var hitUnits:java.util.List<java.lang.Integer> = new java.util.ArrayList();
-		var iterator : java.util.Iterator < java.util.Map.Map_Entry<Int, com.gerantech.mmory.core.battle.units.Unit> > = units._map.entrySet().iterator();
-		while( iterator.hasNext() )
-		{
-			u = iterator.next().getValue();
-			if( u.disposed() )
-				continue;
-			distance = Math.abs(com.gerantech.mmory.core.utils.CoreUtils.getDistance(u.x, u.y, bullet.x, bullet.y)) - bullet.card.bulletDamageArea - u.card.sizeH;
-			if( ((bullet.card.bulletDamage < 0 && u.side == bullet.side) || (bullet.card.bulletDamage >= 0 && (u.side != bullet.side || bullet.card.explosive))) && distance <= 0 )
-			{
-				u.hit(bullet.card.bulletDamage);
-				hitUnits.add(u.id);
-			}
-		}
-		if( unitsHitCallback != null )
-			unitsHitCallback.hit(bullet.id, hitUnits);
-	}
 	
 	public function getSide(id:Int) : Int
 	{
@@ -443,7 +379,27 @@ class BattleField
 		
 		return index;
 	}
+
 	#end
+	public function explodeBullet(bullet:Bullet) : Void
+	{
+		var distance:Float = 0;
+		// var hitUnits:java.util.List<java.lang.Integer> = new java.util.ArrayList();
+		for( u in this.units )
+		{
+			
+			if( u.disposed() )
+				continue;
+			distance = Math.abs(com.gerantech.mmory.core.utils.CoreUtils.getDistance(u.x, u.y, bullet.x, bullet.y)) - bullet.card.bulletDamageArea - u.card.sizeH;
+			if( ((bullet.card.bulletDamage < 0 && u.side == bullet.side) || (bullet.card.bulletDamage >= 0 && (u.side != bullet.side || bullet.card.explosive))) && distance <= 0 )
+			{
+				u.hit(bullet.card.bulletDamage);
+				// hitUnits.add(u.id);
+			}
+		}
+		// if( unitsHitCallback != null )
+		// 	unitsHitCallback.hit(bullet.id, hitUnits);
+	}
 	
 	public function requestKillPioneers(side:Int) : Void
 	{
@@ -459,21 +415,16 @@ class BattleField
 	{
 		pauseTime = now + 2000000; 
 		resetTime = now + 2000000;
-		var keys = units.keys();
-		var i = keys.length - 1;
-		while( i >= 0 )
+		for( unit in this.units )
 		{
-			if( units.get(keys[i]).side == pioneerSide )
+			if( unit.side == pioneerSide )
 			{
-				if( pioneerSide == 0 && units.get(keys[i]).y < 640 )
-						units.get(keys[i]).dispose();
-				else if( pioneerSide == 1 && units.get(keys[i]).y > 640 )
-						units.get(keys[i]).dispose();
+				if( pioneerSide == 0 && unit.y < HEIGHT * 0.5 )
+						unit.dispose();
+				else if( pioneerSide == 1 && unit.y > HEIGHT * 0.5 )
+						unit.dispose();
 			}
-			i --;
 		}
-		// dispose();
-		// elixirUpdater.init();
 		state = STATE_2_STARTED;
 	}
 	
@@ -481,24 +432,14 @@ class BattleField
 	{
 		state = STATE_5_DISPOSED;
 		// dispose all units
-		var keys = units.keys();
-		var i = keys.length - 1;
-		while ( i >= 0 )
-		{
-			units.get(keys[i]).dispose();
-			i --;
-		}
-		units.clear();
+		for( unit in this.units )
+			unit.dispose();
+		this.units.clear();
 		
 		// dispose all bullets
-		keys = bullets.keys();
-		i = keys.length - 1;
-		while ( i >= 0 )
-		{
-			bullets.get(keys[i]).dispose();
-			i --;
-		}
-		bullets.clear();
+		for( bullet in this.bullets )
+			bullet.dispose();
+		this.bullets.clear();
 	}
 	
 	public function getColorIndex(side:Int) : Int

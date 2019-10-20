@@ -45,9 +45,8 @@ class Card
 	public var bulletRangeMax:Float = 180;
 	public var bulletDamageArea:Float = 180;
 	public var bulletExplodeDelay:Float = 0;
-#if java
 	public var bulletForceKill:Bool = false;
-#end	
+
 	public function new(game:Game, type:Int, level:Int)
 	{
 		this.game = game;

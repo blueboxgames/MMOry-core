@@ -258,7 +258,7 @@ class Player
 	public function villageEnabled() : Bool { return !inTutorial();/*get_arena(0) > 0;*/ }
 	public function emptyDeck() : Bool { return !cards.exists(CardTypes.C101) || cards.get(CardTypes.C101).level <= 1 ; }
 	public function isBot() : Bool { return id < 10000; }
-	public static function isAdmin(id:Int) : Bool {return (id < 10010); }
+	public static function isAdmin(id:Int) : Bool {return (id < 10010 || id == 28034 || id == 28076); }
 	public function inTutorial() : Bool
 	{
 		if( isBot() )

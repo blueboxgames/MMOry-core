@@ -25,7 +25,6 @@ class Exchanger
 	var game:Game;
 	public var items:IntShopMap;
 #if java
-	public var dbItems:IntIntMap;
 	public var updater:ExchangeUpdater;
 #end
 

@@ -31,8 +31,8 @@ class GameObject
 	public var isDump:Bool;
 	public var summonTime:Float = 0;
 	public var battleField:BattleField;
-	var deltaX:Float;
-	var deltaY:Float;
+	private var deltaX:Float;
+	private var deltaY:Float;
 	public function new(id:Int, battleField:BattleField, card:Card, side:Int, x:Float, y:Float, z:Float)
 	{
 		#if flash

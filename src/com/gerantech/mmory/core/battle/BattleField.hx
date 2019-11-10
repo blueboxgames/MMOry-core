@@ -5,7 +5,6 @@ import com.gerantech.mmory.core.utils.Point2;
 import com.gerantech.mmory.core.constants.CardTypes;
 import com.gerantech.mmory.core.constants.MessageTypes;
 import com.gerantech.mmory.core.events.BattleEvent;
-import com.gerantech.mmory.core.battle.tilemap.TileMap;
 import com.gerantech.mmory.core.scripts.ScriptEngine;
 import com.gerantech.mmory.core.battle.units.Card;
 import com.gerantech.mmory.core.utils.maps.IntCardMap;
@@ -96,7 +95,7 @@ class BattleField
 		this.friendlyMode = friendlyMode;
 		this.extraTime = hasExtraTime ? field.times.get(3) : 0;
 		
-		this.units = new Map<Int, Unit>();
+		// this.units = new Map<Int, Unit>();
 		this.bullets = new Map<Int, Bullet>();
 		this.elixirUpdater = new ElixirUpdater(field.mode);
 
@@ -151,8 +150,7 @@ class BattleField
 					x = WIDTH - 150;
 					y = 120;
 				}
-				units.set(unitId, new com.gerantech.mmory.core.battle.units.Unit(unitId, this, card, side, side == 0 ? BattleField.WIDTH - x : x, side == 0 ? BattleField.HEIGHT - y : y, 0));
-				unitId ++;
+				addUnit(card, side, side == 0 ? BattleField.WIDTH - x : x, side == 0 ? BattleField.HEIGHT - y : y, 0);
 			}
 		}
 		
@@ -229,6 +227,9 @@ class BattleField
 		// -=-=-=-=-=-=-=-=-=-  UPDATE EXIXIR-BARS  -=-=-=-=-=-=-=-=-=-=-=-
 		elixirUpdater.update(deltaTime, getDuration() > getTime(1));
 
+		// -=-=-=-=-=-=-=-=-=  UPDATE PHYSICS-ENGINE  =-=-=-=-=-=-=-=-=-=-=-
+		this.field.physics.step();
+
 		if( state > STATE_2_STARTED )
 			return;
 		
@@ -242,7 +243,11 @@ class BattleField
 
 		// remove dead units
 		while( this.garbage.length > 0 )
-			this.units.remove(this.garbage.pop());
+		{
+			var u = this.garbage.pop();
+			this.field.physics.colleagues.remove(this.units.get(u));
+			this.units.remove(u);
+		}
 		
 		// -=-=-=-=-=-=-=-=-  UPDATE AND REMOVE BULLETS  -=-=-=-=-=-=-=-=-
 		for( bid => bullet in this.bullets )
@@ -269,15 +274,12 @@ class BattleField
 	{
 		return now / 1000 - startAt;
 	}
-	
 	#if java
 	public function summonUnit(type:Int, side:Int, x:Float, y:Float, time:Float) : Int
 	{
 		var index = cardAvailabled(side, type);
 		if( index < 0 )
-		{
 			return index;
-		}
 		
 		if( side == 0 )
 		{
@@ -309,24 +311,22 @@ class BattleField
 		elixirUpdater.updateAt(side, elixirUpdater.bars[side] - card.elixirSize);
 		
 		if( com.gerantech.mmory.core.constants.CardTypes.isSpell(type) )
-			return addSpell(card, side, x, y);
+			return this.addSpell(card, side, x, y);
 		
-		var i = card.quantity - 1;
-		while( i >= 0 )
-		{
-			var tile = field.tileMap.findTile(com.gerantech.mmory.core.utils.CoreUtils.getXPosition(card.quantity, i, x), com.gerantech.mmory.core.utils.CoreUtils.getYPosition(card.quantity, i, y), side == 0 ? 1 : -1, TileMap.STATE_EMPTY);
-			if( tile == null )
-				trace("tile not found!");
-				
-			var unit = new com.gerantech.mmory.core.battle.units.Unit(unitId, this, card, side, tile.x, tile.y, card.z);
-			units.set(unitId, unit);
-			unitId ++;
-			i --;
-		}
+		for(i in 0...card.quantity)
+			this.addUnit(card, side,com.gerantech.mmory.core.utils.CoreUtils.getXPosition(card.quantity, i, x), com.gerantech.mmory.core.utils.CoreUtils.getYPosition(card.quantity, i, y), 0);
+
 		this.update(cast((CoreUtils.getTimer() - this.now), Int));
 		return unitId - 1;
 	}
-	
+
+	private function addUnit(card:Card, side:Int, x:Float, y:Float, z:Float):Void
+	{
+		var c = this.field.physics.add(new com.gerantech.mmory.core.battle.units.Unit(this.unitId, this, card, side, side == 0 ? BattleField.WIDTH - x : x, side == 0 ? BattleField.HEIGHT - y : y, 0));
+		this.units.set(this.unitId, cast(c, Unit));
+		this.unitId ++;
+	}
+
 	function addSpell(card:com.gerantech.mmory.core.battle.units.Card, side:Int, x:Float, y:Float) : Int
 	{
 		var offset = com.gerantech.mmory.core.utils.GraphicMetrics.getSpellStartPoint(card.type);
@@ -389,7 +389,6 @@ class BattleField
 	#end
 		for( u in this.units )
 		{
-			
 			if( u.disposed() )
 				continue;
 			distance = Math.abs(com.gerantech.mmory.core.utils.CoreUtils.getDistance(u.x, u.y, bullet.x, bullet.y)) - bullet.card.bulletDamageArea - u.card.sizeH;

@@ -45,7 +45,7 @@ echo LoginData version updated.
 endlocal
 
 :: Compile haxe classes to flash and java platforms
-haxe compile.hxml
+haxe build.hxml
 echo Haxe targets compiled.
 
 :: deployments

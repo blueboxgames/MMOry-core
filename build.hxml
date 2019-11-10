@@ -1,5 +1,6 @@
 #				_-_-_-_-_-_-      JAVA COMPILE      -_-_-_-_-_
 -cp src
+-lib hscript
 -D jvm
 -main Core
 -java bin\java
@@ -17,6 +18,7 @@
 
 --next
 -cp src
+-lib hscript
 -main Core
 -swf-version 31
 -swf bin\flash\core.swc

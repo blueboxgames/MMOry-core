@@ -3,8 +3,8 @@ package com.gerantech.colleagues;
 class CMath {
 	static public var EPSILON:Float = 0.0001;
 	static public var EPSILON_SQ:Float = EPSILON * EPSILON;
-	static public var PENETRATION_ALLOWANCE:Float = 0.01;
-	static public var PENETRATION_CORRETION:Float = 0.4;
+	static public var PENETRATION_ALLOWANCE:Float = 0.1;
+	static public var PENETRATION_CORRETION:Float = 0.7;
 	/**
 	 * Normalizes this vector, making it a unit vector. A unit vector has a length of 1.0.
 	 */

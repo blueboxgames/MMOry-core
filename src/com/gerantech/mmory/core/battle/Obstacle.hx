@@ -5,10 +5,10 @@ import com.gerantech.colleagues.Colleague;
 
 class Obstacle extends Colleague {
 	public function new(x:Float, y:Float, width:Float, height:Float) {
-		super(-1, null, card, side, x, y, 0);
+		super(-1, null, null, 0, x, y, 0);
 		this.shape = Shape.create_box(width, height);
 		this.shape.colleague = this;
 		this.shape.initialize();
-    this.setStatic();
+		this.setStatic();
 	}
 }

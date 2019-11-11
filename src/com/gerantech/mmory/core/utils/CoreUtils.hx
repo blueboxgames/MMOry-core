@@ -1,4 +1,5 @@
 package com.gerantech.mmory.core.utils;
+import com.gerantech.mmory.core.battle.BattleField;
 import haxe.Int64;
 
 /**
@@ -43,13 +44,13 @@ class CoreUtils
 		return Math.min(max, Math.max(min, value));
 	}
 	
-	static public function getDistance(sx:Float, sy:Float, dx:Float, dy:Float) : Float
+	static public function getDistance(x1:Float, y1:Float, x2:Float, y2:Float) : Float
 	{
-		return Math.sqrt(Math.pow(sx - dx, 2) + Math.pow((sy - dy) * 1.4285, 2) );
+		return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow((y1 - y2) / BattleField.CAMERA_ANGLE, 2) );
 	}
-	static public function getNormalDistance(sx:Float, sy:Float, dx:Float, dy:Float) : Float
+	static public function getNormalDistance(x1:Float, y1:Float, x2:Float, y2:Float) : Float
 	{
-		return Math.sqrt(Math.pow(sx - dx, 2) + Math.pow((sy - dy), 2) );
+		return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow((y1 - y2), 2) );
 	}
 	
 	static var GAP:Float = 40;

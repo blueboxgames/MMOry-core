@@ -31,8 +31,8 @@ class GameObject
 	public var isDump:Bool;
 	public var summonTime:Float = 0;
 	public var battleField:BattleField;
-	private var deltaX:Float;
-	private var deltaY:Float;
+	public var deltaX:Float;
+	public var deltaY:Float;
 	public function new(id:Int, battleField:BattleField, card:Card, side:Int, x:Float, y:Float, z:Float)
 	{
 		#if flash
@@ -42,7 +42,7 @@ class GameObject
 		this.battleField = battleField;
 		this.side = side;
 		this.card = card;
-		setPosition(x, y, z, true);
+		this.setPosition(x, y, z, true);
 	}
 
 	public function update() : Void

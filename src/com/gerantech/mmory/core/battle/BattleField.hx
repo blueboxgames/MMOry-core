@@ -95,7 +95,7 @@ class BattleField
 		this.friendlyMode = friendlyMode;
 		this.extraTime = hasExtraTime ? field.times.get(3) : 0;
 		
-		// this.units = new Map<Int, Unit>();
+		this.units = new Map<Int, Unit>();
 		this.bullets = new Map<Int, Bullet>();
 		this.elixirUpdater = new ElixirUpdater(field.mode);
 
@@ -165,18 +165,14 @@ class BattleField
 		elixirUpdater.init();
 	}
 	
-	static function getDeckCards(game:Game, cardsTypes:Array<Int>, friendlyMode:Int) : IntCardMap
+	static public function getDeckCards(game:Game, cardsTypes:Array<Int>, friendlyMode:Int) : IntCardMap
 	{
 		var ret = new IntCardMap(true); 
-		var i:Int = 0;
 		//trace("id: " + game.player.id + "-> " + cardsTypes.toString() + " friendlyMode:" + friendlyMode);
-		while( i < cardsTypes.length )
-		{
-			if( game.player.cards.exists(cardsTypes[i]) )
-				ret.set(cardsTypes[i], friendlyMode > 0 ? new Card(game,cardsTypes[i],9) : game.player.cards.get(cardsTypes[i]));
-			i ++;
-		}
-		trace("id: " + game.player.id + "-> " + ret.queue_String());
+		for(c in cardsTypes)
+			if( game.player.cards.exists(c) )
+				ret.set(c, friendlyMode > 0 ? new Card(game, c, 9) : game.player.cards.get(c));
+		// trace("id: " + game.player.id + "-> " + ret.queue_String());
 		return ret;
 	}
 
@@ -227,9 +223,6 @@ class BattleField
 		// -=-=-=-=-=-=-=-=-=-  UPDATE EXIXIR-BARS  -=-=-=-=-=-=-=-=-=-=-=-
 		elixirUpdater.update(deltaTime, getDuration() > getTime(1));
 
-		// -=-=-=-=-=-=-=-=-=  UPDATE PHYSICS-ENGINE  =-=-=-=-=-=-=-=-=-=-=-
-		this.field.physics.step();
-
 		if( state > STATE_2_STARTED )
 			return;
 		
@@ -241,6 +234,9 @@ class BattleField
 			else
 				unit.update();
 
+		// -=-=-=-=-=-=-=-=-=  UPDATE PHYSICS-ENGINE  =-=-=-=-=-=-=-=-=-=-=-
+		this.field.physics.step();
+		
 		// remove dead units
 		while( this.garbage.length > 0 )
 		{

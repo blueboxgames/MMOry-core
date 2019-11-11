@@ -28,7 +28,7 @@ class Game
 	{
 		levels = [0, 20, 50, 100, 200, 400, 1000, 2000, 5000, 10000, 20000, 40000, 80000];
 	}
-	function init(data:InitData) 
+	public function init(data:InitData) 
 	{
 		appVersion = data.appVersion;
 		market = data.market;

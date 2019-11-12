@@ -22,15 +22,17 @@ class Unit extends Colleague
 	var cachedTargetY:Float = 0;
 	var targetIndex:Int = -1;
 	var defaultTargetIndex:Int;
-	var numFindSkip:Int = 10;
 	var immortalTime:Float;
 
 	public function new(id:Int, battleField:BattleField, card:Card, side:Int, x:Float, y:Float, z:Float) 
 	{
 		super(id, battleField, card, side, x, y, z);
-		this.shape = Shape.create_circle(card.sizeH * 0.5);
+		this.shape = Shape.create_circle(card.sizeH);
+
 		this.shape.colleague = this;
 		this.shape.initialize();
+		if( card.speed <= 0 )
+	    this.setStatic();
 		this.summonTime = this.battleField.now + this.card.summonTime;
 		this.immortalTime = this.summonTime;
 		
@@ -82,15 +84,16 @@ class Unit extends Colleague
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= decide -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	private function decide() 
 	{
-		//var log = "decide => id:" + id + " type: " + this.card.type;
+		// var log = "decide => id:" + id + " type: " + this.card.type;
 		var enemyId = this.getNearestEnemy();
 		if( enemyId > -1 )
 		{
 			var enemy = this.battleField.units.get(enemyId);
 			var newEnemyFound = this.cachedEnemy != enemyId;
-			
-			//log += " enemyId:" + enemyId;
-			if( com.gerantech.mmory.core.utils.CoreUtils.getDistance(this.x, this.y, enemy.x, enemy.y) <= this.card.bulletRangeMax )
+			this.cachedEnemy = enemyId;
+
+			// log += " enemy:" + enemy.card.type;
+			if( CoreUtils.getDistance(this.x, this.y, enemy.x, enemy.y) <= this.card.bulletRangeMax )
 			{
 				if( this.attackTime < this.battleField.now )
 				{
@@ -109,7 +112,6 @@ class Unit extends Colleague
 			
 			if( this.card.speed <= 0 )
 				return;
-			
 			if( newEnemyFound )
 			{
 				// log += " move to enemy." ;
@@ -123,6 +125,7 @@ class Unit extends Colleague
 			this.move();
 			return;
 		}
+
 		if( this.card.speed <= 0 )
 			return;
 		this.findTarget();
@@ -130,7 +133,6 @@ class Unit extends Colleague
 		// log += this.card.speed + "		dx:" + deltaX + " dy:" + deltaY;
 		// trace(log);
 	}
-
 	private function findTarget():Void
 	{
 		if( this.targetIndex > -1 )
@@ -213,55 +215,42 @@ class Unit extends Colleague
 
 		var cx:Float = this.deltaX * this.battleField.deltaTime;
 		var cy:Float = this.deltaY * this.battleField.deltaTime;
-		/*var log = "";
-		if( this.battleField.now > tracetime )
-			log = "move   id: " + id + " type: " + this.card.type + " path:" + this.path.length + "   px:" + path[0].x + " x:" + x + " cx:" + cx + "   py:" + path[0].y + " y:" + y + " cy:" + cy;*/
-
-		// cx = (Math.abs(this.path[0].x - x) < Math.abs(cx) || cx == 0) ? GameObject.NaN : (x + cx);
-		// cy = (Math.abs(this.path[0].y - y) < Math.abs(cy) || cy == 0) ? GameObject.NaN : (y + cy);
-
-		/*if( this.battleField.now > tracetime )
-		{
-			log += "   ccx:" + cx + " ccy:" + cy;
-			trace( log );
-			tracetime = this.battleField.now + 1000;
-		}*/
-
-		this.setPosition(cx, cy, GameObject.NaN);
+		this.setPosition(x + cx, y + cy, GameObject.NaN);
 	}
 	
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= attack -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	private function getNearestEnemy() : Int
 	{
-		if ( this.cachedEnemy != -1 && this.battleField.units.exists(this.cachedEnemy) && !this.battleField.units.get(this.cachedEnemy).disposed() )
+		if( this.cachedEnemy != -1 && this.battleField.units.exists(this.cachedEnemy) && !this.battleField.units.get(this.cachedEnemy).disposed() )
 		{
-			if( com.gerantech.mmory.core.utils.CoreUtils.getDistance(this.x, this.y, this.battleField.units.get(this.cachedEnemy).x, this.battleField.units.get(this.cachedEnemy).y) <= this.card.focusRange )
+			if( CoreUtils.getDistance(this.x, this.y, this.battleField.units.get(this.cachedEnemy).x, this.battleField.units.get(this.cachedEnemy).y) <= this.card.focusRange )
 				return this.cachedEnemy;
 		}
-		
-		var distance:Float = this.card.focusRange;
+
 		var ret:Int = -1;
+		var distance:Float = this.card.focusRange;
 		for( u in this.battleField.units )
 		{
+			// prevent disposed and deploying units
 			if( u == null || u.disposed() || u.summonTime != 0 )
 				continue;
-
+			// prevent team-mates
+			if( this.card.bulletDamage >= 0 && this.side == u.side )
+				continue;
 			// prevent axis units for building target cards 
 			if( !this.card.focusUnit && u.card.speed > 0 && CardTypes.isTroop(u.card.type) )
 				continue;
-			
 			// configure vertical angle vision 
 			if( this.card.focusHeight > u.z )
 				continue;
-
-			if( (this.card.bulletDamage >= 0 && this.side != u.side) || (this.card.bulletDamage < 0 && this.side == u.side && u.card.speed > 0 && u.card.type != CardTypes.C109 && u.card.type < CardTypes.C201 && u.health < u.card.health) )
+			// prevent healing of enemy, buildings, self and full-health
+			if( this.card.bulletDamage < 0 && (this.side != u.side || u.card.speed <= 0 || u.id == this.id || u.health >= u.cardHealth) )
+				continue;			
+			var dis = CoreUtils.getDistance(this.x, this.y, u.x, u.y);
+			if( dis <= distance )
 			{
-				var dis = com.gerantech.mmory.core.utils.CoreUtils.getDistance(this.x, this.y, u.x, u.y);
-				if( dis <= distance )
-				{
-					distance = dis;
-					ret = u.id;
-				}
+				distance = dis;
+				ret = u.id;
 			}
 		}
 		return ret;

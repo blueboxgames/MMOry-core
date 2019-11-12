@@ -2,14 +2,11 @@ package com.gerantech.mmory.core.battle.units;
 import com.gerantech.colleagues.Shape;
 import com.gerantech.colleagues.Colleague;
 import com.gerantech.mmory.core.utils.CoreUtils;
-import com.gerantech.mmory.core.socials.Challenge;
-import com.gerantech.mmory.core.utils.Int2;
 import com.gerantech.mmory.core.battle.BattleField;
 import com.gerantech.mmory.core.battle.GameObject;
 import com.gerantech.mmory.core.battle.units.Card;
 import com.gerantech.mmory.core.constants.CardTypes;
 import com.gerantech.mmory.core.events.BattleEvent;
-import com.gerantech.mmory.core.utils.Point2;
 
 /**
  * @author Mansour Djawadi
@@ -19,14 +16,10 @@ class Unit extends Colleague
 	public var health:Float;
 	public var cardHealth:Float;
 	public var bulletId:Int = 0;
-	// var target:Point2;
-	// var defaultTarget:Point2;
 	var attackTime:Float = 0;
 	var cachedEnemy:Int = -1;
 	// var path:Array<Point2>;
 	var immortalTime:Float;
-	// var foundTime:Float = 0;
-	// var foundTile:Int2;
 
 	public function new(id:Int, battleField:BattleField, card:Card, side:Int, x:Float, y:Float, z:Float) 
 	{
@@ -43,19 +36,9 @@ class Unit extends Colleague
 			h = (0.2 + Math.min(0.8, (battleField.games[0].player.get_battleswins() + 1) / 10)) * h;
 		this.cardHealth = h;
 		this.setHealth(h);
-		// trace("isBot:" + card.game.player.isBot() + " get_battleswins:" + battleField.games[0].player.get_battleswins());
-		// trace(card.type + " => this.health:" + this.health + " this.card.health:" + this.card.health + " cardHealth:" + cardHealth + " h:" + h + " level:" + card.level + " side:" + side);
 		
 		this.bulletId = id * 10000;
-		// if( this.card.speed <= 0 )
-		// 	return;
-		// this.target = new Point2(0, 0);
-		// this.foundTile = new Int2(0, 0);
-		// var returnigPosition = this.battleField.field.tileMap.getTile(this.x, this.y);
-		// if( CardTypes.isHero(card.type) )
-		// 	this.defaultTarget = new Point2(returnigPosition.x, returnigPosition.y);
-		// else
-		// 	this.defaultTarget = new Point2(battleField.field.mode == Challenge.MODE_0_HQ ? BattleField.WIDTH * 0.5 : CoreUtils.clamp(returnigPosition.x, BattleField.WIDTH / 3, BattleField.WIDTH / 1.5), side == 0 ? 0 : BattleField.HEIGHT);
+		this.defaultTargetIndex = CardTypes.isHero(card.type) ? id : 1 - this.side;
 	}
 	
 	override public function update() : Void
@@ -328,7 +311,6 @@ class Unit extends Colleague
 	{
 		if( this.disposed() )
 			return;
-		// Point2.disposeAll(this.path);
 		if( this.card.explosive && !this.isDump )
 			this.attack(this);
 		super.dispose();

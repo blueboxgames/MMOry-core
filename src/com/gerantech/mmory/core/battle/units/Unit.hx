@@ -178,49 +178,17 @@ class Unit extends Colleague
 		// trace("[" + cachedTargetX + " " + cachedTargetY + "] => dx:" + deltaX + " dy:" + deltaY);
 	}
 
-		if( ret )
-			this.cachedEnemy = enemy.id;
-		return ret;
-	} */
-
-	/* function findPath(targetX:Float, targetY:Float) : Void
-	{
-		Point2.disposeAll(this.path);
-		if( this.card.speed <= 0 )
-			return;
-		
-		if( this.x == targetX && this.y == targetY )
-		{
-			this.path = null;
-			return;
-		}
-		this.path = this.battleField.field.tileMap.findPath(this.x, this.y, this.z, targetX, targetY, side == 0 ? 1 : -1);
-		this.foundTile = this.battleField.field.tileMap.getTile(targetX, targetY);
-		this.foundTime = this.battleField.now + this.card.bulletShootGap;
-		if( this.path == null || this.path.length == 0 )
-			return;
-		if( BattleField.DEBUG_MODE )
-		{
-			var i = 0;
-			var len = path.length;
-			var pthStr = "findPath  id: " + id + " side: " + side + " type: " + this.card.type + "  ";
-			while ( i < len )
-			{
-				pthStr += (this.path[i].x + "," + this.path[i].y + " ");
-				i ++;
-			}
-			this.fireEvent(id, "findPath", null);
-			trace(pthStr);
-		}
-		this.estimateAngle();
-	} */
-
 	private function estimateAngle(x:Float, y:Float) : Void 
 	{
+		if( y - this.y == 0 && x - this.x == 0 )
+		{
+			this.deltaX = this.deltaY = 0;
+			return;
+		}
 		var angle:Float = Math.atan2(y - this.y, x - this.x);
-		this.deltaX = Math.round(this.card.speed * Math.cos(angle) * 1000) / 1000;
-		this.deltaY = Math.round(this.card.speed * Math.sin(angle) * 1000) / 1000;
-		//trace("side:" + side + "  x:" + x + " " + path[0].x + " ,  y:" + y + " " + path[0].y + " ,  delta:" + deltaX + " " + deltaY);
+		this.deltaX = Math.round(this.card.speed * Math.cos(angle) * 100000) / 100000;
+		this.deltaY = Math.round(this.card.speed * Math.sin(angle) * 100000) / 100000;
+		// trace("t:" + card.type + " angle:" + angle + "  x:" + x + " " + this.x + " ,  y:" + y + " " + this.y + " ,  delta:" + deltaX + " " + deltaY);
 	}
 
 	private function move() : Void

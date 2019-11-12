@@ -18,7 +18,11 @@ class Unit extends Colleague
 	public var bulletId:Int = 0;
 	var attackTime:Float = 0;
 	var cachedEnemy:Int = -1;
-	// var path:Array<Point2>;
+	var cachedTargetX:Float = 0;
+	var cachedTargetY:Float = 0;
+	var targetIndex:Int = -1;
+	var defaultTargetIndex:Int;
+	var numFindSkip:Int = 10;
 	var immortalTime:Float;
 
 	public function new(id:Int, battleField:BattleField, card:Card, side:Int, x:Float, y:Float, z:Float) 
@@ -110,54 +114,69 @@ class Unit extends Colleague
 			{
 				// log += " move to enemy." ;
 				// trace(log);
+				this.targetIndex = -1;
+				this.deltaX = this.deltaY = 0;
+				this.cachedTargetX = enemy.x;
+				this.cachedTargetY = enemy.y;
 				this.estimateAngle(enemy.x, enemy.y);
-				// this.changeMovingTarget(enemy.x, enemy.y);
 			}
 			this.move();
 			return;
 		}
 		if( this.card.speed <= 0 )
 			return;
-		
 		this.findTarget();
-		// if( !this.target.equalsPoint(this.defaultTarget) )
-		// 	this.changeMovingTarget(this.defaultTarget.x, this.defaultTarget.y);
 		this.move();
+		// log += this.card.speed + "		dx:" + deltaX + " dy:" + deltaY;
+		// trace(log);
 	}
 
 	private function findTarget():Void
 	{
+		if( this.targetIndex > -1 )
+			return;
+		
+		if( CardTypes.isHero(card.type) )
+		{
+			this.targetIndex = this.defaultTargetIndex;
+			this.cachedTargetX = this.battleField.field.targets[this.targetIndex * 2];
+			this.cachedTargetY = this.battleField.field.targets[this.targetIndex * 2 + 1];
+			this.estimateAngle(this.cachedTargetX, this.cachedTargetY);
+			return;
+		}
+		
 		var dis = 2000.0;
-		var i:Int = -2;
+		var i:Int = 0;
 		var tx:Float = 0;
 		var ty:Float = 0;
-		while (i < this.battleField.field.targets.length)
+		var len = this.battleField.field.targets.length;
+		while (i < len)
 		{
-			i += 2;
+			if( i == side )
+			{
+				i += 2;
+				continue;
+			}
 			tx = this.battleField.field.targets[i];
 			ty = this.battleField.field.targets[i + 1];
-			if( (side == 0 && y <= ty + 1) || (side == 1 && y >= ty - 1) )
+			i += 2;
+			if( (side == 0 && y < ty + 1) || (side == 1 && y > ty - 1) )
 				continue;
 			var d = CoreUtils.getDistance(tx, ty, x, y);
-			if (dis > d)
+			if( dis > d )
+			{
+				this.targetIndex = Math.floor(i / 2);
+				this.cachedTargetX = tx;
+				this.cachedTargetY = ty;
 				dis = d;
+			}
 		}
 
-		if (dis == 2000.0)
-			this.deltaX = this.deltaY = 0;
-		else
-			this.estimateAngle(tx, ty);
+		if( dis == 2000.0 )
+			this.targetIndex = this.defaultTargetIndex;
+		this.estimateAngle(this.cachedTargetX, this.cachedTargetY);
+		// trace("[" + cachedTargetX + " " + cachedTargetY + "] => dx:" + deltaX + " dy:" + deltaY);
 	}
-
-	/* function isNewEnemy(enemy:Unit):Bool
-	{
-		var ret = enemy.id != this.cachedEnemy;
-		if( !ret && enemy != null )
-		{
-			var t = this.battleField.field.tileMap.getTile(enemy.x, enemy.y);
-			if( t != null && this.foundTile != null )
-				ret = this.battleField.now > this.foundTime && !this.foundTile.equal(t);
-		}
 
 		if( ret )
 			this.cachedEnemy = enemy.id;
@@ -204,17 +223,26 @@ class Unit extends Colleague
 		//trace("side:" + side + "  x:" + x + " " + path[0].x + " ,  y:" + y + " " + path[0].y + " ,  delta:" + deltaX + " " + deltaY);
 	}
 
-//	var tracetime:Float;
 	private function move() : Void
 	{
-		if( this.card.speed <= 0 || this.deltaX == 0 || this.deltaY == 0 )
+		if( this.deltaX == 0 && this.deltaY == 0 )
 		{
 			#if flash
 			this.setState(GameObject.STATE_3_WAITING);
 			#end
 			return;
 		}
-		
+
+		// turn to new target
+		if( (deltaX >= 0 && x >= cachedTargetX || deltaX < 0 && x <= cachedTargetX) && (deltaY >= 0 && y >= cachedTargetY || deltaY < 0 && y <= cachedTargetY) )
+		{
+			// last target
+			if( this.targetIndex == this.defaultTargetIndex )
+				return;
+			this.targetIndex = -1;
+			this.findTarget();
+		}
+
 		var cx:Float = this.deltaX * this.battleField.deltaTime;
 		var cy:Float = this.deltaY * this.battleField.deltaTime;
 		/*var log = "";

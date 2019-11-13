@@ -322,7 +322,7 @@ if( __type == 13 )
 		default		:	10	;
 	}
 	
-	return ret * 20.00;
+	return ret * 18.00;
 }
 
 // sizeV
@@ -654,7 +654,7 @@ if( __type == 26 )
 		
 		default		:	1.0;
 	}
-	return ret * 300;
+	return ret * 260;
 }
 
 
@@ -693,7 +693,7 @@ if( __type == 15 )
 		
 		default		:	1.0	;
 	}
-	return ret * 300;
+	return ret * 260;
 }
 
 

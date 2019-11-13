@@ -5,7 +5,6 @@ import com.gerantech.mmory.core.battle.units.Card;
 import com.gerantech.mmory.core.socials.Challenge;
 import com.gerantech.mmory.core.utils.maps.IntIntMap;
 import com.gerantech.mmory.core.utils.maps.IntIntCardMap;
-import com.gerantech.mmory.core.battle.units.Unit;
 import com.gerantech.colleagues.CMath;
 import com.gerantech.colleagues.Shape;
 import com.gerantech.mmory.core.Game;
@@ -26,7 +25,11 @@ class BattleFieldTest extends Sprite {
 		flash.Lib.current.addChild(new BattleFieldTest());
 	}
 
+	private var playerId:Int = 10002;
+	private var challengeIndex:Int = 0;
+	
 	private var skipDrawing:Bool;
+	private var challengeMode:Int;
 	private var battleField:BattleField;
 	private var unitId:Int = 0;
 
@@ -39,19 +42,20 @@ class BattleFieldTest extends Sprite {
 	private function this_addedToStageHandler(event:Event):Void {
 		this.removeEventListener(Event.ADDED_TO_STAGE, this.this_addedToStageHandler);
 		scaleX = scaleY = stage.stageWidth / BattleField.WIDTH;
-		var l = new URLLoader(new URLRequest("script-data.cs"));
+		var l = new URLLoader(new URLRequest("C:\\SmartFoxServer_2X\\SFS2X-5000\\www\\assets\\script-data.cs"));
 		l.addEventListener(Event.COMPLETE, script_completeHandler);
 	}
 
 	private function script_completeHandler(event:Event):Void {
 		ScriptEngine.initialize(event.currentTarget.data, 2700);
-		var l = new URLLoader(new URLRequest("field-1.json"));
+		this.challengeMode = ScriptEngine.getInt(ScriptEngine.T41_CHALLENGE_MODE, this.challengeIndex, 0, null, null);
+		var l = new URLLoader(new URLRequest("C:\\SmartFoxServer_2X\\SFS2X-5000\\www\\assets\\map-" + this.challengeMode + ".json"));
 		l.addEventListener(Event.COMPLETE, map_completeHandler);
 	}
-
+	
 	private function map_completeHandler(event:Event):Void {
 		var t = flash.Lib.getTimer();
-		var field = new FieldData(Challenge.MODE_1_TOUCHDOWN, event.currentTarget.data);
+		var field = new FieldData(this.challengeMode, event.currentTarget.data);
 		var data = new InitData();
 		data.id = 10004;
 		data.resources.set(2, 100);

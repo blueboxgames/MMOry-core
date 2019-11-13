@@ -1,0 +1,9 @@
+-cp tests
+-cp src
+-lib hscript
+-main BattleFieldTest
+# -D advanced-telemetry
+-D fdb
+--debug
+-swf bin/application.swf
+-swf-header 450:600:40:666666

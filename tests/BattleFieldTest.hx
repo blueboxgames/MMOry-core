@@ -101,7 +101,10 @@ class BattleFieldTest extends Sprite {
 			BattleField.getDeckCards(battleField.games[1], battleField.games[1].player.getSelectedDeck().toArray(true), battleField.friendlyMode));
 		this.battleField.state = BattleField.STATE_2_STARTED;
 
-		this.draw();
+		for (c in this.battleField.field.physics.colleagues)
+			if( Std.is(c, Obstacle))
+				c.show(this);
+		
 		this.addEventListener(Event.ENTER_FRAME, this.this_enterFrameHandler);
 		this.stage.addEventListener(MouseEvent.CLICK, this.stage_clickHandler);
 	}
@@ -129,47 +132,5 @@ class BattleFieldTest extends Sprite {
 	private function this_enterFrameHandler(event:flash.events.Event):Void {
 		this.battleField.update(cast(flash.Lib.getTimer() - this.battleField.now, Int));
 		// this.draw();
-	}
-
-	private function draw():Void {
-		// this.graphics.clear();
-		var x:Float = 0;
-		var y:Float = 0;
-		this.graphics.lineStyle(1, 0xAAAAAA);
-		for (b in this.battleField.field.physics.colleagues) {
-			if( b.shape.type == Shape.TYPE_CIRCLE )
-				continue;
-
-			for (i in 0...b.shape.vertexCount) {
-				x = CMath.matrix_transformX(b.shape.matrix, b.shape.getX(i), b.shape.getY(i)) + b.x;
-				y = CMath.matrix_transformY(b.shape.matrix, b.shape.getX(i), b.shape.getY(i)) + b.y;
-				if (i == 0)
-					this.graphics.moveTo(x, y);
-				else
-					this.graphics.lineTo(x, y);
-			}
-			x = CMath.matrix_transformX(b.shape.matrix, b.shape.getX(0), b.shape.getY(0)) + b.x;
-			y = CMath.matrix_transformY(b.shape.matrix, b.shape.getX(0), b.shape.getY(0)) + b.y;
-			this.graphics.lineTo(x, y);
-		}
-
-		for (c in this.battleField.field.physics.contacts) {
-			/* if (c.count > 0 && c.a.shape.type == Shape.TYPE_CIRCLE && c.b.shape.type == Shape.TYPE_CIRCLE && c.a.side != c.b.side) {
-				this.battleField.field.physics.colleagues.remove(c.a);
-				this.battleField.field.physics.colleagues.remove(c.b);
-				continue;
-			}*/
-			for (i in 0...c.count) {
-				this.graphics.moveTo(c.getPointX(i), c.getPointY(i));
-				this.graphics.lineTo(c.getPointX(i) + c.normalX * 4, c.getPointY(i) + c.normalY * 4);
-			}
-		}
-
-		// draw targets
-		var i = 0;
-		while (i < this.battleField.field.targets.length) {
-			this.graphics.drawCircle(this.battleField.field.targets[i], this.battleField.field.targets[i + 1], 4);
-			i += 2;
-		}
 	}
 }

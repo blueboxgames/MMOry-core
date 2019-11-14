@@ -159,7 +159,7 @@ class Shape {
 			return;
 		}
 
-		// centroid 
+		// centroid
 		var cx:Float = 0;
 		var cy:Float = 0;
 		var area = 0.0;
@@ -199,6 +199,8 @@ class Shape {
 		// Not really necessary, but I like doing this anyway
 		for (i in 0...vertexCount)
 			set(i, getX(i) - cx, getY(i) - cy);
+		colleague.x += cx;
+		colleague.y += cy;
 
 		colleague.mass = density * area;
 		colleague.invMass = (colleague.mass != 0.0) ? 1.0 / colleague.mass : 0.0;

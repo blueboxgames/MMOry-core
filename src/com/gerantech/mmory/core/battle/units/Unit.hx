@@ -13,6 +13,7 @@ import com.gerantech.mmory.core.events.BattleEvent;
  */
 class Unit extends Colleague
 {
+	static var TARGET_SIZE = 50;
 	public var health:Float;
 	public var cardHealth:Float;
 	public var bulletId:Int = 0;
@@ -150,7 +151,7 @@ class Unit extends Colleague
 			tx = this.battleField.field.targets[i];
 			ty = this.battleField.field.targets[i + 1];
 			i += 2;
-			if( (side == 0 && y < ty + 1) || (side == 1 && y > ty - 1) )
+			if( (side == 0 && y < ty + TARGET_SIZE * 2) || (side == 1 && y > ty - TARGET_SIZE * 2) )
 				continue;
 			var d = CoreUtils.getDistance(tx, ty, x, y);
 			if( dis > d )
@@ -196,7 +197,7 @@ class Unit extends Colleague
 		}
 
 		// turn to new target
-		if( (deltaX >= 0 && x >= cachedTargetX || deltaX < 0 && x <= cachedTargetX) && (deltaY >= 0 && y >= cachedTargetY || deltaY < 0 && y <= cachedTargetY) )
+		if( this.targetIndex > -1 && (deltaX >= 0 && x >= cachedTargetX - TARGET_SIZE || deltaX < 0 && x <= cachedTargetX + TARGET_SIZE) && (deltaY >= 0 && y >= cachedTargetY - TARGET_SIZE || deltaY < 0 && y <= cachedTargetY + TARGET_SIZE) )
 		{
 			// last target
 			if( this.targetIndex == this.defaultTargetIndex )

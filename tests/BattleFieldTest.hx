@@ -92,6 +92,7 @@ class BattleFieldTest extends Sprite {
 			}
 		}
 
+		// initialize decks
 		this.battleField.decks = new IntIntCardMap();
 		this.battleField.decks.set(0,
 			BattleField.getDeckCards(battleField.games[0], battleField.games[0].player.getSelectedDeck().toArray(true), battleField.friendlyMode));
@@ -99,10 +100,19 @@ class BattleFieldTest extends Sprite {
 			BattleField.getDeckCards(battleField.games[1], battleField.games[1].player.getSelectedDeck().toArray(true), battleField.friendlyMode));
 		this.battleField.state = BattleField.STATE_2_STARTED;
 
+		// draw obstacles
 		for (c in this.battleField.field.physics.colleagues)
-			if( Std.is(c, Obstacle))
+			if (Std.is(c, Obstacle))
 				c.show(this);
-		
+
+		// draw targets
+		var i = 0;
+		this.graphics.beginFill(0xFFFFFF);
+		while (i < this.battleField.field.targets.length) {
+			this.graphics.drawCircle(this.battleField.field.targets[i], this.battleField.field.targets[i + 1], 3);
+			i += 2;
+		}
+
 		this.addEventListener(Event.ENTER_FRAME, this.this_enterFrameHandler);
 		this.stage.addEventListener(MouseEvent.CLICK, this.stage_clickHandler);
 	}

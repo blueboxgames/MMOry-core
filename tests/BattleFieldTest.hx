@@ -1,5 +1,6 @@
 package;
 
+import com.gerantech.mmory.core.battle.Obstacle;
 import com.gerantech.mmory.core.utils.CoreUtils;
 import com.gerantech.mmory.core.battle.units.Card;
 import com.gerantech.mmory.core.socials.Challenge;
@@ -26,8 +27,8 @@ class BattleFieldTest extends Sprite {
 	}
 
 	private var playerId:Int = 10002;
-	private var challengeIndex:Int = 0;
-	
+	private var challengeIndex:Int = 2;
+
 	private var skipDrawing:Bool;
 	private var challengeMode:Int;
 	private var battleField:BattleField;
@@ -42,22 +43,22 @@ class BattleFieldTest extends Sprite {
 	private function this_addedToStageHandler(event:Event):Void {
 		this.removeEventListener(Event.ADDED_TO_STAGE, this.this_addedToStageHandler);
 		scaleX = scaleY = stage.stageWidth / BattleField.WIDTH;
-		var l = new URLLoader(new URLRequest("C:\\SmartFoxServer_2X\\SFS2X-5000\\www\\assets\\script-data.cs"));
+		var l = new URLLoader(new URLRequest("C:\\_projects\\mmories\\mmory-core\\src\\com\\gerantech\\mmory\\core\\scripts\\script-data.cs"));
 		l.addEventListener(Event.COMPLETE, script_completeHandler);
 	}
 
 	private function script_completeHandler(event:Event):Void {
 		ScriptEngine.initialize(event.currentTarget.data, 2700);
-		this.challengeMode = ScriptEngine.getInt(ScriptEngine.T41_CHALLENGE_MODE, this.challengeIndex, 0, null, null);
+		this.challengeMode = ScriptEngine.getInt(ScriptEngine.T41_CHALLENGE_MODE, this.challengeIndex, playerId);
 		var l = new URLLoader(new URLRequest("C:\\SmartFoxServer_2X\\SFS2X-5000\\www\\assets\\map-" + this.challengeMode + ".json"));
 		l.addEventListener(Event.COMPLETE, map_completeHandler);
 	}
-	
+
 	private function map_completeHandler(event:Event):Void {
 		var t = flash.Lib.getTimer();
 		var field = new FieldData(this.challengeMode, event.currentTarget.data);
 		var data = new InitData();
-		data.id = 10004;
+		data.id = playerId;
 		data.resources.set(2, 100);
 		data.decks.set(0, new IntIntMap());
 		for (i in 101...109) {
@@ -124,10 +125,10 @@ class BattleFieldTest extends Sprite {
 				cast(b, UnitView).setV(this.skipDrawing);
 			return;
 		}
-		var card = this.battleField.decks.get(0).get(101 + Math.floor(Math.random() * 8));
+		var card = this.battleField.decks.get(0).get(103); // + Math.floor(Math.random() * 8));
 		for (i in 0...card.quantity)
-			this.addUnit(card, event.stageY > BattleField.HEIGHT * 0.5 * scaleY ? 0 : 1, CoreUtils.getXPosition(card.quantity, i, event.stageX/scaleX),
-				CoreUtils.getYPosition(card.quantity, i, event.stageY/scaleY), card.z);
+			this.addUnit(card, event.stageY > BattleField.HEIGHT * 0.5 * scaleY ? 0 : 1, CoreUtils.getXPosition(card.quantity, i, event.stageX / scaleX),
+				CoreUtils.getYPosition(card.quantity, i, event.stageY / scaleY), card.z);
 	}
 
 	private function addUnit(card:Card, side:Int, x:Float, y:Float, z:Float):Void {

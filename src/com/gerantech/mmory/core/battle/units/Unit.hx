@@ -84,7 +84,6 @@ class Unit extends Colleague
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= decide -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	private function decide() 
 	{
-		// var log = "decide => id:" + id + " type: " + this.card.type;
 		var enemyId = this.getNearestEnemy();
 		if( enemyId > -1 )
 		{
@@ -92,21 +91,20 @@ class Unit extends Colleague
 			var newEnemyFound = this.cachedEnemy != enemyId;
 			this.cachedEnemy = enemyId;
 
-			// log += " enemy:" + enemy.card.type;
-			if( CoreUtils.getDistance(this.x, this.y, enemy.x, enemy.y) <= this.card.bulletRangeMax )
+			if( this.attackTime < this.battleField.now )
 			{
-				if( this.attackTime < this.battleField.now )
+				// if( id == 6)trace("attack " + CoreUtils.getDistance(this.x, this.y, enemy.x, enemy.y) + " " + (this.card.bulletRangeMax + enemy.card.sizeH + card.sizeH));
+				if( CoreUtils.getDistance(this.x, this.y, enemy.x, enemy.y) <= this.card.bulletRangeMax + enemy.card.sizeH + card.sizeH )
 				{
-					this.attack(enemy);
-					// log += "   " + health + " <=> " + enemy.health;
-					// trace(log);
+				// if( id == 6)trace("attack " + enemyId);
+					this.attack(enemy);	
+					return;
 				}
-				else
-				{
-					// log += "   wait" ;
-					// trace(log);
-					this.setState(GameObject.STATE_3_WAITING);
-				}
+			}
+			else
+			{
+				// if( id == 6)trace("wait " + enemyId);
+				this.setState(GameObject.STATE_3_WAITING);
 				return;
 			}
 			
@@ -114,6 +112,7 @@ class Unit extends Colleague
 				return;
 			if( newEnemyFound )
 			{
+				// if( id == 6)trace("move " + enemyId);
 				// log += " move to enemy." ;
 				// trace(log);
 				this.targetIndex = -1;

@@ -1,4 +1,5 @@
 package com.gerantech.mmory.core.battle;
+import com.gerantech.mmory.core.utils.GraphicMetrics;
 import com.gerantech.mmory.core.battle.units.Unit;
 import com.gerantech.mmory.core.battle.bullets.Bullet;
 import com.gerantech.mmory.core.utils.Point2;
@@ -297,7 +298,7 @@ class BattleField
 			return this.addSpell(card, side, x, y);
 		
 		for(i in 0...card.quantity)
-			this.addUnit(card, side,com.gerantech.mmory.core.utils.CoreUtils.getXPosition(card.quantity, i, x), com.gerantech.mmory.core.utils.CoreUtils.getYPosition(card.quantity, i, y), 0);
+			this.addUnit(card, side, CoreUtils.getXPosition(card.quantity, i, x), com.gerantech.mmory.core.utils.CoreUtils.getYPosition(card.quantity, i, y), 0);
 
 		this.update(cast((CoreUtils.getTimer() - this.now), Int));
 		return unitId - 1;
@@ -305,23 +306,23 @@ class BattleField
 
 	private function addUnit(card:Card, side:Int, x:Float, y:Float, z:Float):Void
 	{
-		var c = this.field.physics.add(new com.gerantech.mmory.core.battle.units.Unit(this.unitId, this, card, side, side == 0 ? BattleField.WIDTH - x : x, side == 0 ? BattleField.HEIGHT - y : y, 0));
+		var c = this.field.physics.add(new Unit(this.unitId, this, card, side, x, y, z));
 		this.units.set(this.unitId, cast(c, Unit));
 		this.unitId ++;
 	}
 
-	function addSpell(card:com.gerantech.mmory.core.battle.units.Card, side:Int, x:Float, y:Float) : Int
+	function addSpell(card:Card, side:Int, x:Float, y:Float) : Int
 	{
-		var offset = com.gerantech.mmory.core.utils.GraphicMetrics.getSpellStartPoint(card.type);
-		var spell = new com.gerantech.mmory.core.battle.bullets.Bullet(this, spellId, card, side, x + offset.x, y + offset.y, offset.z, x, y, 0);
+		var offset = GraphicMetrics.getSpellStartPoint(card.type);
+		var spell = new Bullet(this, spellId, card, side, x + offset.x, y + offset.y, offset.z, x, y, 0);
 		bullets.set(spellId, spell);
 		spellId ++;
 		return spellId - 1;
 	}
 
-	public function addBullet(unit:com.gerantech.mmory.core.battle.units.Unit, side:Int, x:Float, y:Float, target:com.gerantech.mmory.core.battle.units.Unit) : Void 
+	public function addBullet(unit:Unit, side:Int, x:Float, y:Float, target:Unit) : Void 
 	{
-		var b = new com.gerantech.mmory.core.battle.bullets.Bullet(this, unit.bulletId, unit.card, side, x, y, 0, target.x, target.y, 0);
+		var b = new Bullet(this, unit.bulletId, unit.card, side, x, y, 0, target.x, target.y, 0);
 		b.targetId = target.id;
 		bullets.set(unit.bulletId, b);
 		unit.bulletId ++;

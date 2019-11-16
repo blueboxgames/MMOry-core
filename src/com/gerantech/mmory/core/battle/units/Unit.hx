@@ -20,7 +20,7 @@ class Unit extends Colleague
 	var cachedEnemy:Int = -1;
 	var cachedTargetX:Float = 0;
 	var cachedTargetY:Float = 0;
-	var targetIndex:Int = -1;
+	var targetIndex:Int = 100;
 	var defaultTargetIndex:Int;
 	var immortalTime:Float;
 
@@ -113,9 +113,7 @@ class Unit extends Colleague
 			if( newEnemyFound )
 			{
 				// if( id == 6)trace("move " + enemyId);
-				// log += " move to enemy." ;
-				// trace(log);
-				this.targetIndex = -1;
+				this.targetIndex = 100;
 				this.deltaX = this.deltaY = 0;
 				this.cachedTargetX = enemy.x;
 				this.cachedTargetY = enemy.y;
@@ -127,24 +125,15 @@ class Unit extends Colleague
 
 		if( this.card.speed <= 0 )
 			return;
+		if( this.targetIndex == 100 )
+			this.targetIndex = -1;
 		this.findTarget();
 		this.move();
-		// log += this.card.speed + "		dx:" + deltaX + " dy:" + deltaY;
-		// trace(log);
 	}
 	private function findTarget():Void
 	{
 		if( this.targetIndex > -1 )
 			return;
-		
-		if( CardTypes.isHero(card.type) )
-		{
-			this.targetIndex = this.defaultTargetIndex;
-			this.cachedTargetX = this.battleField.field.targets[this.targetIndex * 2];
-			this.cachedTargetY = this.battleField.field.targets[this.targetIndex * 2 + 1];
-			this.estimateAngle(this.cachedTargetX, this.cachedTargetY);
-			return;
-		}
 		
 		var dis = 2000.0;
 		var i:Int = 0;
@@ -174,9 +163,13 @@ class Unit extends Colleague
 		}
 
 		if( dis == 2000.0 )
+		{
 			this.targetIndex = this.defaultTargetIndex;
+			this.cachedTargetX = this.battleField.field.targets[this.targetIndex * 2];
+			this.cachedTargetY = this.battleField.field.targets[this.targetIndex * 2 + 1];
+		}
 		this.estimateAngle(this.cachedTargetX, this.cachedTargetY);
-		// trace("[" + cachedTargetX + " " + cachedTargetY + "] => dx:" + deltaX + " dy:" + deltaY);
+		// if( id == 6) trace("dis:" + dis + " inedx:" + this.targetIndex);
 	}
 
 	private function estimateAngle(x:Float, y:Float) : Void 
@@ -207,7 +200,11 @@ class Unit extends Colleague
 		{
 			// last target
 			if( this.targetIndex == this.defaultTargetIndex )
+			{
+				this.deltaX = this.deltaY = 0;
 				return;
+			}
+			// if( id == 6) trace("new target");
 			this.targetIndex = -1;
 			this.findTarget();
 		}
@@ -252,6 +249,7 @@ class Unit extends Colleague
 				ret = u.id;
 			}
 		}
+		// if( id == 6 && ret > -1) trace(ret);
 		return ret;
 	}
 	
@@ -271,7 +269,6 @@ class Unit extends Colleague
 			return;
 		
 		this.setHealth(this.health - damage);
-		//trace("type:" + this.card.type + " id:" + id + " damage:" + damage + " health:" + health);
 		this.fireEvent(id, BattleEvent.HIT, damage);
 	}
 

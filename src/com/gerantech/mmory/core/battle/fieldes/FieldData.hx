@@ -32,7 +32,7 @@ class FieldData {
 
 		for (o in children) {
 			if (o.name == "obstacle") {
-				this.physics.add(new Obstacle(o.transform.tx + o.shape.width * 0.5, o.transform.ty + o.shape.height * 0.5, o.shape.width * 0.5, o.shape.height * 0.5));
+				this.physics.add(new Obstacle(o));
 			} else if (o.name == "target") {
 				this.targets.unshift(o.transform.ty);
 				this.targets.unshift(o.transform.tx);

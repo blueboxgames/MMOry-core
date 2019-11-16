@@ -75,23 +75,21 @@ class BattleFieldTest extends Sprite {
 		this.battleField = new BattleField();
 		this.battleField.initialize(player, bot, field, 0, t / 1000, t, false, 0);
 
+		// add heros
 		var len = field.mode == Challenge.MODE_0_HQ ? 6 : 2;
-		if( field.mode != Challenge.MODE_1_TOUCHDOWN )
-		while (unitId < len) {
-			var side = unitId % 2;
-			var hqType = 201;
-			if (field.mode == Challenge.MODE_1_TOUCHDOWN)
-				hqType = 221;
-			else if (field.mode == Challenge.MODE_2_BAZAAR)
-				hqType = 202;
-			var heroType = field.mode == Challenge.MODE_0_HQ ? 222 : 223;
-			var card = new Card(battleField.games[side], unitId > 1 ? heroType : hqType,
-				battleField.friendlyMode > 0 ? 9 : battleField.games[side].player.get_level(0));
-			var x = Math.ffloor(field.targets[unitId * 2]);
-			var y = Math.ffloor(field.targets[unitId * 2 + 1]) + (side == 0 ? - 64 : 64);
-			if( x != BattleField.WIDTH * 0.5 )
-				x += field.targets[unitId * 2] > BattleField.WIDTH * 0.5 ? 32 : -32;
-			this.addUnit(card, side, x, y, card.z);
+		if (field.mode != Challenge.MODE_1_TOUCHDOWN) {
+			while (unitId < len) {
+				var side = unitId % 2;
+				var hqType = 201;
+				if (field.mode == Challenge.MODE_1_TOUCHDOWN)
+					hqType = 221;
+				else if (field.mode == Challenge.MODE_2_BAZAAR)
+					hqType = 202;
+				var heroType = field.mode == Challenge.MODE_0_HQ ? 222 : 223;
+				var card = new Card(battleField.games[side], unitId > 1 ? heroType : hqType,
+					battleField.friendlyMode > 0 ? 9 : battleField.games[side].player.get_level(0));
+				this.addUnit(card, side, Math.ffloor(field.targets[unitId * 2]), Math.ffloor(field.targets[unitId * 2 + 1]), card.z);
+			}
 		}
 
 		this.battleField.decks = new IntIntCardMap();

@@ -99,7 +99,7 @@ class Unit extends Colleague
 				if( CoreUtils.getDistance(this.x, this.y, enemy.x, enemy.y) <= this.card.bulletRangeMax + enemy.card.sizeH + card.sizeH )
 				{
 				// if( id == 6)trace("attack " + enemyId);
-					this.attack(enemy);	
+					this.attack(enemy);
 					return;
 				}
 			}
@@ -110,6 +110,7 @@ class Unit extends Colleague
 				return;
 			}
 			
+			// follow enemy
 			if( this.card.speed <= 0 )
 				return;
 			if( newEnemyFound )
@@ -123,6 +124,7 @@ class Unit extends Colleague
 			return;
 		}
 
+		// move to target
 		if( this.card.speed <= 0 )
 			return;
 		if( this.targetIndex == 100 )
@@ -230,7 +232,7 @@ class Unit extends Colleague
 			// prevent disposed and deploying units
 			if( u == null || u.disposed() || u.summonTime != 0 )
 				continue;
-			// prevent team-mates
+			// prevent team-mates attack
 			if( this.card.bulletDamage >= 0 && this.side == u.side )
 				continue;
 			// prevent axis units for building target cards 
@@ -259,7 +261,6 @@ class Unit extends Colleague
 #if java
 		this.battleField.addBullet(this, side, x, y, enemy);
 #end
-		this.fireEvent(id, BattleEvent.ATTACK, enemy);
 		this.attackTime = this.battleField.now + this.card.bulletShootGap;
 	}
 	

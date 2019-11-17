@@ -91,6 +91,7 @@ class Unit extends Colleague
 			var enemy = this.battleField.units.get(enemyId);
 			var newEnemyFound = this.cachedEnemy != enemyId;
 			this.cachedEnemy = enemyId;
+			this.targetIndex = 100;
 
 			if( this.attackTime < this.battleField.now )
 			{
@@ -114,8 +115,6 @@ class Unit extends Colleague
 			if( newEnemyFound )
 			{
 				// if( id == 6)trace("move " + enemyId);
-				this.targetIndex = 100;
-				this.deltaX = this.deltaY = 0;
 				this.cachedTargetX = enemy.x;
 				this.cachedTargetY = enemy.y;
 				this.estimateAngle(enemy.x, enemy.y);

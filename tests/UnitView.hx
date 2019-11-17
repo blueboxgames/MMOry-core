@@ -45,15 +45,12 @@ class UnitView extends Unit {
 		return true;
 	}
 
-	override function fireEvent(dispatcherId:Int, type:String, data:Any) {
-		if (type == BattleEvent.ATTACK) {
-			var target = cast(data, Unit);
-			var b = new Bullet(battleField, bulletId, card, side, x, y, 0, target.x, target.y, 0);
-			b.targetId = target.id;
-			battleField.bullets.set(bulletId, b);
-			bulletId++;
-		}
-		super.fireEvent(dispatcherId, type, data);
+	override private function attack(enemy:Unit):Void {
+		var b = new Bullet(battleField, bulletId, card, side, x, y, 0, enemy.x, enemy.y, 0);
+		b.targetId = enemy.id;
+		battleField.bullets.set(bulletId, b);
+		bulletId++;
+		super.attack(enemy);
 	}
 
 	override function dispose() {

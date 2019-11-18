@@ -23,6 +23,7 @@ class Unit extends Colleague
 	var targetIndex:Int = 100;
 	var defaultTargetIndex:Int;
 	var immortalTime:Float;
+	var maxDistanseSkip:Int = 10;
 
 	public function new(id:Int, battleField:BattleField, card:Card, side:Int, x:Float, y:Float, z:Float) 
 	{
@@ -226,6 +227,10 @@ class Unit extends Colleague
 				return this.cachedEnemy;
 		}
 
+		maxDistanseSkip ++;
+		if( maxDistanseSkip < 10 )
+			return -1;
+		maxDistanseSkip = 0;
 		var ret:Int = -1;
 		var distance:Float = this.card.focusRange;
 		for( u in this.battleField.units )

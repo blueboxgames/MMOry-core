@@ -71,8 +71,10 @@ class GameObject
 
 	function fireEvent (dispatcherId:Int, type:String, data:Any) : Void
 	{
+#if java
 		if( eventCallback != null )
 			eventCallback.dispatch(dispatcherId, type, data);
+#end
 	}
 
 	public function dispose() : Void

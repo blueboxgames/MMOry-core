@@ -12,7 +12,7 @@ import com.gerantech.mmory.core.constants.CardTypes;
  */
 class Unit extends Colleague
 {
-	static var TARGET_SIZE = 50;
+	static var TARGET_SIZE = 40;
 	public var health:Float;
 	public var cardHealth:Float;
 	public var bulletId:Int = 0;

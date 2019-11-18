@@ -85,6 +85,8 @@ class Unit extends Colleague
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= decide -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	private function decide() 
 	{
+		if( this.state < GameObject.STATE_2_MORTAL )
+			return;
 		var enemyId = this.getNearestEnemy();
 		if( enemyId > -1 )
 		{

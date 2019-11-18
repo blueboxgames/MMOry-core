@@ -12,7 +12,7 @@ import com.gerantech.mmory.core.constants.CardTypes;
  */
 class Unit extends Colleague
 {
-	static var TARGET_SIZE = 40;
+	static var TARGET_SIZE = 48;
 	public var health:Float;
 	public var cardHealth:Float;
 	public var bulletId:Int = 0;
@@ -219,16 +219,14 @@ class Unit extends Colleague
 		var cy:Float = this.deltaY * this.battleField.deltaTime;
 		this.setPosition(x + cx, y + cy, GameObject.NaN);
 	}
-	
+
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= attack -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	private function getNearestEnemy() : Int
 	{
 		if( this.cachedEnemy != -1 && this.battleField.units.exists(this.cachedEnemy) && !this.battleField.units.get(this.cachedEnemy).disposed() )
-		{
 			if( CoreUtils.getDistance(this.x, this.y, this.battleField.units.get(this.cachedEnemy).x, this.battleField.units.get(this.cachedEnemy).y) <= this.card.focusRange )
 				return this.cachedEnemy;
-		}
-
+		
 		maxDistanseSkip ++;
 		if( maxDistanseSkip < 10 )
 			return -1;

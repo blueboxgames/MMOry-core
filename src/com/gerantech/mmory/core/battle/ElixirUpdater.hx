@@ -10,7 +10,7 @@ class ElixirUpdater
 {
 	static public var INIT_VALUE:Int = 5;
 	static public var MAX_VALUE:Int = 10;
-	static public var SPEED:Float = 0.00030;
+	static public var SPEED:Float = 0.00020;
 
 	public var bars:Array<Float>;
 	public var reserved:Array<Int>;

@@ -28,7 +28,7 @@ class BattleField
 #end
 	static public var WIDTH:Int = 900;
 	static public var HEIGHT:Int = 1200;
-	static public var PADDING:Int = 100;
+	static public var PADDING:Int = 40;
 	static public var SUMMON_PADDING:Int = 32;
 	
 	static public var STATE_0_WAITING:Int = 0;

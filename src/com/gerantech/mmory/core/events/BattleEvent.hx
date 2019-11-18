@@ -10,10 +10,8 @@ class BattleEvent
 class BattleEvent extends flash.events.Event
 #end
 {
-static public var ATTACK:String = "attack";
-static public var HIT:String = "hit";
-static public var STATE_CHANGE:String = "stateChange";
-static public var PAUSE:String = "pause";
+static public var STATE_CHANGE:String = "sc";
+static public var PAUSE:String = "p";
 
 #if java
 public function new() {}

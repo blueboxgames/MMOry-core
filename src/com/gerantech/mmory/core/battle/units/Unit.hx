@@ -6,7 +6,6 @@ import com.gerantech.mmory.core.battle.BattleField;
 import com.gerantech.mmory.core.battle.GameObject;
 import com.gerantech.mmory.core.battle.units.Card;
 import com.gerantech.mmory.core.constants.CardTypes;
-import com.gerantech.mmory.core.events.BattleEvent;
 
 /**
  * @author Mansour Djawadi
@@ -174,17 +173,19 @@ class Unit extends Colleague
 		// if( id == 6) trace("dis:" + dis + " inedx:" + this.targetIndex);
 	}
 
-	private function estimateAngle(x:Float, y:Float) : Void 
+	private function estimateAngle(x:Float, y:Float):Float 
 	{
+		// prevent wrong angle calculation
 		if( y - this.y == 0 && x - this.x == 0 )
 		{
 			this.deltaX = this.deltaY = 0;
-			return;
+			return -1;
 		}
-		var angle:Float = Math.atan2(y - this.y, x - this.x);
+		var angle = Math.atan2(y - this.y, x - this.x);
 		this.deltaX = Math.round(this.card.speed * Math.cos(angle) * 100000) / 100000;
 		this.deltaY = Math.round(this.card.speed * Math.sin(angle) * 100000) / 100000;
-		// trace("t:" + card.type + " angle:" + angle + "  x:" + x + " " + this.x + " ,  y:" + y + " " + this.y + " ,  delta:" + deltaX + " " + deltaY);
+		// if( side == 1 && card.type == 101 ) trace("t:" + card.type + "  x:" + x + " " + this.x + " ,  y:" + y + " " + this.y + " ,  delta:" + deltaX + " " + deltaY);
+		return angle;
 	}
 
 	private function move() : Void
@@ -270,7 +271,6 @@ class Unit extends Colleague
 			return;
 		
 		this.setHealth(this.health - damage);
-		this.fireEvent(id, BattleEvent.HIT, damage);
 	}
 
 	private function setHealth(health:Float) : Float
@@ -298,11 +298,7 @@ class Unit extends Colleague
 		super.dispose();
 	}
 	
-	#if java
 	public function toString():String
-	#elseif flash
-	public override function toString():String
-	#end
 	{
 		return "type:" + this.card.type + " x:" + this.x + " y:" + this.y + " side:" + this.side + " level:" + this.card.level + " elixirSize:" + this.card.elixirSize + " summonTime:" + this.card.summonTime + " health:" + this.health + " speed:" + this.card.speed + " bulletDamage:" + this.card.bulletDamage + " bulletFireGap:" + this.card.bulletShootGap + " bulletRangeMax:" + this.card.bulletRangeMax;
 	}

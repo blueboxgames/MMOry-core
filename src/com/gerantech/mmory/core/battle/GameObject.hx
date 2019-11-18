@@ -4,12 +4,9 @@ import com.gerantech.mmory.core.battle.units.Card;
  * ...
  * @author Mansour Djawadi
  */
-#if flash
-class GameObject extends flash.events.EventDispatcher
-{
-#elseif java
 class GameObject
 {
+#if java
 	public var eventCallback:com.gerantech.mmory.core.events.EventCallback;
 #end
 	static public var NaN:Int = -1000000;
@@ -35,9 +32,6 @@ class GameObject
 	public var deltaY:Float;
 	public function new(id:Int, battleField:BattleField, card:Card, side:Int, x:Float, y:Float, z:Float)
 	{
-		#if flash
-		super();
-		#end
 		this.id = id;
 		this.battleField = battleField;
 		this.side = side;
@@ -77,12 +71,8 @@ class GameObject
 
 	function fireEvent (dispatcherId:Int, type:String, data:Any) : Void
 	{
-		#if java
 		if( eventCallback != null )
 			eventCallback.dispatch(dispatcherId, type, data);
-		#elseif flash
-		dispatchEvent(new com.gerantech.mmory.core.events.BattleEvent(type, data));
-		#end
 	}
 
 	public function dispose() : Void

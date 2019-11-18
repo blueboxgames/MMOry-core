@@ -63,9 +63,6 @@ class Collision {
 	}
 
 	public function checkCP(contacts:Contacts, a:Colleague, b:Colleague):Bool {
-		if (!check(contacts, a, b))
-			return false;
-
 		contacts.count = 0;
 
 		CMath.matrix_transpose(b.shape.matrix);

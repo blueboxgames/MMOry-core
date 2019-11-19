@@ -12,7 +12,6 @@ import com.gerantech.mmory.core.constants.CardTypes;
  */
 class Unit extends Colleague
 {
-	static var TARGET_SIZE = 48;
 	public var health:Float;
 	public var cardHealth:Float;
 	public var bulletId:Int = 0;
@@ -154,7 +153,7 @@ class Unit extends Colleague
 			tx = this.battleField.field.targets[i];
 			ty = this.battleField.field.targets[i + 1];
 			i += 2;
-			if( (side == 0 && y < ty + TARGET_SIZE * 2) || (side == 1 && y > ty - TARGET_SIZE * 2) )
+			if( ( side == 0 && y < ty + card.sizeH + Card.radiusMax + 1 ) || ( side == 1 && y > ty - card.sizeH - Card.radiusMax - 1 ) )
 				continue;
 			var d = CoreUtils.getDistance(tx, ty, x, y);
 			if( dis > d )
@@ -202,7 +201,7 @@ class Unit extends Colleague
 		}
 
 		// turn to new target
-		if( this.targetIndex > -1 && (deltaX >= 0 && x >= cachedTargetX - TARGET_SIZE || deltaX < 0 && x <= cachedTargetX + TARGET_SIZE) && (deltaY >= 0 && y >= cachedTargetY - TARGET_SIZE || deltaY < 0 && y <= cachedTargetY + TARGET_SIZE) )
+		if( this.targetIndex > -1 && (deltaX >= 0 && x >= cachedTargetX - card.sizeH - Card.radiusMax || deltaX < 0 && x <= cachedTargetX + card.sizeH + Card.radiusMax) && (deltaY >= 0 && y >= cachedTargetY - card.sizeH - Card.radiusMax || deltaY < 0 && y <= cachedTargetY + card.sizeH + Card.radiusMax) )
 		{
 			// last target
 			if( this.targetIndex == this.defaultTargetIndex )

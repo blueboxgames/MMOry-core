@@ -46,6 +46,7 @@ class Card
 	public var bulletDamageArea:Float = 180;
 	public var bulletExplodeDelay:Float = 0;
 	public var bulletForceKill:Bool = false;
+	static public var radiusMax:Float = 0; 
 
 	public function new(game:Game, type:Int, level:Int)
 	{
@@ -68,8 +69,9 @@ class Card
 		z = ScriptEngine.get(ScriptEngine.T10_Z, type);
 		speed = ScriptEngine.get(ScriptEngine.T11_SPEED, type);
 		health = ScriptEngine.get(ScriptEngine.T12_HEALTH, type, level);
-		sizeH = ScriptEngine.get(ScriptEngine.T13_SIZE_H, type);
 		sizeV = ScriptEngine.get(ScriptEngine.T14_SIZE_V, type);
+		sizeH = ScriptEngine.get(ScriptEngine.T13_SIZE_H, type);
+		radiusMax = Math.max(radiusMax, sizeH);
 		focusRange = ScriptEngine.get(ScriptEngine.T15_FOCUS_RANGE, type);
 		explosive = ScriptEngine.getBool(ScriptEngine.T16_EXPLOSIVE, type);
 		focusUnit = ScriptEngine.getBool(ScriptEngine.T17_FOCUS_UNIT, type);

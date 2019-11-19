@@ -13,7 +13,6 @@ class ScriptEngine
 	static public var T02_ELIXIR_SIZE = 2;
 	static public var T03_QUANTITY = 3;
 	static public var T04_SUMMON_TIME = 4;
-	static public var T05_SUMMON_SIZE:Int = 5;
 	//static public var T05_BIRTH_RATE = 5;
 	
 	static public var T10_Z:Int = 10;

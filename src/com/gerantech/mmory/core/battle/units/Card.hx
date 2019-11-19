@@ -78,8 +78,6 @@ class Card
 		focusHeight = ScriptEngine.getInt(ScriptEngine.T18_FOCUS_HEIGHT, type);
 		selfDammage = ScriptEngine.get(ScriptEngine.T19_SELF_DAMMAGE, type, health);
 		
-		summonSize = quantity > 1 ? ScriptEngine.get(ScriptEngine.T05_SUMMON_SIZE, type) : sizeH;
-
 		// bullet data
 		bulletSpeed = ScriptEngine.get(ScriptEngine.T21_BULLET_SPEED, type, level);
 		bulletDamage = ScriptEngine.get(ScriptEngine.T22_BULLET_DAMAGE, type, level);

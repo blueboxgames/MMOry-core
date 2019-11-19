@@ -471,30 +471,28 @@ class BattleField
 
 	public function fixSummonPosition(point:Point2, cardType:Int, summonState:Int, side:Int = 0):Point2
 	{
-		var card = games[side].player.cards.get(cardType);
-		var padding = SUMMON_PADDING + (card == null ? 0 : card.summonSize);
-		if( point.x < padding )
-			point.x = padding;
-		if( point.x > WIDTH - padding )
-			point.x = WIDTH - padding;
-		if( point.y > HEIGHT - padding )
-			point.y = HEIGHT - padding;
+		if( point.x < SUMMON_PADDING )
+			point.x = SUMMON_PADDING;
+		if( point.x > WIDTH - SUMMON_PADDING )
+			point.x = WIDTH - SUMMON_PADDING;
+		if( point.y > HEIGHT - SUMMON_PADDING )
+			point.y = HEIGHT - SUMMON_PADDING;
 
-		var top:Float = padding;
+		var top:Float = SUMMON_PADDING;
 		if( !CardTypes.isSpell(cardType) )
 		{
 			if( field.mode == Challenge.MODE_1_TOUCHDOWN || field.mode == Challenge.MODE_2_BAZAAR )
 			{
-				top = HEIGHT * 0.6666 + padding;
+				top = HEIGHT * 0.6666 + SUMMON_PADDING;
 			}
 			else
 			{
 				if( summonState >= SUMMON_AREA_BOTH )
-					top = HEIGHT * 0.3333 + padding;
+					top = HEIGHT * 0.3333 + SUMMON_PADDING;
 				else if( point.x > WIDTH * 0.5 )
-					top = HEIGHT * (summonState == SUMMON_AREA_RIGHT ? 0.3333 : 0.5) + padding;
+					top = HEIGHT * (summonState == SUMMON_AREA_RIGHT ? 0.3333 : 0.5) + SUMMON_PADDING;
 				else
-					top = HEIGHT * (summonState == SUMMON_AREA_LEFT ? 0.3333 : 0.5) + padding;
+					top = HEIGHT * (summonState == SUMMON_AREA_LEFT ? 0.3333 : 0.5) + SUMMON_PADDING;
 			}
 		}
 		if( point.y < top )

@@ -59,7 +59,7 @@ class Collision {
 			contacts.normalX *= -1;
 			contacts.normalY *= -1;
 		}
-		return true;
+		return contacts.count > 0;
 	}
 
 	public function checkCP(contacts:Contacts, a:Colleague, b:Colleague):Bool {
@@ -72,7 +72,7 @@ class Collision {
 
 		// Find edge with minimum penetration
 		// Exact concept as using support points in Polygon vs Polygon
-		var separation:Float = Math.NEGATIVE_INFINITY;
+		var separation:Float = -100000;
 		var faceNormal:Int = 0;
 		for (i in 0...b.shape.vertexCount) {
 			var cxsb = centerX - b.shape.getX(i);

@@ -12,7 +12,8 @@ class FieldData {
 	public var json:Dynamic;
 	public var times:IntList;
 	public var mapData:String;
-	public var physics:Colleagues2d;
+	public var air:Colleagues2d;
+	public var ground:Colleagues2d;
 	public var targets:Array<Float>;
 
 	public function new(mode:Int, mapData:String, ?arg:Dynamic = null) {
@@ -24,15 +25,16 @@ class FieldData {
 		this.times.push(180);
 		this.times.push(240);
 
+		this.air = new Colleagues2d(BattleField.DELTA_TIME);
+		this.ground = new Colleagues2d(BattleField.DELTA_TIME);
 		this.targets = new Array();
-		this.physics = new Colleagues2d(BattleField.DELTA_TIME);
 		this.mapData = mapData;
 		this.json = Json.parse(mapData);
 		var children:Array<Dynamic> = this.json.children[0].artboard.children;
 
 		for (o in children) {
 			if (o.name == "obstacle") {
-				this.physics.add(new Obstacle(o));
+				this.ground.add(new Obstacle(o));
 			} else if (o.name == "target") {
 				this.targets.unshift(o.transform.ty);
 				this.targets.unshift(o.transform.tx);

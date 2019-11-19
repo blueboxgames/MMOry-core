@@ -1,4 +1,5 @@
 package com.gerantech.mmory.core.battle;
+import com.gerantech.colleagues.Colleague;
 import com.gerantech.mmory.core.utils.GraphicMetrics;
 import com.gerantech.mmory.core.battle.units.Unit;
 import com.gerantech.mmory.core.battle.bullets.Bullet;
@@ -223,13 +224,17 @@ class BattleField
 				unit.update();
 
 		// -=-=-=-=-=-=-=-=-=  UPDATE PHYSICS-ENGINE  =-=-=-=-=-=-=-=-=-=-=-
-		this.field.physics.step();
+		this.field.air.step();
+		this.field.ground.step();
 		
 		// remove dead units
 		while( this.garbage.length > 0 )
 		{
 			var u = this.garbage.pop();
-			this.field.physics.colleagues.remove(this.units.get(u));
+			if( this.units.get(u).card.z < 0 )
+				this.field.air.colleagues.remove(this.units.get(u));
+			else
+				this.field.ground.colleagues.remove(this.units.get(u));
 			this.units.remove(u);
 		}
 		
@@ -306,8 +311,13 @@ class BattleField
 
 	private function addUnit(card:Card, side:Int, x:Float, y:Float, z:Float):Void
 	{
-		var c = this.field.physics.add(new Unit(this.unitId, this, card, side, x, y, z));
-		this.units.set(this.unitId, cast(c, Unit));
+		var u = new Unit(this.unitId, this, card, side, x, y, z);
+		if( card.z < 0 )
+			this.field.air.add(u);
+		else
+			this.field.ground.add(u);
+		this.units.set(this.unitId, u);
+		
 		this.unitId ++;
 	}
 

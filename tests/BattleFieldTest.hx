@@ -125,7 +125,7 @@ class BattleFieldTest extends Sprite {
 				cast(b, UnitView).setV(this.skipDrawing);
 			return;
 		}
-		var card = this.battleField.decks.get(0).get(103); // + Math.floor(Math.random() * 8));
+		var card = this.battleField.decks.get(0).get(101 + Math.floor(Math.random() * 8));
 		for (i in 0...card.quantity)
 			this.addUnit(card, event.stageY > BattleField.HEIGHT * 0.5 * scaleY ? 0 : 1, CoreUtils.getXPosition(card.quantity, i, event.stageX / scaleX),
 				CoreUtils.getYPosition(card.quantity, i, event.stageY / scaleY), card.z);

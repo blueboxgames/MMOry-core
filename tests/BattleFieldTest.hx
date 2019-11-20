@@ -102,7 +102,7 @@ class BattleFieldTest extends Sprite {
 		this.battleField.state = BattleField.STATE_2_STARTED;
 
 		// draw obstacles
-		for (c in this.battleField.field.physics.colleagues)
+		for (c in this.battleField.field.ground.colleagues)
 			if (Std.is(c, Obstacle))
 				c.show(this);
 
@@ -133,7 +133,10 @@ class BattleFieldTest extends Sprite {
 
 	private function addUnit(card:Card, side:Int, x:Float, y:Float, z:Float):Void {
 		var u = new UnitView(this, unitId, this.battleField, card, side, x, y, z);
-		this.battleField.field.physics.add(u);
+		if (card.z < 0)
+			this.battleField.field.air.add(u);
+		else
+			this.battleField.field.ground.add(u);
 		this.battleField.units.set(unitId, u);
 		unitId++;
 	}

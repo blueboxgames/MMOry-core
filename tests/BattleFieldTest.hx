@@ -1,15 +1,13 @@
 package;
 
+import com.gerantech.mmory.core.Game;
+import com.gerantech.mmory.core.InitData;
 import com.gerantech.mmory.core.battle.Obstacle;
 import com.gerantech.mmory.core.utils.CoreUtils;
 import com.gerantech.mmory.core.battle.units.Card;
 import com.gerantech.mmory.core.socials.Challenge;
 import com.gerantech.mmory.core.utils.maps.IntIntMap;
 import com.gerantech.mmory.core.utils.maps.IntIntCardMap;
-import com.gerantech.colleagues.CMath;
-import com.gerantech.colleagues.Shape;
-import com.gerantech.mmory.core.Game;
-import com.gerantech.mmory.core.InitData;
 import com.gerantech.mmory.core.battle.BattleField;
 import com.gerantech.mmory.core.battle.fieldes.FieldData;
 import com.gerantech.mmory.core.scripts.ScriptEngine;
@@ -27,7 +25,7 @@ class BattleFieldTest extends Sprite {
 	}
 
 	private var playerId:Int = 10002;
-	private var challengeIndex:Int = 2;
+	private var challengeIndex:Int = 1;
 
 	private var skipDrawing:Bool;
 	private var challengeMode:Int;

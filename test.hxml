@@ -2,7 +2,7 @@
 -cp src
 -lib hscript
 -main BattleFieldTest
-# -D advanced-telemetry
+-D advanced-telemetry
 -D fdb
 --debug
 -swf bin/application.swf

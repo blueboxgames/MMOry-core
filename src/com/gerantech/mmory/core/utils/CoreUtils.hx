@@ -56,7 +56,7 @@ class CoreUtils
 	static var GAP:Float = 40;
 	static public function getXPosition(max:Int, i:Int, x:Float) : Float
 	{
-		if( max == 2 )
+		if( max <= 2 )
 		{
 			return switch ( i )
 			{
@@ -65,7 +65,7 @@ class CoreUtils
 				default : x;
 			}
 		}
-		if( max == 3 )
+		if( max <= 3 )
 		{
 			return switch ( i )
 			{
@@ -75,7 +75,7 @@ class CoreUtils
 				default : x;
 			}
 		}
-		if( max == 4 )
+		if( max <= 4 )
 		{
 			return switch ( i )
 			{
@@ -86,7 +86,7 @@ class CoreUtils
 				default : x;
 			}
 		}
-		if( max == 6 )
+		if( max <= 6 )
 		{
 			return switch ( i )
 			{
@@ -100,7 +100,7 @@ class CoreUtils
 			}
 		}
 
-	    if( max == 12 )
+	    if( max <= 12 )
         {
             return switch ( i )
 			{
@@ -125,7 +125,7 @@ class CoreUtils
 	
 	static public function getYPosition(max:Int, i:Int, y:Float) : Float
 	{
-		if( max == 2 )
+		if( max <= 2 )
 		{
 			return switch ( i )
 			{
@@ -134,7 +134,7 @@ class CoreUtils
 				default : y;
 			}
 		}
-		if( max == 3 )
+		if( max <= 3 )
 		{
 			return switch ( i )
 			{
@@ -144,7 +144,7 @@ class CoreUtils
 				default : y;
 			}
 		}
-		if( max == 4 )
+		if( max <= 4 )
 		{
 			return switch ( i )
 			{
@@ -155,7 +155,7 @@ class CoreUtils
 				default : y;
 			}
 		}
-		if( max == 6 )
+		if( max <= 6 )
 		{
 			return switch ( i )
 			{
@@ -168,7 +168,7 @@ class CoreUtils
 				default : y;
 			}
 		}
-		if( max == 12 )
+		if( max <= 12 )
 		{
 			return switch ( i )
 			{

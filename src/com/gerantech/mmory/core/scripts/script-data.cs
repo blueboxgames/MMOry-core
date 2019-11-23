@@ -135,9 +135,9 @@ if( __type == 3 )
 		case	114	:	 3	;
 		case	115	:	 1	;
 		case	116	:	 1	;
-		case	117	:  12	;
-		case  118 :  1	;
-		case	119	:  1	;
+		case	117	:	 9	;
+		case  	118 :	 1	;
+		case	119	:	 1	;
 	
 		case	151	:	 1	;
 		case	152	:	 1	;
@@ -296,9 +296,9 @@ if( __type == 13 )
 		case	114	:	10	;
 		case	115	:	25	;
 		case	116	:	60	;	
-		case	117	: 20	;
-		case	118	: 35	;
-		case	119	: 40	;
+		case	117	:	20	;
+		case	118	:	35	;
+		case	119	:	40	;
 
 		
 		case	201	:	40	;
@@ -484,18 +484,18 @@ if( __type == 22 )
 		case	105	:	0.68	;
 		case	106	:	0.16	;
 		case	107	:	0.50	;
-		case	108	:	0.09  ;
+		case	108	:	0.09	;
 		case	109	:	-0.1	;
-		case	110	: 0.171	;
-		case	111	: 0.24	;
-		case	112	:	0.157	;
+		case	110	:	0.17	;
+		case	111	:	0.24	;
+		case	112	:	0.15	;
 		case	113	:	0.3		;
 		case	114	:	0.206	;
 		case	115	:	0.24	;
 		case	116	:	0.16	;	
-		case	117	: 0.14	;
-		case	118	: 0.60  ;
-		case	119	: 0.20  ; 
+		case	117	:	0.14	;
+		case	118	:	0.60	;
+		case	119	:	0.20	; 
 		
 		case	151	:	0.70	;
 		case	152	:	0.40 	;

@@ -51,14 +51,13 @@ class Exchanger
 			return MessageTypes.RESPONSE_NOT_ALLOWED;
 		if( item.type == ExchangeType.C104_STARS && item.numExchanges < 10 )
 			return MessageTypes.RESPONSE_NOT_ALLOWED;
-		
 		if( item.category == ExchangeType.C100_FREES )
 			findRandomOutcome(item, now);
 		else if( item.category == ResourceType.R30_CHALLENGES )
 			item.outcomes.set(item.type, 1);
 		// provide requirements
 		item.requirements = getRequierement(item, now);
-		trace("item.requirements", item.requirements.toString());
+		trace("item: " + item.toString());
 		// start opening process
 		if( item.category == ExchangeType.C110_BATTLES && item.getState(now) == ExchangeItem.CHEST_STATE_WAIT )
 		{
@@ -75,16 +74,17 @@ class Exchanger
 						item.expiredAt = 0;
 						return MessageTypes.RESPONSE_NOT_ENOUGH_REQS;
 					}
+					return exchange(item, now, confirmedHards);
 				}
 				game.player.resources.reduceMap(item.requirements);
 				item.requirements = new IntIntMap();
-				return res == MessageTypes.RESPONSE_SUCCEED ? res : exchange(item, now, confirmedHards);
+				return res;
 			}
 			return res;
 		}
 		
 		var deductions = game.player.deductions(item.requirements);
-		var needsHard = toHard(deductions );
+		var needsHard = toHard(deductions);
 		trace("confirmedHards:" + confirmedHards + " needsHard:" + needsHard + " deductions:" + deductions.toString() + " reqs:" + item.requirements.toString() + " outs:" + item.outcomes.toString());
 		if( !game.player.has(item.requirements) && needsHard > confirmedHards )
 			return MessageTypes.RESPONSE_NOT_ENOUGH_REQS;

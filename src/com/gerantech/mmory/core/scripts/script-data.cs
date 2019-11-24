@@ -281,31 +281,31 @@ if( __type == 13 )
 	return switch( __arg0 )
 	{
 		case	101	:	30	;
-		case	102	:	45  ;
-		case	103	:	30	;
-		case	104	:	30	;
-		case	105	:	40	;
-		case	106	:	30	;
-		case	107	:	30	;
-		case	108	:	30	;
+		case	102	:	50  ;
+		case	103	:	32	;
+		case	104	:	35	;
+		case	105	:	45	;
+		case	106	:	35	;
+		case	107	:	35	;
+		case	108	:	35	;
 		case	109	:	40	;
-		case	110	:	20	;
-		case	111	:	25	;
-		case	112	:	25	;
-		case	113	:	20	;
-		case	114	:	30	;
-		case	115	:	25	;
+		case	110	:	35	;
+		case	111	:	35	;
+		case	112	:	35	;
+		case	113	:	35	;
+		case	114	:	35	;
+		case	115	:	35	;
 		case	116	:	60	;	
-		case	117	:	20	;
+		case	117	:	30	;
 		case	118	:	35	;
 		case	119	:	40	;
 
 		
-		case	201	:	40	;
-		case	202	:	45	;
-		case	221	:	30	;
+		case	201	:	60	;
+		case	202	:	55	;
+		case	221	:	35	;
 		case	222	:	40	;
-		case	223	:	25	;
+		case	223	:	35	;
 		
 		default		:	30	;
 	}

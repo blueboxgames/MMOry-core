@@ -32,7 +32,10 @@ class Unit extends Colleague
 		this.shape.colleague = this;
 		this.shape.initialize();
 		if( card.speed <= 0 )
-	    this.setStatic();
+		{
+			this.mass *= 100.0;
+			this.invMass = (this.mass != 0.0) ? 1.0 / this.mass : 0.0;
+		}
 		this.summonTime = this.battleField.now + this.card.summonTime;
 		this.immortalTime = this.summonTime;
 		
@@ -78,6 +81,8 @@ class Unit extends Colleague
 		{
 			this.setState(GameObject.STATE_2_MORTAL);
 			this.immortalTime = 0;
+			if( card.speed <= 0 )
+				this.setStatic();
 		}
 	}
 	

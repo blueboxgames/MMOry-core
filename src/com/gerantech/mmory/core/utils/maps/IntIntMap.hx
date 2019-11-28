@@ -48,8 +48,8 @@ class IntIntMap extends flash.events.EventDispatcher
 		while ( step < list.length )
 		{
 			kayVal = list[step].split(":");
-			increase(Std.parseInt(kayVal[0]), kayVal.length > 1 ? Std.parseInt(kayVal[1]) : 0 );
-			//trace("reqsStr", list[listLen], Std.parseInt(kayVal[0]), kayVal.length > 1 ? Std.parseInt(kayVal[1]) : 0);
+			set(Std.parseInt(kayVal[0]), kayVal.length > 1 ? Std.parseInt(kayVal[1]) : 0 );
+			// trace("parse", list.length, Std.parseInt(kayVal[0]), kayVal.length > 1 ? Std.parseInt(kayVal[1]) : 0);
 			step ++;
 		}
 	}

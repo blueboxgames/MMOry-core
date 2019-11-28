@@ -58,11 +58,10 @@ class BattleFieldTest extends Sprite {
 		var data = new InitData();
 		data.id = playerId;
 		data.resources.set(2, 100);
-		data.decks.set(0, new IntIntMap());
-		for (i in 101...109) {
-			data.resources.set(i, 1);
-			data.cardsLevel.set(i, 1);
-			data.decks.get(0).set(i - 101, i);
+		data.decks.set(0, new IntIntMap("0:101,1:102,2:103,3:104,4:105,5:106,6:116,7:119"));
+		for (i in 0...8) {
+			data.resources.set(data.decks.get(0).get(i), 1);
+			data.cardsLevel.set(data.decks.get(0).get(i), 1);
 		}
 		var player = new Game();
 		player.init(data);
@@ -123,7 +122,8 @@ class BattleFieldTest extends Sprite {
 				cast(b, UnitView).setV(this.skipDrawing);
 			return;
 		}
-		var card = this.battleField.decks.get(0).get(101 + Math.floor(Math.random() * 8));
+		var cards = this.battleField.decks.get(0).keys();
+		var card = this.battleField.decks.get(0).get(cards[cast(cards.length * Math.random(), Int)]);
 		for (i in 0...card.quantity)
 			this.addUnit(card, event.stageY > BattleField.HEIGHT * 0.5 * scaleY ? 0 : 1, CoreUtils.getXPosition(card.quantity, i, event.stageX / scaleX),
 				CoreUtils.getYPosition(card.quantity, i, event.stageY / scaleY), card.z);

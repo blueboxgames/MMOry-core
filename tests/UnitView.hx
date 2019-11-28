@@ -54,8 +54,10 @@ class UnitView extends Unit {
 	}
 
 	override function dispose() {
-		this.view.parent.removeChild(this.view);
-		this.range.parent.removeChild(this.range);
+		if (this.view != null && this.view.parent != null)
+			this.view.parent.removeChild(this.view);
+		if (this.range != null && this.range.parent != null)
+			this.range.parent.removeChild(this.range);
 		super.dispose();
 	}
 }

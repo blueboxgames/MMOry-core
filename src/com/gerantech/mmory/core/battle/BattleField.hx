@@ -1,5 +1,4 @@
 package com.gerantech.mmory.core.battle;
-import com.gerantech.colleagues.Colleague;
 import com.gerantech.mmory.core.utils.GraphicMetrics;
 import com.gerantech.mmory.core.battle.units.Unit;
 import com.gerantech.mmory.core.battle.bullets.Bullet;
@@ -186,7 +185,7 @@ class BattleField
 	public function forceUpdate(deltaTime:Int) : Void
 	{
 		this.deltaTime = deltaTime;
-		this.now += deltaTime;	
+		this.now += deltaTime;
 		// -=-=-=-=-=-=-=-  UPDATE TIME-STATE  -=-=-=-=-=-=-=-=-=-
 		if( resetTime <= this.now )
 			killPioneers();
@@ -258,7 +257,7 @@ class BattleField
 		this.remainigTime = 0;	
 		update(remaning);
 	}
-	
+
 	public function getDuration() : Float
 	{
 		return now / 1000 - startAt;
@@ -283,7 +282,8 @@ class BattleField
 		if(this.now - time > LOW_NETWORK_CONNECTION_THRESHOLD)
 			return MessageTypes.RESPONSE_NOT_ALLOWED;
 
-		this.forceUpdate(cast((time - CoreUtils.getTimer()), Int));
+		var rollbackTime:Int = cast((time - this.now), Int);
+		this.forceUpdate(rollbackTime);
 		var card = decks.get(side).get(type);
 		var log:String = null;
 		if( BattleField.DEBUG_MODE )
@@ -305,7 +305,7 @@ class BattleField
 		for(i in 0...card.quantity)
 			this.addUnit(card, side, CoreUtils.getXPosition(card.quantity, i, x), com.gerantech.mmory.core.utils.CoreUtils.getYPosition(card.quantity, i, y), 0);
 
-		this.update(cast((CoreUtils.getTimer() - this.now), Int));
+		this.forceUpdate(rollbackTime*-1);
 		return unitId - 1;
 	}
 

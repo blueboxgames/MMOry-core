@@ -305,7 +305,7 @@ class BattleField
 		for(i in 0...card.quantity)
 			this.addUnit(card, side, CoreUtils.getXPosition(card.quantity, i, x), com.gerantech.mmory.core.utils.CoreUtils.getYPosition(card.quantity, i, y), 0);
 
-		this.forceUpdate(rollbackTime*-1);
+		this.forceUpdate( cast( CoreUtils.getTimer()-this.now, Int ) );
 		return unitId - 1;
 	}
 

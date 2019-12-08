@@ -568,8 +568,10 @@ class BattleField
 		if( field.mode == Challenge.MODE_1_TOUCHDOWN || field.mode == Challenge.MODE_2_BAZAAR )
 			return SUMMON_AREA_THIRD;
 		// trace(side + " e2: " + units.exists(2 + side)+ " e4: " + units.exists(4 + side) );
-		var hasLeft = units.exists(2 + side) && !units.get(2 + side).disposed();
-		var hasRight = units.exists(4 + side) && !units.get(4 + side).disposed();
+		var leftUnit = side == 0 ? 4 : 3;
+		var rightUnit = side == 0 ? 2 : 5;
+		var hasLeft = units.exists(leftUnit) && !units.get(leftUnit).disposed();
+		var hasRight = units.exists(rightUnit) && !units.get(rightUnit).disposed();
 		if( hasLeft && hasRight )
 			return SUMMON_AREA_HALF;
 		if( hasRight )

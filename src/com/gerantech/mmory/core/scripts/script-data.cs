@@ -783,10 +783,8 @@ if( __type == 42 )
 {
 	return switch( __arg0 )
 	{
-		case 1:		1;
-		case 2:		1;
 		case 3:		2;
-		default:	0;
+		default:	1;
 	}
 }
 
@@ -831,7 +829,7 @@ if( __type == 47 )
 	}
 }
 
-// getRewardCoef(type:Int) : Float
+// getRewardCoef(index:Int) : Float
 if( __type == 48 )
 {
 	return switch( __arg0 )
@@ -853,13 +851,13 @@ if( __type == 51 )
 	}
 }
 
-// getRunRequiements(mode:Int):IntIntMap
+// getRunRequiements(index:Int):IntIntMap
 if( __type == 52 )
 {
 	return switch( __arg0 )
 	{
-		case 0:		"6:2";
-		case 1:		"6:1";
+		case 0:		"6:1";
+		case 1:		"6:2";
 		case 2:		"6:3";
 		case 3:		"6:4";
 		default:	"6:0";

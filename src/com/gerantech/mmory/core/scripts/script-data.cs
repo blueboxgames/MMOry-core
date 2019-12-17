@@ -768,6 +768,29 @@ if( __type == 29 )
 // getMode(index:Int) : Int
 if( __type == 41 )
 {
+	var split = __arg1 % 3;
+
+	if( split == 0 )
+	return switch( __arg0 )
+	{
+		case 0:		0;
+		case 1:		2;
+		case 2:		1;
+		case 3:		3;
+		default:	0;
+	}
+
+	if( split == 1 )
+	return switch( __arg0 )
+	{
+		case 0:		2;
+		case 1:		0;
+		case 2:		1;
+		case 3:		3;
+		default:	0;
+	}
+
+	if( split == 2 )
 	return switch( __arg0 )
 	{
 		case 0:		1;
@@ -776,6 +799,8 @@ if( __type == 41 )
 		case 3:		3;
 		default:	0;
 	}
+
+	return __arg0;
 }
 
 // getType(index:Int) : Int
@@ -880,7 +905,7 @@ if( __type == 53 )
 //numtutorBattles(playerId:Int) : Int
 if( __type == 61 )
 {
-	return __arg0 % 2 == 0 ? 4 : 2;
+	return 4;
 }
 
 //numCovers(mode:Int, battleWins:Int) : Int

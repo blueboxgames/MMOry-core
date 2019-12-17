@@ -144,6 +144,8 @@
 	"222-attack.mp3":			{	"pre": true,	"initial": false,	"url": "http://localhost:8080/assets/222-attack.mp3"	},
 	"222.atf":						{	"pre": true,	"initial": false,	"url": "http://localhost:8080/assets/222.atf"	},
 	"222.xml":						{	"pre": true,	"initial": false,	"url": "http://localhost:8080/assets/222.xml"	},
+	"224.atf":						{	"pre": true,	"initial": false,	"url": "http://localhost:8080/assets/224.atf"	},
+	"224.xml":						{	"pre": true,	"initial": false,	"url": "http://localhost:8080/assets/224.xml"	},
 
 	"field-0.atf":					{	"pre": false,	"initial": false,	"url": "http://localhost:8080/assets/field-0.atf"	},
 	"field-0.xml":					{	"pre": false,	"initial": false,	"url": "http://localhost:8080/assets/field-0.xml"	},

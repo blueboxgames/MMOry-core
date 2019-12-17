@@ -136,7 +136,7 @@ if( __type == 3 )
 		case	115	:	 1	;
 		case	116	:	 1	;
 		case	117	:	 9	;
-		case  	118 :	 1	;
+		case  118 :	 1	;
 		case	119	:	 1	;
 	
 		case	151	:	 1	;
@@ -218,10 +218,8 @@ if( __type == 11 )
 		case	113	:	0.70;
 		case	114	:	1.10;
 		case	115	:	0.60;
-		case	116	:	0.00;
 		case	117	: 1.10;
 		case	118	: 0.70;
-		case	119	: 0.00;
 
 		case	201	:	0.00;
 		case	202	:	0.00;
@@ -264,11 +262,11 @@ if( __type == 12 )
 		case	119	: 1.50;
 
 		case	201	:	5.00;
-		case	202	:	8.00;
+		case	202	:	6.00;
 		case	221	:	6.00;
 		case	222	:	2.00;
 		case	223	:	2.50;
-		
+		case	224	: 2.50;
 		
 		default		:	1.00;
 	}
@@ -306,6 +304,7 @@ if( __type == 13 )
 		case	221	:	35	;
 		case	222	:	40	;
 		case	223	:	35	;
+		case	119	:	50	;
 		
 		default		:	30	;
 	}
@@ -344,6 +343,7 @@ if( __type == 14 )
 		case	221	:	0.90;
 		case	222	:	0.90;
 		case	223	:	0.50;
+		case	119	: 0.50;
 		
 		default		:	1.00;
 	}
@@ -405,10 +405,11 @@ if( __type == 18 )
 		case  152 : -105;
 
 		
-		case 	201 : -105 	;
-		case 	221 :	-30 	;
-		case	222	:	-105	;
-		case	223	:	-30		;
+		case 	201 : -105;
+		case 	221 :	-30 ;
+		case	222	:	-105;
+		case	223	:	-30	;
+		case	224	: -30	;
 
 		default		:	-1;
 	}
@@ -464,6 +465,7 @@ if( __type == 21 )
 		case	221	:	1.5	;
 		case	222	:	2.2	;
 		case	223	:	1.5	;
+		case	224	: 1.6	;
 		
 		default		:	1.0	;
 	}
@@ -505,7 +507,7 @@ if( __type == 22 )
 		case	221	:	0.2		;
 		case	222	:	0.26	;
 		case	223	:	0.25	;
-		
+		case	224	:	0.30	; 
 		
 		default		:	1.00	;
 	}
@@ -544,6 +546,7 @@ if( __type == 23 )
 		case 	221 :	1.0 ;
 		case 	222 :	1.5 ;
 		case 	223 :	1.1 ;
+		case	224	: 1.5 ;	
 		
 		default		:	1.0 ;
 	}
@@ -637,10 +640,11 @@ if( __type == 26 )
 		case 	221 : 0.5 	;
 		case 	222 : 1.5 	;
 		case 	223 : 0.4 	;
+		case	224	: 1.6		;
 		
 		default		:	1.0;
 	}
-	return ret * 260;
+	return ret * 270;
 }
 
 
@@ -675,11 +679,11 @@ if( __type == 15 )
 		case 	221 :	1.6 ;
 		case	222	:	1.9	;
 		case	223	:	1.6	;
-		
+		case	224	: 1.6	;
 		
 		default		:	1.0	;
 	}
-	return ret * 260;
+	return ret * 270;
 }
 
 
@@ -719,6 +723,7 @@ if( __type == 27 )
 		case 	221 :	1.00 	;
 		case 	222 :	0.50 	;
 		case	223	:	0.50	;
+		case	224	: 0.50  ;
 		
 		default 	:	1.00	;
 	}
@@ -747,11 +752,12 @@ if( __type == 29 )
 		case	109	:	true;
 		case	110	:	true;
 		case	112	:	true;
+		case	117	: true;
+		case	119	:	true;
 		case	201	:	true;
 		case	221	:	true;
 		case	222	:	true;
-		case	117	: true;
-		case	119	:	true;
+		case	224	:	true;
 		default		:	false;
 	}
 }

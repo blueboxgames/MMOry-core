@@ -16,7 +16,7 @@ class Outcome
 	static var LOSE_PONT:Int = -3;
 	static var WIN_POINT:Int = 8;
 
-	static public function get(battleField:BattleField, type:Int, alliseSide:Int, alliseStar:Int, axisStar:Int) : IntIntMap
+	static public function get(battleField:BattleField, index:Int, alliseSide:Int, alliseStar:Int, axisStar:Int) : IntIntMap
 	{
 		var ret = new IntIntMap();
 		if( battleField.friendlyMode > 0 )
@@ -29,11 +29,11 @@ class Outcome
 		if( alliesGame.player.isBot() )
 			return ret;
 		
-		// trace("mode:" + battleField.field.mode + " type:" + type);
+		// trace("mode:" + battleField.field.mode + " index:" + index);
 		var league = alliesGame.arenas.get(alliesGame.player.get_arena(0));
 
 		// points
-		var point = getPoint(battleField, type, alliseSide, alliseStar, axisStar);
+		var point = getPoint(battleField, index, alliseSide, alliseStar, axisStar);
 		if( point != 0 )
 			ret.set(ResourceType.R2_POINT, point);
 		
@@ -69,7 +69,7 @@ class Outcome
 		return ret;
 	}
 
-	static function getPoint(battleField:BattleField, type:Int, alliseSide:Int, alliseStar:Int, axisStar:Int) : Int
+	static function getPoint(battleField:BattleField, index:Int, alliseSide:Int, alliseStar:Int, axisStar:Int) : Int
 	{
 		var alliesGame = battleField.games[alliseSide];
 		var axisGame = battleField.games[alliseSide == 0 ? 1: 0];
@@ -88,7 +88,7 @@ class Outcome
 			return 0;
 
 		// var diff = alliseStar - axisStar;
-		return ScriptEngine.getInt(ScriptEngine.T48_CHALLENGE_REWARDCOEF, type ) * (alliseStar > axisStar ? WIN_POINT : LOSE_PONT);
+		return ScriptEngine.getInt(ScriptEngine.T48_CHALLENGE_REWARDCOEF, index ) * (alliseStar > axisStar ? WIN_POINT : LOSE_PONT);
 	}
 
 	static  function getEmptySlots(alliesGame:Game, now:Int) : Array<Int>

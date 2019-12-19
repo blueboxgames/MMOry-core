@@ -30,6 +30,6 @@
 {"id":221, "base":"",     "overlay":"",				"summon":"base",	 "y":"-12", "bullet":"",				    "bulletFX":"",	"smoke":"",		  "flame":"",		  "hit":"",			    "die":"blood-", "hitShake":0.0, "dieShake":1.0,	"summonSFX":[],				      "hitSFX":[],    "dieSFX":[],    "attackSFX":["221-attack"]},
 {"id":222, "base":"",     "overlay":"",				"summon":"base",	 "y":"-5",  "bullet":"black-s",		  "bulletFX":"",	"smoke":"base",	"flame":"base",	"hit":"hit-",		  "die":"blood-", "hitShake":0.0, "dieShake":1.0,	"summonSFX":[],				      "hitSFX":[],    "dieSFX":[],    "attackSFX":["222-attack"]},
 {"id":223, "base":"",     "overlay":"",				"summon":"base",	 "y":"-12", "bullet":"",		        "bulletFX":"",	"smoke":"",	    "flame":"",	    "hit":"",		      "die":"blood-", "hitShake":0.0, "dieShake":1.0,	"summonSFX":[],				      "hitSFX":[],    "dieSFX":[],    "attackSFX":["103-attack-1", "103-attack-2", "103-attack-3", "103-attack-4", "103-attack-5"]},
-{"id":119, "base":"",     "overlay":"",				"summon":"base",   "y":"-12",	"bullet":"black-l",		  "bulletFX":"",	"smoke":"base",	"flame":"base",	"hit":"hit-",		  "die":"wood-",  "hitShake":0.0, "dieShake":0.0,	"summonSFX":["102-summon"], "hitSFX":[],    "dieSFX":[],    "attackSFX":["102-attack"]}
+{"id":224, "base":"",     "overlay":"",				"summon":"base",   "y":"-12",	"bullet":"black-l",		  "bulletFX":"",	"smoke":"base",	"flame":"base",	"hit":"hit-",		  "die":"wood-",  "hitShake":0.0, "dieShake":0.0,	"summonSFX":["102-summon"], "hitSFX":[],    "dieSFX":[],    "attackSFX":["102-attack"]}
 ]
 }

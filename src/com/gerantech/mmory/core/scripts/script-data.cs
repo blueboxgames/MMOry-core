@@ -980,26 +980,26 @@ if( __type == 66 )
 		if( __arg1 == "start" )
 		return switch( __arg2 )
 		{
-			case 0	: 	[2, 550, 1500, 500, false];
-			case 1	:		[3, 712, 1400, 500, false];
-			case 2	: 	[0, 525, 1350, 500, true];
+			case 0	: 	[2, 550, 1300, 500, false];
+			case 1	:		[3, 712, 1200, 500, false];
+			case 2	: 	[0, 525, 1150, 500, true];
 			default:	null;
 		}
 
 		if( __arg1 == "cover" )
 		return switch( __arg2 )
 		{
-			case 1	: 	[3, 780, 1400, 500, false];
-			case 2	: 	[1, 300, 1250, 500, false];
-			case 11	:		[1, 335, 1400, 500, false];
-			case 21	: 	[3, 610, 1400, 500, false];
+			case 1	: 	[3, 780, 1200, 500, false];
+			case 2	: 	[1, 300, 1050, 500, false];
+			case 11	:		[1, 335, 1200, 500, false];
+			case 21	: 	[3, 610, 1200, 500, false];
 			default:	null;
 		}
 
 		if( __arg1 == "newround" )
 		return switch( __arg2 )
 		{
-			case 0	: [1, 540, 1400, 3000, false];
+			case 0	: [1, 540, 1200, 3000, false];
 			default:	null;
 		}
 	}
@@ -1009,26 +1009,26 @@ if( __type == 66 )
 	return switch( __arg2 )
 	{
 	// (deck-card-index, x-pos, y-pos, delay)
-		case 0	: 	[1, 300, 1500, 300, false];
-		case 1	:		[2, 200, 1300, 300, false];
-		case 2	: 	[0, 200, 1300, 300, true];
+		case 0	: 	[1, 300, 1300, 300, false];
+		case 1	:		[2, 200, 1100, 300, false];
+		case 2	: 	[0, 200, 1100, 300, true];
 		default	:	null;
 	}
 
 	if( __arg1 == "cover" )
 	return switch( __arg2 )
 	{
-		case 1	: 	[2, 350, 1350, 500, false];
-		case 2	: 	[2, 200, 1200, 500, false];
-		case 11	:		[3, 300, 1300, 500, false];
-		case 21	: 	[2, 300, 1350, 500, false];
+		case 1	: 	[2, 350, 1150, 500, false];
+		case 2	: 	[2, 200, 1000, 500, false];
+		case 11	:		[3, 300, 1100, 500, false];
+		case 21	: 	[2, 300, 1150, 500, false];
 		default:	null;
 	}
 
 	if( __arg1 == "newround" )
 	return switch( __arg2 )
 	{
-		case 0	: 	[1, 450, 850, 200, false];
+		case 0	: 	[1, 450, 650, 200, false];
 		default:	null;
 	}
 

@@ -1,19 +1,20 @@
 package com.gerantech.mmory.core.battle;
-import com.gerantech.mmory.core.utils.GraphicMetrics;
-import com.gerantech.mmory.core.battle.units.Unit;
+
+import com.gerantech.mmory.core.Game;
 import com.gerantech.mmory.core.battle.bullets.Bullet;
-import com.gerantech.mmory.core.utils.Point2;
+import com.gerantech.mmory.core.battle.fieldes.FieldData;
+import com.gerantech.mmory.core.battle.units.Card;
+import com.gerantech.mmory.core.battle.units.Unit;
 import com.gerantech.mmory.core.constants.CardTypes;
 import com.gerantech.mmory.core.constants.MessageTypes;
 import com.gerantech.mmory.core.events.BattleEvent;
 import com.gerantech.mmory.core.scripts.ScriptEngine;
-import com.gerantech.mmory.core.battle.units.Card;
-import com.gerantech.mmory.core.utils.maps.IntCardMap;
 import com.gerantech.mmory.core.socials.Challenge;
-import com.gerantech.mmory.core.Game;
-import com.gerantech.mmory.core.battle.fieldes.FieldData;
-import com.gerantech.mmory.core.utils.maps.IntIntCardMap;
 import com.gerantech.mmory.core.utils.CoreUtils;
+import com.gerantech.mmory.core.utils.GraphicMetrics;
+import com.gerantech.mmory.core.utils.Point2;
+import com.gerantech.mmory.core.utils.maps.IntCardMap;
+import com.gerantech.mmory.core.utils.maps.IntIntCardMap;
 
 /**
  * ...
@@ -215,12 +216,25 @@ class BattleField
 			return;
 		
 		// -=-=-=-=-=-=-=-=-  UPDATE AND REMOVE UNITS  -=-=-=-=-=-=-=-=-=-=
+		// Creates a garbage array, adds unit id's to an array and sorts them
+		// then updates disposed ones and updates the rest.
+		
 		this.garbage = new Array<Int>();
+		var unitIds:Array<Int> = new Array<Int>();
+		
 		for( uid => unit in this.units )
-			if( unit.disposed() )
+			unitIds.push(uid);
+
+		unitIds.sort(function(a,b) return a-b);
+
+		while( unitIds.length != 0 )
+		{
+			var uid = unitIds.pop();
+			if( this.units.get(uid).disposed() )
 				this.garbage.push(uid);
 			else
-				unit.update();
+				this.units.get(uid).update();
+		}
 
 		// -=-=-=-=-=-=-=-=-=  UPDATE PHYSICS-ENGINE  =-=-=-=-=-=-=-=-=-=-=-
 		this.field.air.step();

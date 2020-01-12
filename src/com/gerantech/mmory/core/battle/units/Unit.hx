@@ -24,7 +24,7 @@ class Unit extends Colleague
 	var immortalTime:Float;
 	var maxDistanseSkip:Int = 10;
 
-	public function new(id:Int, battleField:BattleField, card:Card, side:Int, x:Float, y:Float, z:Float) 
+	public function new(id:Int, battleField:BattleField, card:Card, side:Int, x:Float, y:Float, z:Float, t:Float) 
 	{
 		super(id, battleField, card, side, x, y, z);
 		this.shape = Shape.create_circle(card.sizeH);
@@ -36,7 +36,7 @@ class Unit extends Colleague
 			this.mass *= 100.0;
 			this.invMass = (this.mass != 0.0) ? 1.0 / this.mass : 0.0;
 		}
-		this.summonTime = this.battleField.now + this.card.summonTime;
+		this.summonTime = t + this.card.summonTime;
 		this.immortalTime = this.summonTime;
 		
 		// fake health for tutorial

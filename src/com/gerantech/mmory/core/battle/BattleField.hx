@@ -49,8 +49,7 @@ class BattleField
 	static public var DEBUG_MODE:Bool = false;
 	static public var DELTA_TIME:Int = 25;
 
-	static public var BETWEEN_UPDATE_THRESHOLE:Int = 50;
-	static public var LOW_NETWORK_CONNECTION_THRESHOLD:Int = 5000;
+	static public var MAX_LATENCY:Int = 2000;
 	
 	public var state:Int = 0;
 	public var singleMode:Bool;
@@ -139,7 +138,7 @@ class BattleField
 				var hqType = 201; if(field.mode == Challenge.MODE_1_TOUCHDOWN ) hqType = 221; else if( field.mode == Challenge.MODE_2_BAZAAR ) hqType = 202;
 				var heroType = field.mode == Challenge.MODE_0_HQ ? 222 : 224;
 				var card = new com.gerantech.mmory.core.battle.units.Card(games[side], unitId > 1 ? heroType : hqType, friendlyMode > 0 ? 9 : games[side].player.get_level(0));
-				this.addUnit(card, side, Math.ffloor(field.targets[unitId * 2]), Math.ffloor(field.targets[unitId * 2 + 1]), card.z);
+				this.addUnit(card, side, Math.ffloor(field.targets[unitId * 2]), Math.ffloor(field.targets[unitId * 2 + 1]), card.z, this.now);
 			}
 		}
 		
@@ -291,15 +290,11 @@ class BattleField
 				pauseTime = now + ptoffset;
 		}
 
-		if(this.now + BETWEEN_UPDATE_THRESHOLE < time)
-			return MessageTypes.RESPONSE_NOT_ALLOWED;
-		if(this.now - time > LOW_NETWORK_CONNECTION_THRESHOLD)
+		if(this.now - time > MAX_LATENCY)
 			return MessageTypes.RESPONSE_NOT_ALLOWED;
 
-		var rollbackTime:Int = cast((time - this.now), Int);
-		
-		// START ROLLBACK
-		this.forceUpdate(rollbackTime);
+		if( time < this.now )
+			time = this.now;
 		
 		var card = decks.get(side).get(type);
 		decks.get(side).queue_removeAt(index);
@@ -307,21 +302,17 @@ class BattleField
 		elixirUpdater.updateAt(side, elixirUpdater.bars[side] - card.elixirSize);
 		
 		if( com.gerantech.mmory.core.constants.CardTypes.isSpell(type) )
-		{
-			this.forceUpdate( rollbackTime*-1 );
 			return this.addSpell(card, side, x, y);
-		}
 		
 		for(i in 0...card.quantity)
-			this.addUnit(card, side, CoreUtils.getXPosition(card.quantity, i, x), com.gerantech.mmory.core.utils.CoreUtils.getYPosition(card.quantity, i, y), 0);
+			this.addUnit(card, side, CoreUtils.getXPosition(card.quantity, i, x), com.gerantech.mmory.core.utils.CoreUtils.getYPosition(card.quantity, i, y), 0, time);
 
-		this.forceUpdate( rollbackTime*-1 );
 		return unitId - 1;
 	}
 
-	private function addUnit(card:Card, side:Int, x:Float, y:Float, z:Float):Void
+	private function addUnit(card:Card, side:Int, x:Float, y:Float, z:Float, t:Float):Void
 	{
-		var u = new Unit(this.unitId, this, card, side, x, y, z);
+		var u = new Unit(this.unitId, this, card, side, x, y, z, t);
 		if( card.z < 0 )
 			this.field.air.add(u);
 		else

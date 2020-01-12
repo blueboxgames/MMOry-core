@@ -1,11 +1,11 @@
 package com.gerantech.mmory.core.battle.units;
-import com.gerantech.colleagues.Shape;
 import com.gerantech.colleagues.Colleague;
-import com.gerantech.mmory.core.utils.CoreUtils;
+import com.gerantech.colleagues.Shape;
 import com.gerantech.mmory.core.battle.BattleField;
 import com.gerantech.mmory.core.battle.GameObject;
 import com.gerantech.mmory.core.battle.units.Card;
 import com.gerantech.mmory.core.constants.CardTypes;
+import com.gerantech.mmory.core.utils.CoreUtils;
 
 /**
  * @author Mansour Djawadi
@@ -237,8 +237,13 @@ class Unit extends Colleague
 		maxDistanseSkip = 0;
 		var ret:Int = -1;
 		var distance:Float = this.card.focusRange;
+		var unitIds:Array<Int> = new Array<Int>();
 		for( u in this.battleField.units )
+			unitIds.push(u.id);
+		
+		while( unitIds.length != 0 )
 		{
+			var u:Unit = this.battleField.units.get(unitIds.pop());
 			// prevent disposed and deploying units
 			if( u == null || u.disposed() || u.summonTime != 0 )
 				continue;
@@ -261,7 +266,6 @@ class Unit extends Colleague
 				ret = u.id;
 			}
 		}
-		// if( id == 6 && ret > -1) trace(ret);
 		return ret;
 	}
 	

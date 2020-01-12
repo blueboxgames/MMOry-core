@@ -279,129 +279,36 @@ class BattleField
 	#if java
 	public function summonUnit(type:Int, side:Int, x:Float, y:Float, time:Float) : Int
 	{
-		var log:String = null;
-		var logFlags:Int = 0x0;
-		var logIndex:Int = 0;
-		if( DEBUG_MODE )
-		{
-			var logRollback:Bool = false;
-			var logDeck:Bool = false;
-			if( logRollback )
-				logFlags |= 0x1;
-			if( logDeck )
-				logFlags |= 0x10;
-			log = 
-				"headID:" + this.unitId + "\n" + 
-				"side: " + side + "\n" +
-				"position: " + x + "," + y + "\n" +
-				"logFlags: " + logFlags + "\n";
-			log += "-------------------------------------\n";
-		}
 		var index = cardAvailabled(side, type);
 		if( index < 0 )
-		{
-			if( DEBUG_MODE )
-			{
-				log += logIndex + ": Invalid summon\n";
-				log += "desc: " + side + " is not allowed to summon: " + type + "\n";
-				log += "-------------------------------------\n";
-				logIndex++;
-			}
 			return index;
-		}
 		
 		if( side == 0 )
 		{
 			numSummonedUnits ++;
 			var ptoffset = ScriptEngine.getInt(ScriptEngine.T64_BATTLE_PAUSE_TIME, field.mode, games[0].player.get_battleswins(), numSummonedUnits);
 			if( ptoffset > 0 )
-			{
-				if( DEBUG_MODE )
-				{
-					log += logIndex + ": Pausetime";
-					log += "desc: ptoffset = " + ptoffset + "\n";
-					log += "-------------------------------------\n";
-					logIndex++;
-				}
 				pauseTime = now + ptoffset;
-			}
 		}
 
 		if(this.now + BETWEEN_UPDATE_THRESHOLE < time)
-		{
-			if( DEBUG_MODE )
-			{
-				log += logIndex + ": Client time is faster\n";
-				log += "client time: " + time + " server time: " + this.now + "\n";
-				log += "-------------------------------------\n";
-				logIndex++;
-			}
 			return MessageTypes.RESPONSE_NOT_ALLOWED;
-		}
 		if(this.now - time > LOW_NETWORK_CONNECTION_THRESHOLD)
-		{
-			if( DEBUG_MODE )
-			{
-				log += logIndex + ": Low Connectivity\n";
-				log += "client time: " + time + " server time: " + this.now + "\n";
-				log += "-------------------------------------\n";
-				logIndex++;
-			}	
 			return MessageTypes.RESPONSE_NOT_ALLOWED;
-		}
 
 		var rollbackTime:Int = cast((time - this.now), Int);
 		
 		// START ROLLBACK
-		if( DEBUG_MODE && ( logFlags & 0x1 != 0 ) )
-		{
-			log += logIndex + ": Start rollback\n";
-			log += 
-			"stime: " + this.now + "\n" + 
-			"ctime: " + time + "\n" +
-			"amoun: " + rollbackTime  + "\n";
-			log += "-------------------------------------\n";
-			logIndex++;
-		}
 		this.forceUpdate(rollbackTime);
 		
 		var card = decks.get(side).get(type);
-		if( DEBUG_MODE && ( logFlags & 0x10 != 0 ) )
-		{
-			log += logIndex + ": Deck before\n";
-			log += 
-			"side: " + side + "\n" +
-			"deck: " + decks.get(side).queue_String() + "\n";
-			log += "-------------------------------------\n";
-			logIndex++;
-		}
 		decks.get(side).queue_removeAt(index);
 		decks.get(side).enqueue(type);
-		if( DEBUG_MODE && ( logFlags & 0x10 != 0 ) )
-		{
-			log += logIndex + ": Deck after\n";
-			log += 
-			"side: " + side + "\n" +
-			"deck: " + decks.get(side).queue_String() + "\n";
-			log += "-------------------------------------\n";
-			logIndex++;
-		}
 		elixirUpdater.updateAt(side, elixirUpdater.bars[side] - card.elixirSize);
 		
 		if( com.gerantech.mmory.core.constants.CardTypes.isSpell(type) )
 		{
 			this.forceUpdate( rollbackTime*-1 );
-			if( DEBUG_MODE && ( logFlags & 0x1 != 0 ) )
-			{
-				log += logIndex + ": End rollback.\n";
-				log += 
-				"stime:" + this.now + "\n" +
-				"amount: " + rollbackTime*-1  + "\n";
-				log += "-------------------------------------\n";
-				logIndex++;
-			}
-			if( DEBUG_MODE )
-				trace(log);
 			return this.addSpell(card, side, x, y);
 		}
 		
@@ -409,17 +316,6 @@ class BattleField
 			this.addUnit(card, side, CoreUtils.getXPosition(card.quantity, i, x), com.gerantech.mmory.core.utils.CoreUtils.getYPosition(card.quantity, i, y), 0);
 
 		this.forceUpdate( rollbackTime*-1 );
-		if( DEBUG_MODE && ( logFlags & 0x1 != 0 ) )
-		{
-			log += logIndex + ": End rollback.\n";
-			log += 
-			"stime:" + this.now + "\n" +
-			"amount: " + rollbackTime*-1  + "\n";
-			log += "-------------------------------------\n";
-			logIndex++;
-		}
-		if( DEBUG_MODE )
-				trace(log);
 		return unitId - 1;
 	}
 

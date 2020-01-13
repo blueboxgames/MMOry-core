@@ -313,10 +313,6 @@ class BattleField
 	private function addUnit(card:Card, side:Int, x:Float, y:Float, z:Float, t:Float):Void
 	{
 		var u = new Unit(this.unitId, this, card, side, x, y, z, t);
-		if( card.z < 0 )
-			this.field.air.add(u);
-		else
-			this.field.ground.add(u);
 		this.units.set(this.unitId, u);
 		
 		this.unitId ++;

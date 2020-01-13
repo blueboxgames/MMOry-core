@@ -81,6 +81,10 @@ class Unit extends Colleague
 		{
 			this.setState(GameObject.STATE_2_MORTAL);
 			this.immortalTime = 0;
+			if( card.z < 0 )
+				this.battleField.field.air.add(this);
+			else
+				this.battleField.field.ground.add(this);
 			if( card.speed <= 0 )
 				this.setStatic();
 		}

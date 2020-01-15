@@ -23,6 +23,7 @@ class Unit extends Colleague
 	var defaultTargetIndex:Int;
 	var immortalTime:Float;
 	var maxDistanseSkip:Int = 10;
+	var reEstimateIndex:Int = 0;
 
 	public function new(id:Int, battleField:BattleField, card:Card, side:Int, x:Float, y:Float, z:Float, t:Float) 
 	{
@@ -145,7 +146,13 @@ class Unit extends Colleague
 	private function findTarget():Void
 	{
 		if( this.targetIndex > -1 )
-			return;
+		{
+			reEstimateIndex += 1;
+			if( reEstimateIndex > 10 )
+				reEstimateIndex = 0;
+			else
+				return;
+		}
 		
 		var dis = 2000.0;
 		var i:Int = 0;

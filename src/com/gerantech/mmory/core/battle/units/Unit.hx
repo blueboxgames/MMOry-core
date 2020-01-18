@@ -99,7 +99,7 @@ class Unit extends Colleague
 		var enemyId = this.getNearestEnemy();
 		if( enemyId > -1 )
 		{
-			var enemy = this.battleField.units.get(enemyId);
+			var enemy = this.battleField.getUnit(enemyId);
 			var newEnemyFound = this.cachedEnemy != enemyId;
 			this.cachedEnemy = enemyId;
 			this.targetIndex = 100;
@@ -238,8 +238,9 @@ class Unit extends Colleague
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= attack -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	private function getNearestEnemy() : Int
 	{
-		if( this.cachedEnemy != -1 && this.battleField.units.exists(this.cachedEnemy) && !this.battleField.units.get(this.cachedEnemy).disposed() )
-			if( CoreUtils.getDistance(this.x, this.y, this.battleField.units.get(this.cachedEnemy).x, this.battleField.units.get(this.cachedEnemy).y) <= this.card.focusRange )
+		var unit = this.battleField.getUnit(this.cachedEnemy);
+		if( this.cachedEnemy != -1 && unit != null && !unit.disposed() )
+			if( CoreUtils.getDistance(this.x, this.y, unit.x, unit.y) <= this.card.focusRange )
 				return this.cachedEnemy;
 		
 		maxDistanseSkip ++;
@@ -248,13 +249,8 @@ class Unit extends Colleague
 		maxDistanseSkip = 0;
 		var ret:Int = -1;
 		var distance:Float = this.card.focusRange;
-		var unitIds:Array<Int> = new Array<Int>();
 		for( u in this.battleField.units )
-			unitIds.push(u.id);
-		
-		while( unitIds.length != 0 )
 		{
-			var u:Unit = this.battleField.units.get(unitIds.pop());
 			// prevent disposed and deploying units
 			if( u == null || u.disposed() || u.summonTime != 0 )
 				continue;

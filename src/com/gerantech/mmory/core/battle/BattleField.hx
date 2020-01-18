@@ -59,8 +59,8 @@ class BattleField
 	public var arena:Int;
 	public var extraTime:Int = 0;
 	public var decks:IntIntCardMap;
-	public var units:Map<Int, Unit>;
-	public var bullets:Map<Int, Bullet>;
+	public var units:Array<Unit>;
+	public var bullets:Array<Bullet>;
 	public var now:Float = 0;
 	public var startAt:Int = 0;
 	public var deltaTime:Int = 25;
@@ -70,7 +70,6 @@ class BattleField
 	public var numSummonedUnits:Int;
 	public var pauseTime:Float;
 	public var elixirUpdater:ElixirUpdater;
-	var garbage:Array<Int>;
 	var pioneerSide:Int;
 	var resetTime:Float = -1;
 	var remainigTime:Int = 0;
@@ -96,8 +95,8 @@ class BattleField
 		this.friendlyMode = friendlyMode;
 		this.extraTime = hasExtraTime ? field.times.get(3) : 0;
 		
-		this.units = new Map<Int, Unit>();
-		this.bullets = new Map<Int, Bullet>();
+		this.units = new Array<Unit>();
+		this.bullets = new Array<Bullet>();
 		this.elixirUpdater = new ElixirUpdater(field.mode);
 
 		this.games = new Array<Game>();
@@ -217,22 +216,14 @@ class BattleField
 		// -=-=-=-=-=-=-=-=-  UPDATE AND REMOVE UNITS  -=-=-=-=-=-=-=-=-=-=
 		// Creates a garbage array, adds unit id's to an array and sorts them
 		// then updates disposed ones and updates the rest.
-		
-		this.garbage = new Array<Int>();
-		var unitIds:Array<Int> = new Array<Int>();
-		
-		for( uid => unit in this.units )
-			unitIds.push(uid);
 
-		unitIds.sort(function(a,b) return a-b);
-
-		while( unitIds.length != 0 )
+		var uGarbage:Array<Unit> = new Array<Unit>();
+		for( unit in this.units )
 		{
-			var uid = unitIds.pop();
-			if( this.units.get(uid).disposed() )
-				this.garbage.push(uid);
+			if( !unit.disposed() )
+				unit.update();
 			else
-				this.units.get(uid).update();
+				uGarbage.push(unit);
 		}
 
 		// -=-=-=-=-=-=-=-=-=  UPDATE PHYSICS-ENGINE  =-=-=-=-=-=-=-=-=-=-=-
@@ -240,26 +231,27 @@ class BattleField
 		this.field.ground.step();
 		
 		// remove dead units
-		while( this.garbage.length > 0 )
+		for(unit in uGarbage )
 		{
-			var u = this.garbage.pop();
-			if( this.units.get(u).card.z < 0 )
-				this.field.air.colleagues.remove(this.units.get(u));
+			if( unit.card.z < 0 )
+				this.field.air.colleagues.remove(unit);
 			else
-				this.field.ground.colleagues.remove(this.units.get(u));
-			this.units.remove(u);
+				this.field.ground.colleagues.remove(unit);
+			this.units.remove(unit);
 		}
 		
 		// -=-=-=-=-=-=-=-=-  UPDATE AND REMOVE BULLETS  -=-=-=-=-=-=-=-=-
-		for( bid => bullet in this.bullets )
-			if( bullet.disposed() )
-				this.garbage.push(bid);
-			else
+
+		var bGarbage:Array<Bullet> = new Array<Bullet>();
+		for( bullet in this.bullets )
+			if( !bullet.disposed() )
 				bullet.update();
+			else
+				bGarbage.push(bullet);
 
 		// remove exploded bullets
-		while( this.garbage.length > 0 )
-			this.bullets.remove(this.garbage.pop());
+		for( bullet in bGarbage )
+			this.bullets.remove(bullet);
 	}
 
 	private function performRemaining () : Void
@@ -313,7 +305,7 @@ class BattleField
 	private function addUnit(card:Card, side:Int, x:Float, y:Float, z:Float, t:Float):Void
 	{
 		var u = new Unit(this.unitId, this, card, side, x, y, z, t);
-		this.units.set(this.unitId, u);
+		this.units.push(u);
 		
 		this.unitId ++;
 	}
@@ -322,7 +314,7 @@ class BattleField
 	{
 		var offset = GraphicMetrics.getSpellStartPoint(card.type);
 		var spell = new Bullet(this, spellId, card, side, x + offset.x, y + offset.y, offset.z, x, y, 0);
-		bullets.set(spellId, spell);
+		bullets.push(spell);
 		spellId ++;
 		return spellId - 1;
 	}
@@ -331,7 +323,7 @@ class BattleField
 	{
 		var b = new Bullet(this, unit.bulletId, unit.card, side, x, y, 0, target.x, target.y, 0);
 		b.targetId = target.id;
-		bullets.set(unit.bulletId, b);
+		bullets.push(b);
 		unit.bulletId ++;
 	}
 	
@@ -371,6 +363,14 @@ class BattleField
 		return index;
 	}
 	#end
+
+	public function getUnit(uid:Int):Unit
+	{
+		for(unit in this.units)
+			if(unit.id == uid)
+				return unit;
+		return null;
+	}
 
 	public function explodeBullet(bullet:Bullet) : Void
 	{
@@ -430,12 +430,12 @@ class BattleField
 		// dispose all units
 		for( unit in this.units )
 			unit.dispose();
-		this.units.clear();
+		this.units = null;
 		
 		// dispose all bullets
 		for( bullet in this.bullets )
 			bullet.dispose();
-		this.bullets.clear();
+		this.bullets = null;
 	}
 	
 	public function getColorIndex(side:Int) : Int
@@ -467,8 +467,8 @@ class BattleField
 		// trace(side + " e2: " + units.exists(2 + side)+ " e4: " + units.exists(4 + side) );
 		var leftUnit = side == 0 ? 4 : 3;
 		var rightUnit = side == 0 ? 2 : 5;
-		var hasLeft = units.exists(leftUnit) && !units.get(leftUnit).disposed();
-		var hasRight = units.exists(rightUnit) && !units.get(rightUnit).disposed();
+		var hasLeft = getUnit(leftUnit) != null;
+		var hasRight = getUnit(rightUnit) != null;
 		if( hasLeft && hasRight )
 			return SUMMON_AREA_HALF;
 		if( hasRight )

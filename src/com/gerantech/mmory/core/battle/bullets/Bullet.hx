@@ -75,7 +75,7 @@ class Bullet extends GameObject
 		summonTime = 0;
 		// prevent shooting while projectile is dead.
 		var unitId:Int = Std.int((id - id % 10000) / 10000);
-		if( !CardTypes.isSpell(card.type) && !card.explosive && !battleField.units.exists(unitId) )
+		if( !CardTypes.isSpell(card.type) && !card.explosive && battleField.getUnit(unitId).disposed() )
 		{
 			dispose();
 			return;
@@ -87,11 +87,12 @@ class Bullet extends GameObject
 	{
 		if( explodeTime > -1 )
 			return;
-		if( card.bulletForceKill && this.battleField.units.exists(targetId) )
+		var unit = battleField.getUnit(targetId);
+		if( card.bulletForceKill && unit != null && !unit.disposed() )
 		{
-			this.fx = battleField.units.get(targetId).x;
-			this.fy = battleField.units.get(targetId).y;
-			this.fz = battleField.units.get(targetId).z;
+			this.fx = unit.x;
+			this.fy = unit.y;
+			this.fz = unit.z;
 			createPath();
 		}
 		setPosition(dx != 0 ? x + deltaX : GameObject.NaN, dy != 0 ? y + deltaY : GameObject.NaN, dz != 0 ? z + deltaZ : GameObject.NaN);

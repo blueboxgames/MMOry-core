@@ -1,19 +1,20 @@
 package com.gerantech.mmory.core.battle;
-import com.gerantech.mmory.core.utils.GraphicMetrics;
-import com.gerantech.mmory.core.battle.units.Unit;
+
+import com.gerantech.mmory.core.Game;
 import com.gerantech.mmory.core.battle.bullets.Bullet;
-import com.gerantech.mmory.core.utils.Point2;
+import com.gerantech.mmory.core.battle.fieldes.FieldData;
+import com.gerantech.mmory.core.battle.units.Card;
+import com.gerantech.mmory.core.battle.units.Unit;
 import com.gerantech.mmory.core.constants.CardTypes;
 import com.gerantech.mmory.core.constants.MessageTypes;
 import com.gerantech.mmory.core.events.BattleEvent;
 import com.gerantech.mmory.core.scripts.ScriptEngine;
-import com.gerantech.mmory.core.battle.units.Card;
-import com.gerantech.mmory.core.utils.maps.IntCardMap;
 import com.gerantech.mmory.core.socials.Challenge;
-import com.gerantech.mmory.core.Game;
-import com.gerantech.mmory.core.battle.fieldes.FieldData;
-import com.gerantech.mmory.core.utils.maps.IntIntCardMap;
 import com.gerantech.mmory.core.utils.CoreUtils;
+import com.gerantech.mmory.core.utils.GraphicMetrics;
+import com.gerantech.mmory.core.utils.Point2;
+import com.gerantech.mmory.core.utils.maps.IntCardMap;
+import com.gerantech.mmory.core.utils.maps.IntIntCardMap;
 
 /**
  * ...
@@ -48,8 +49,7 @@ class BattleField
 	static public var DEBUG_MODE:Bool = false;
 	static public var DELTA_TIME:Int = 25;
 
-	static public var BETWEEN_UPDATE_THRESHOLE:Int = 50;
-	static public var LOW_NETWORK_CONNECTION_THRESHOLD:Int = 5000;
+	static public var MAX_LATENCY:Int = 2000;
 	
 	public var state:Int = 0;
 	public var singleMode:Bool;
@@ -138,7 +138,7 @@ class BattleField
 				var hqType = 201; if(field.mode == Challenge.MODE_1_TOUCHDOWN ) hqType = 221; else if( field.mode == Challenge.MODE_2_BAZAAR ) hqType = 202;
 				var heroType = field.mode == Challenge.MODE_0_HQ ? 222 : 224;
 				var card = new com.gerantech.mmory.core.battle.units.Card(games[side], unitId > 1 ? heroType : hqType, friendlyMode > 0 ? 9 : games[side].player.get_level(0));
-				this.addUnit(card, side, Math.ffloor(field.targets[unitId * 2]), Math.ffloor(field.targets[unitId * 2 + 1]), card.z);
+				this.addUnit(card, side, Math.ffloor(field.targets[unitId * 2]), Math.ffloor(field.targets[unitId * 2 + 1]), card.z, this.now);
 			}
 		}
 		
@@ -215,12 +215,25 @@ class BattleField
 			return;
 		
 		// -=-=-=-=-=-=-=-=-  UPDATE AND REMOVE UNITS  -=-=-=-=-=-=-=-=-=-=
+		// Creates a garbage array, adds unit id's to an array and sorts them
+		// then updates disposed ones and updates the rest.
+		
 		this.garbage = new Array<Int>();
+		var unitIds:Array<Int> = new Array<Int>();
+		
 		for( uid => unit in this.units )
-			if( unit.disposed() )
+			unitIds.push(uid);
+
+		unitIds.sort(function(a,b) return a-b);
+
+		while( unitIds.length != 0 )
+		{
+			var uid = unitIds.pop();
+			if( this.units.get(uid).disposed() )
 				this.garbage.push(uid);
 			else
-				unit.update();
+				this.units.get(uid).update();
+		}
 
 		// -=-=-=-=-=-=-=-=-=  UPDATE PHYSICS-ENGINE  =-=-=-=-=-=-=-=-=-=-=-
 		this.field.air.step();
@@ -265,157 +278,41 @@ class BattleField
 	#if java
 	public function summonUnit(type:Int, side:Int, x:Float, y:Float, time:Float) : Int
 	{
-		var log:String = null;
-		var logFlags:Int = 0x0;
-		var logIndex:Int = 0;
-		if( DEBUG_MODE )
-		{
-			var logRollback:Bool = false;
-			var logDeck:Bool = false;
-			if( logRollback )
-				logFlags |= 0x1;
-			if( logDeck )
-				logFlags |= 0x10;
-			log = 
-				"headID:" + this.unitId + "\n" + 
-				"side: " + side + "\n" +
-				"position: " + x + "," + y + "\n" +
-				"logFlags: " + logFlags + "\n";
-			log += "-------------------------------------\n";
-		}
 		var index = cardAvailabled(side, type);
 		if( index < 0 )
-		{
-			if( DEBUG_MODE )
-			{
-				log += logIndex + ": Invalid summon\n";
-				log += "desc: " + side + " is not allowed to summon: " + type + "\n";
-				log += "-------------------------------------\n";
-				logIndex++;
-			}
 			return index;
-		}
 		
 		if( side == 0 )
 		{
 			numSummonedUnits ++;
 			var ptoffset = ScriptEngine.getInt(ScriptEngine.T64_BATTLE_PAUSE_TIME, field.mode, games[0].player.get_battleswins(), numSummonedUnits);
 			if( ptoffset > 0 )
-			{
-				if( DEBUG_MODE )
-				{
-					log += logIndex + ": Pausetime";
-					log += "desc: ptoffset = " + ptoffset + "\n";
-					log += "-------------------------------------\n";
-					logIndex++;
-				}
 				pauseTime = now + ptoffset;
-			}
 		}
 
-		if(this.now + BETWEEN_UPDATE_THRESHOLE < time)
-		{
-			if( DEBUG_MODE )
-			{
-				log += logIndex + ": Client time is faster\n";
-				log += "client time: " + time + " server time: " + this.now + "\n";
-				log += "-------------------------------------\n";
-				logIndex++;
-			}
+		if(this.now - time > MAX_LATENCY)
 			return MessageTypes.RESPONSE_NOT_ALLOWED;
-		}
-		if(this.now - time > LOW_NETWORK_CONNECTION_THRESHOLD)
-		{
-			if( DEBUG_MODE )
-			{
-				log += logIndex + ": Low Connectivity\n";
-				log += "client time: " + time + " server time: " + this.now + "\n";
-				log += "-------------------------------------\n";
-				logIndex++;
-			}	
-			return MessageTypes.RESPONSE_NOT_ALLOWED;
-		}
 
-		var rollbackTime:Int = cast((time - this.now), Int);
-		
-		// START ROLLBACK
-		if( DEBUG_MODE && ( logFlags & 0x1 != 0 ) )
-		{
-			log += logIndex + ": Start rollback\n";
-			log += 
-			"stime: " + this.now + "\n" + 
-			"ctime: " + time + "\n" +
-			"amoun: " + rollbackTime  + "\n";
-			log += "-------------------------------------\n";
-			logIndex++;
-		}
-		this.forceUpdate(rollbackTime);
+		if( time < this.now )
+			time = this.now;
 		
 		var card = decks.get(side).get(type);
-		if( DEBUG_MODE && ( logFlags & 0x10 != 0 ) )
-		{
-			log += logIndex + ": Deck before\n";
-			log += 
-			"side: " + side + "\n" +
-			"deck: " + decks.get(side).queue_String() + "\n";
-			log += "-------------------------------------\n";
-			logIndex++;
-		}
 		decks.get(side).queue_removeAt(index);
 		decks.get(side).enqueue(type);
-		if( DEBUG_MODE && ( logFlags & 0x10 != 0 ) )
-		{
-			log += logIndex + ": Deck after\n";
-			log += 
-			"side: " + side + "\n" +
-			"deck: " + decks.get(side).queue_String() + "\n";
-			log += "-------------------------------------\n";
-			logIndex++;
-		}
 		elixirUpdater.updateAt(side, elixirUpdater.bars[side] - card.elixirSize);
 		
 		if( com.gerantech.mmory.core.constants.CardTypes.isSpell(type) )
-		{
-			this.forceUpdate( rollbackTime*-1 );
-			if( DEBUG_MODE && ( logFlags & 0x1 != 0 ) )
-			{
-				log += logIndex + ": End rollback.\n";
-				log += 
-				"stime:" + this.now + "\n" +
-				"amount: " + rollbackTime*-1  + "\n";
-				log += "-------------------------------------\n";
-				logIndex++;
-			}
-			if( DEBUG_MODE )
-				trace(log);
 			return this.addSpell(card, side, x, y);
-		}
 		
 		for(i in 0...card.quantity)
-			this.addUnit(card, side, CoreUtils.getXPosition(card.quantity, i, x), com.gerantech.mmory.core.utils.CoreUtils.getYPosition(card.quantity, i, y), 0);
+			this.addUnit(card, side, CoreUtils.getXPosition(card.quantity, i, x), com.gerantech.mmory.core.utils.CoreUtils.getYPosition(card.quantity, i, y), 0, time);
 
-		this.forceUpdate( rollbackTime*-1 );
-		if( DEBUG_MODE && ( logFlags & 0x1 != 0 ) )
-		{
-			log += logIndex + ": End rollback.\n";
-			log += 
-			"stime:" + this.now + "\n" +
-			"amount: " + rollbackTime*-1  + "\n";
-			log += "-------------------------------------\n";
-			logIndex++;
-		}
-		if( DEBUG_MODE )
-				trace(log);
 		return unitId - 1;
 	}
 
-	private function addUnit(card:Card, side:Int, x:Float, y:Float, z:Float):Void
+	private function addUnit(card:Card, side:Int, x:Float, y:Float, z:Float, t:Float):Void
 	{
-		var u = new Unit(this.unitId, this, card, side, x, y, z);
-		if( card.z < 0 )
-			this.field.air.add(u);
-		else
-			this.field.ground.add(u);
+		var u = new Unit(this.unitId, this, card, side, x, y, z, t);
 		this.units.set(this.unitId, u);
 		
 		this.unitId ++;

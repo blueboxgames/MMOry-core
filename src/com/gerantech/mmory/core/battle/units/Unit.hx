@@ -1,11 +1,11 @@
 package com.gerantech.mmory.core.battle.units;
-import com.gerantech.colleagues.Shape;
 import com.gerantech.colleagues.Colleague;
-import com.gerantech.mmory.core.utils.CoreUtils;
+import com.gerantech.colleagues.Shape;
 import com.gerantech.mmory.core.battle.BattleField;
 import com.gerantech.mmory.core.battle.GameObject;
 import com.gerantech.mmory.core.battle.units.Card;
 import com.gerantech.mmory.core.constants.CardTypes;
+import com.gerantech.mmory.core.utils.CoreUtils;
 
 /**
  * @author Mansour Djawadi
@@ -23,8 +23,9 @@ class Unit extends Colleague
 	var defaultTargetIndex:Int;
 	var immortalTime:Float;
 	var maxDistanseSkip:Int = 10;
+	var reEstimateIndex:Int = 0;
 
-	public function new(id:Int, battleField:BattleField, card:Card, side:Int, x:Float, y:Float, z:Float) 
+	public function new(id:Int, battleField:BattleField, card:Card, side:Int, x:Float, y:Float, z:Float, t:Float) 
 	{
 		super(id, battleField, card, side, x, y, z);
 		this.shape = Shape.create_circle(card.sizeH);
@@ -36,7 +37,7 @@ class Unit extends Colleague
 			this.mass *= 100.0;
 			this.invMass = (this.mass != 0.0) ? 1.0 / this.mass : 0.0;
 		}
-		this.summonTime = this.battleField.now + this.card.summonTime;
+		this.summonTime = t + this.card.summonTime;
 		this.immortalTime = this.summonTime;
 		
 		// fake health for tutorial
@@ -81,6 +82,10 @@ class Unit extends Colleague
 		{
 			this.setState(GameObject.STATE_2_MORTAL);
 			this.immortalTime = 0;
+			if( card.z < 0 )
+				this.battleField.field.air.add(this);
+			else
+				this.battleField.field.ground.add(this);
 			if( card.speed <= 0 )
 				this.setStatic();
 		}
@@ -141,7 +146,13 @@ class Unit extends Colleague
 	private function findTarget():Void
 	{
 		if( this.targetIndex > -1 )
-			return;
+		{
+			reEstimateIndex += 1;
+			if( reEstimateIndex > 10 )
+				reEstimateIndex = 0;
+			else
+				return;
+		}
 		
 		var dis = 2000.0;
 		var i:Int = 0;
@@ -237,8 +248,13 @@ class Unit extends Colleague
 		maxDistanseSkip = 0;
 		var ret:Int = -1;
 		var distance:Float = this.card.focusRange;
+		var unitIds:Array<Int> = new Array<Int>();
 		for( u in this.battleField.units )
+			unitIds.push(u.id);
+		
+		while( unitIds.length != 0 )
 		{
+			var u:Unit = this.battleField.units.get(unitIds.pop());
 			// prevent disposed and deploying units
 			if( u == null || u.disposed() || u.summonTime != 0 )
 				continue;
@@ -261,7 +277,6 @@ class Unit extends Colleague
 				ret = u.id;
 			}
 		}
-		// if( id == 6 && ret > -1) trace(ret);
 		return ret;
 	}
 	

@@ -12,6 +12,8 @@ import com.gerantech.mmory.core.utils.CoreUtils;
  */
 class Unit extends Colleague
 {
+	static final MAX_FINDTARGET_STEPS_SKIP:Int = 20;
+
 	public var health:Float;
 	public var cardHealth:Float;
 	public var bulletId:Int = 0;
@@ -23,7 +25,7 @@ class Unit extends Colleague
 	var defaultTargetIndex:Int;
 	var immortalTime:Float;
 	var maxDistanseSkip:Int = 10;
-	var reEstimateIndex:Int = 0;
+	var findTargetStep:Int = 0;
 
 	public function new(id:Int, battleField:BattleField, card:Card, side:Int, x:Float, y:Float, z:Float, t:Float) 
 	{
@@ -147,9 +149,9 @@ class Unit extends Colleague
 	{
 		if( this.targetIndex > -1 )
 		{
-			reEstimateIndex += 1;
-			if( reEstimateIndex > 10 )
-				reEstimateIndex = 0;
+			findTargetStep += 1;
+			if( findTargetStep > MAX_FINDTARGET_STEPS_SKIP )
+				findTargetStep = 0;
 			else
 				return;
 		}

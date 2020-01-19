@@ -16,10 +16,13 @@ class Colleagues2d {
 		var len = colleagues.length;
 		for (i in 0...len) {
 			var a:Colleague = this.colleagues[i];
+			if(a.disposed())
+				continue;
 
 			for (j in i + 1...len) {
 				var b:Colleague = this.colleagues[j];
-
+				if(b.disposed())
+					continue;
 				if (a.invMass == 0 && b.invMass == 0)
 					continue;
 

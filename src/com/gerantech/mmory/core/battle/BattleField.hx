@@ -216,42 +216,18 @@ class BattleField
 		// -=-=-=-=-=-=-=-=-  UPDATE AND REMOVE UNITS  -=-=-=-=-=-=-=-=-=-=
 		// Creates a garbage array, adds unit id's to an array and sorts them
 		// then updates disposed ones and updates the rest.
-
-		var uGarbage:Array<Unit> = new Array<Unit>();
 		for( unit in this.units )
-		{
 			if( !unit.disposed() )
 				unit.update();
-			else
-				uGarbage.push(unit);
-		}
 
 		// -=-=-=-=-=-=-=-=-=  UPDATE PHYSICS-ENGINE  =-=-=-=-=-=-=-=-=-=-=-
 		this.field.air.step();
 		this.field.ground.step();
 		
-		// remove dead units
-		for(unit in uGarbage )
-		{
-			if( unit.card.z < 0 )
-				this.field.air.colleagues.remove(unit);
-			else
-				this.field.ground.colleagues.remove(unit);
-			this.units.remove(unit);
-		}
-		
 		// -=-=-=-=-=-=-=-=-  UPDATE AND REMOVE BULLETS  -=-=-=-=-=-=-=-=-
-
-		var bGarbage:Array<Bullet> = new Array<Bullet>();
 		for( bullet in this.bullets )
 			if( !bullet.disposed() )
-				bullet.update();
-			else
-				bGarbage.push(bullet);
-
-		// remove exploded bullets
-		for( bullet in bGarbage )
-			this.bullets.remove(bullet);
+				bullet.update();			
 	}
 
 	private function performRemaining () : Void
@@ -413,6 +389,8 @@ class BattleField
 		resetTime = now + 2000000;
 		for( unit in this.units )
 		{
+			if( unit.disposed() )
+				continue;
 			if( unit.side == pioneerSide )
 			{
 				if( pioneerSide == 0 && unit.y < HEIGHT * 0.5 )

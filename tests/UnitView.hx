@@ -1,12 +1,11 @@
 package;
 
-import flash.display.DisplayObjectContainer;
+import com.gerantech.mmory.core.battle.BattleField;
 import com.gerantech.mmory.core.battle.bullets.Bullet;
+import com.gerantech.mmory.core.battle.units.Card;
+import com.gerantech.mmory.core.battle.units.Unit;
 import com.gerantech.mmory.core.events.BattleEvent;
 import flash.display.Shape;
-import com.gerantech.mmory.core.battle.units.Card;
-import com.gerantech.mmory.core.battle.BattleField;
-import com.gerantech.mmory.core.battle.units.Unit;
 
 class UnitView extends Unit {
 	private var view:Shape;
@@ -48,7 +47,7 @@ class UnitView extends Unit {
 	override private function attack(enemy:Unit):Void {
 		var b = new Bullet(battleField, bulletId, card, side, x, y, 0, enemy.x, enemy.y, 0);
 		b.targetId = enemy.id;
-		battleField.bullets.set(bulletId, b);
+		battleField.bullets.push(b);
 		bulletId++;
 		super.attack(enemy);
 	}

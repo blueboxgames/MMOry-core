@@ -75,7 +75,9 @@ class Bullet extends GameObject
 		summonTime = 0;
 		// prevent shooting while projectile is dead.
 		var unitId:Int = Std.int((id - id % 10000) / 10000);
-		if( !CardTypes.isSpell(card.type) && !card.explosive && battleField.getUnit(unitId).disposed() )
+		var unit = battleField.getUnit(unitId);
+
+		if( !CardTypes.isSpell(card.type) && !card.explosive && unit != null && unit.disposed() )
 		{
 			dispose();
 			return;

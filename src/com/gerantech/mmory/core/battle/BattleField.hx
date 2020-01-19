@@ -464,11 +464,18 @@ class BattleField
 	{
 		if( field.mode == Challenge.MODE_1_TOUCHDOWN )
 			return SUMMON_AREA_THIRD;
-		// trace(side + " e2: " + units.exists(2 + side)+ " e4: " + units.exists(4 + side) );
-		var leftUnit = side == 0 ? 4 : 3;
-		var rightUnit = side == 0 ? 2 : 5;
-		var hasLeft = getUnit(leftUnit) != null;
-		var hasRight = getUnit(rightUnit) != null;
+		
+		// Get unit
+		var leftUnitID = side == 0 ? 4 : 3;
+		var rightUnitID = side == 0 ? 2 : 5;
+		var leftUnit = getUnit(leftUnitID);
+		var rightUnit = getUnit(rightUnitID);
+
+		// Check existance
+		var hasLeft = leftUnit != null && !leftUnit.disposed();
+		var hasRight = rightUnit != null && !rightUnit.disposed();
+		
+		// Return result
 		if( hasLeft && hasRight )
 			return SUMMON_AREA_HALF;
 		if( hasRight )

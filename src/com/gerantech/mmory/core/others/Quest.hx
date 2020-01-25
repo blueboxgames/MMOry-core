@@ -121,6 +121,7 @@ class Quest
 	}
 #end
 
+static public function progressive(type:Int) : Bool { return type < 10 || type > 12; }
 	static public function getReward(type:Int, step:Int):IntIntMap
 	{
 		var ret:IntIntMap = new IntIntMap();

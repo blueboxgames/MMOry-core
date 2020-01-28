@@ -1,13 +1,13 @@
 package com.gerantech.mmory.core;
-import com.gerantech.mmory.core.exchanges.ExchangeItem;
-import com.gerantech.mmory.core.others.TrophyReward;
-import com.gerantech.mmory.core.constants.MessageTypes;
 import com.gerantech.mmory.core.Game;
 import com.gerantech.mmory.core.battle.units.Card;
 import com.gerantech.mmory.core.constants.CardTypes;
+import com.gerantech.mmory.core.constants.MessageTypes;
 import com.gerantech.mmory.core.constants.PrefsTypes;
 import com.gerantech.mmory.core.constants.ResourceType;
+import com.gerantech.mmory.core.exchanges.ExchangeItem;
 import com.gerantech.mmory.core.others.Quest;
+import com.gerantech.mmory.core.others.TrophyReward;
 import com.gerantech.mmory.core.scripts.ScriptEngine;
 import com.gerantech.mmory.core.utils.maps.IntCardMap;
 import com.gerantech.mmory.core.utils.maps.IntIntIntMap;
@@ -71,16 +71,11 @@ class Player
 		// add prefs
 		prefs = new com.gerantech.mmory.core.utils.maps.IntStrMap();
 		#if flash
-		prefs.set(com.gerantech.mmory.core.constants.PrefsTypes.SETTINGS_1_MUSIC, "true");
-		prefs.set(com.gerantech.mmory.core.constants.PrefsTypes.SETTINGS_2_SFX, "true");
-		prefs.set(com.gerantech.mmory.core.constants.PrefsTypes.SETTINGS_3_NOTIFICATION, "true");
-		prefs.set(com.gerantech.mmory.core.constants.PrefsTypes.SETTINGS_4_LOCALE, "0");
-		prefs.set(com.gerantech.mmory.core.constants.PrefsTypes.SETTINGS_5_ADS, "true");
-		
-		prefs.set(com.gerantech.mmory.core.constants.PrefsTypes.OFFER_30_RATING, "15");
-		prefs.set(com.gerantech.mmory.core.constants.PrefsTypes.OFFER_31_TELEGRAM , "20");
-		prefs.set(com.gerantech.mmory.core.constants.PrefsTypes.OFFER_32_INSTAGRAM, "25");
-		prefs.set(com.gerantech.mmory.core.constants.PrefsTypes.OFFER_33_FRIENDSHIP, "30");
+		prefs.set(PrefsTypes.SETTINGS_1_MUSIC, "true");
+		prefs.set(PrefsTypes.SETTINGS_2_SFX, "true");
+		prefs.set(PrefsTypes.SETTINGS_3_NOTIFICATION, "true");
+		prefs.set(PrefsTypes.SETTINGS_4_LOCALE, "0");
+		prefs.set(PrefsTypes.SETTINGS_5_ADS, "true");
 		#end
 		
 		i = 0;

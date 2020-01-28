@@ -136,14 +136,14 @@ class Quest
 #end
 
 static public function progressive(type:Int) : Bool { return type < 10 || type > 12; }
-	static public function getReward(type:Int, step:Int):IntIntMap
+static public function getReward(type:Int, step:Int):IntIntMap
 	{
 		var ret:IntIntMap = new IntIntMap();
 		ret.set(ResourceType.R1_XP,			CoreUtils.round( Math.pow(1.4, step) * 1));
 		if(type >= TYPE_10_RATING )
 			ret.set(ResourceType.R4_CURRENCY_HARD,	type == TYPE_13_FRIENDSHIP ? 50 : 10);
 		else
-		ret.set(ResourceType.R3_CURRENCY_SOFT,	CoreUtils.round( Math.pow(1.4, step) * 5));
+			ret.set(ResourceType.R3_CURRENCY_SOFT,	CoreUtils.round( Math.pow(1.4, step) * 5));
 		return ret;
 	}
 	
@@ -160,7 +160,7 @@ static public function progressive(type:Int) : Bool { return type < 10 || type >
 		return switch ( type )
 		{
 			case 0 :	player.get_level(player.get_xp());
-			case 1 :	player.get_arena(player.get_point()) + 1;
+			case 1 :	player.get_arena(player.get_point());
 			//case 2 :	player.getLastOperation();
 			case 3 :	player.get_battlesCount();
 			case 4 :	player.get_battleswins();

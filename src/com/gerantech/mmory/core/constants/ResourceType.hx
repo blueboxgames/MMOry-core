@@ -26,6 +26,7 @@ class ResourceType
 	public static var R22_BOOK_OPENED_FREE:Int = 22;
 	public static var R25_REWARD_STEP:Int = 25;
 	public static var R26_OFFER_STEP:Int = 26;
+	public static var R27_FRIENDS:Int = 27;
 	
 	public static var R30_CHALLENGES:Int = 30;
 	public static var R40_QUESTS:Int = 40;

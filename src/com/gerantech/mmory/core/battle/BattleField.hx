@@ -49,7 +49,7 @@ class BattleField
 	static public var DEBUG_MODE:Bool = false;
 	static public var DELTA_TIME:Int = 25;
 
-	static public var MAX_LATENCY:Int = 2000;
+	static public var MAX_LATENCY:Int = 4000;
 	
 	public var state:Int = 0;
 	public var singleMode:Bool;

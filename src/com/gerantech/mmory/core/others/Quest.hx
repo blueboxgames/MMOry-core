@@ -1,6 +1,7 @@
 package com.gerantech.mmory.core.others;
 import com.gerantech.mmory.core.Player;
 import com.gerantech.mmory.core.battle.units.Card;
+import com.gerantech.mmory.core.constants.PrefsTypes;
 import com.gerantech.mmory.core.constants.ResourceType;
 import com.gerantech.mmory.core.exchanges.ExchangeItem;
 import com.gerantech.mmory.core.socials.Challenge;
@@ -58,11 +59,14 @@ class Quest
 	static public var TYPE_7_CARD_COLLECT:Int = 7;
 	static public var TYPE_8_CARD_UPGRADE:Int = 8;
 	static public var TYPE_9_BOOK_OPEN:Int = 9;
+	static public var TYPE_10_RATING:Int = 10;
+	static public var TYPE_11_TELEGRAM:Int = 11;
+	static public var TYPE_12_INSTAGRAM:Int = 12;
+	static public var TYPE_13_FRIENDSHIP:Int = 13;
 	
 #if java
 	static public inline var MAX_QUESTS:Int = 4;
-	static public var MAX_STEP:Array<Int> = [30, 30, 4, 100, 100, 100, 100, 100, 100, 100];
-
+	static public var MAX_STEP:Array<Int> = [30, 30, 4, 100, 100, 100, 100, 100, 100, 100, 1, 1, 1, 1];
 	static public function instantiate(player:Player, type:Int) : Quest
 	{
 		var key = Quest.getKey(player, type);
@@ -72,6 +76,9 @@ class Quest
 	
 	static public function getKey(player:Player, type:Int):Int
 	{
+		if( type >= 10 )
+			return 20 + type;
+
 		return switch ( type )
 		{
 			case 0 :	ResourceType.R1_XP;
@@ -90,6 +97,9 @@ class Quest
 	
 	static public function getTarget(type:Int, step:Int) : Int
 	{
+		if( type >= 10 && type < 13 )
+			return 1;
+		
 		return switch ( type )
 		{
 			case 0 :	1 + step;
@@ -102,6 +112,10 @@ class Quest
 			case 7 :	Card.getTotalCollected(step + 2, 0);
 			case 8 :	step + 2;
 			case 9 :	CoreUtils.round( Math.pow(1.4, step) * 10) - 2;
+			case 10 :	1;
+			case 11 :	1;
+			case 12 :	1;
+			case 13 :	5;
 			default: 	0;
 		}
 	}
@@ -121,11 +135,15 @@ class Quest
 	}
 #end
 
-	static public function getReward(type:Int, step:Int):IntIntMap
+static public function progressive(type:Int) : Bool { return type < 10 || type > 12; }
+static public function getReward(type:Int, step:Int):IntIntMap
 	{
 		var ret:IntIntMap = new IntIntMap();
 		ret.set(ResourceType.R1_XP,			CoreUtils.round( Math.pow(1.4, step) * 1));
-		ret.set(ResourceType.R3_CURRENCY_SOFT,	CoreUtils.round( Math.pow(1.4, step) * 5));
+		if(type >= TYPE_10_RATING )
+			ret.set(ResourceType.R4_CURRENCY_HARD,	type == TYPE_13_FRIENDSHIP ? 50 : 10);
+		else
+			ret.set(ResourceType.R3_CURRENCY_SOFT,	CoreUtils.round( Math.pow(1.4, step) * 5));
 		return ret;
 	}
 	
@@ -142,7 +160,7 @@ class Quest
 		return switch ( type )
 		{
 			case 0 :	player.get_level(player.get_xp());
-			case 1 :	player.get_arena(player.get_point()) + 1;
+			case 1 :	player.get_arena(player.get_point());
 			//case 2 :	player.getLastOperation();
 			case 3 :	player.get_battlesCount();
 			case 4 :	player.get_battleswins();
@@ -151,6 +169,10 @@ class Quest
 			case 7 :	Card.getTotalCollected(player.cards.get(key).level, player.getResource(key));
 			case 8 :	player.cards.get(key).level;
 			case 9 :	player.getResource(key);
+			case 10 :	player.prefs.getAsInt(PrefsTypes.OFFER_30_RATING);
+			case 11 :	player.prefs.getAsInt(PrefsTypes.OFFER_31_TELEGRAM);
+			case 12 :	player.prefs.getAsInt(PrefsTypes.OFFER_32_INSTAGRAM);
+			case 13 :	player.getResource(ResourceType.R27_FRIENDS);
 			default: 	0;
 		}
 	}

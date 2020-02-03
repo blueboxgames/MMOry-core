@@ -56,6 +56,11 @@ class PrefsTypes
 	public static var T_230_CHALLENGES_FOCUS:Int = 230;
 	public static var T_231_CHALLENGES_SELECTED:Int = 231;
 
+	public static var VALUE_30_RATING:Int = 8;
+	public static var VALUE_31_TELEGRAM:Int = 20;
+	public static var VALUE_32_INSTAGRAM:Int = 16;
+	public static var VALUE_33_FRIENDSHIP:Int = 12;
+
 	public function new() {}
 	public static function isSettings(type:Int) : Bool
 	{

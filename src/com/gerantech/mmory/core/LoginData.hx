@@ -37,7 +37,6 @@ class LoginData
 		resources.set(ResourceType.R6_TICKET, 10);
 		resources.set(CardTypes.C101, 1);
 		resources.set(CardTypes.C102, 1);
-		resources.set(CardTypes.C121, 1);
 		resources.set(CardTypes.C104, 1);
 		resources.set(CardTypes.C105, 1);
 		resources.set(CardTypes.C120, 1);

@@ -1,7 +1,7 @@
 package com.gerantech.mmory.core;
 import com.gerantech.mmory.core.constants.CardTypes;
-import com.gerantech.mmory.core.constants.ResourceType;
 import com.gerantech.mmory.core.constants.ExchangeType;
+import com.gerantech.mmory.core.constants.ResourceType;
 import com.gerantech.mmory.core.utils.lists.IntList;
 import com.gerantech.mmory.core.utils.maps.IntIntMap;
 /**
@@ -11,9 +11,9 @@ import com.gerantech.mmory.core.utils.maps.IntIntMap;
 class LoginData
 {
 	public static var coreSize:Int = 0;
-	public var coreVersion:String = "3000.1207191823";//do not change len.
+	public var coreVersion:String = "3100.0204102156";//do not change len.
 	public var noticeVersion:Int = 2800;
-	public var forceVersion:Int = 2700;
+	public var forceVersion:Int = 2800;
 	public var resources:IntIntMap;
 	public var buildingsLevel:IntIntMap;
 	public var exchanges:IntList;

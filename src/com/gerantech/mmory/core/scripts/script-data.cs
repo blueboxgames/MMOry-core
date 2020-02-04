@@ -900,6 +900,25 @@ if( __type == 53 )
 		default:	20;
 	}
 }
+
+// challenge initial units(mode:Int, isHero:Bool):Int
+if( __type == 54 )
+{
+	if( __arg1 )
+	return switch( __arg0 )
+	{
+		case 2:		224;
+		default:	222;
+	}
+
+	return switch( __arg0 )
+	{
+		case 2:		202;
+		default:	201;
+	}
+}
+
+
 // =================== BATTLES ====================== 
 
 //numtutorBattles(playerId:Int) : Int

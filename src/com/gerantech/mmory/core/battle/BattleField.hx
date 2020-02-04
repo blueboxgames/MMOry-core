@@ -127,15 +127,15 @@ class BattleField
 			trace ("es 1:" + ScriptEngine.get(ScriptEngine.T69_BATTLE_ELIXIR_RATIO, field.mode, 1, game_0.player.get_battleswins()) + " field.mode:" + field.mode + " battleswins" + game_0.player.get_battleswins());
 		}
 		
-		// add heros
+		// add inital units
 		if( field.mode != Challenge.MODE_1_TOUCHDOWN )
 		{
-			var len = field.mode == Challenge.MODE_1_TOUCHDOWN ? 2 : 6;
-			while( unitId < len )
+			// var len = field.mode == Challenge.MODE_2_BAZAAR ? 2 : 6;
+			var hqType = ScriptEngine.get(ScriptEngine.T54_CHALLENGE_INITIAL_UNITS, field.mode, false);
+			var heroType = ScriptEngine.get(ScriptEngine.T54_CHALLENGE_INITIAL_UNITS, field.mode, true);
+			while( unitId < 6 )
 			{
 				var side = unitId % 2;
-				var hqType = 201; if(field.mode == Challenge.MODE_1_TOUCHDOWN ) hqType = 221; else if( field.mode == Challenge.MODE_2_BAZAAR ) hqType = 202;
-				var heroType = field.mode == Challenge.MODE_0_HQ ? 222 : 224;
 				var card = new com.gerantech.mmory.core.battle.units.Card(games[side], unitId > 1 ? heroType : hqType, friendlyMode > 0 ? 9 : games[side].player.get_level(0));
 				this.addUnit(card, side, Math.ffloor(field.targets[unitId * 2]), Math.ffloor(field.targets[unitId * 2 + 1]), card.z, this.now);
 			}

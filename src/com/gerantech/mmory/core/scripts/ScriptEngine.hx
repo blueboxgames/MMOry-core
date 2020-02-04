@@ -47,6 +47,7 @@ class ScriptEngine
 	static public var T51_CHALLENGE_JOIN_REQS:Int = 51;
 	static public var T52_CHALLENGE_RUN_REQS:Int = 52;
 	static public var T53_CHALLENGE_TICKET_REWARD:Int = 53;
+	static public var T54_CHALLENGE_INITIAL_UNITS:Int = 54;
 
 	static public var T61_BATTLE_NUM_TUTORS:Int = 61;
 	static public var T62_BATTLE_NUM_COVERS:Int = 62;

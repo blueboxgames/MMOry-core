@@ -37,12 +37,14 @@ class LoginData
 		resources.set(ResourceType.R6_TICKET, 10);
 		resources.set(CardTypes.C101, 1);
 		resources.set(CardTypes.C102, 1);
-		resources.set(CardTypes.C103, 1);
+		resources.set(CardTypes.C121, 1);
 		resources.set(CardTypes.C104, 1);
 		resources.set(CardTypes.C105, 1);
-		resources.set(CardTypes.C106, 1);
+		resources.set(CardTypes.C120, 1);
 		resources.set(CardTypes.C107, 1);
 		resources.set(CardTypes.C108, 1);
+		resources.set(CardTypes.C120, 1);
+		resources.set(CardTypes.C121, 1);
 		
 		exchanges = new IntList();
 		exchanges.push(ExchangeType.C21_SPECIAL);
@@ -54,6 +56,6 @@ class LoginData
 		exchanges.push(ExchangeType.C113_BATTLE);
 		exchanges.push(ExchangeType.C114_BATTLE);
 		
-		deck = [CardTypes.C102, CardTypes.C104, CardTypes.C108, CardTypes.C101, CardTypes.C105, CardTypes.C106, CardTypes.C103, CardTypes.C107];
+		deck = [CardTypes.C102, CardTypes.C104, CardTypes.C108, CardTypes.C101, CardTypes.C105, CardTypes.C120, CardTypes.C121, CardTypes.C107];
 	}
 }

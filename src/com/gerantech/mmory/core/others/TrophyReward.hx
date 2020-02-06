@@ -17,7 +17,7 @@ class TrophyReward
   public var step:Int;
   public var game:Game;
   
-  public function new(game:Game, league:Int, index:Int, point:Int, key:Int, value:Int)
+  public function new(game:Game, league:Int, index:Int, point:Int, key:Int, value:Int, step:Int)
   {
     this.game = game;
     this.league = league;
@@ -25,7 +25,7 @@ class TrophyReward
     this.point = point;
     this.key = key;
     this.value = value;
-    this.step = (league - 1) * 3 + index + 1;
+    this.step = step;
   }
 
   public function reached() : Bool

@@ -82,12 +82,11 @@ class ScriptEngine
 	
 	static public function get(type:Int, ?arg0:Dynamic, ?arg1:Dynamic = null, ?arg2:Dynamic = null, ?arg3:Dynamic = null) : Dynamic
 	{
-		
-		interp.variables.set(appVersion > 2000 ? "__type" : "featureType", type);
+		interp.variables.set("__type", type);
 		if( arg0 != null )
-			interp.variables.set(appVersion > 2000 ? "__arg0" : "cardType", arg0);
+			interp.variables.set("__arg0", arg0);
 		if( arg1 != null )
-			interp.variables.set(appVersion > 2000 ? "__arg1" : "cardLevel", arg1);
+			interp.variables.set("__arg1", arg1);
 		if( arg2 != null )
 			interp.variables.set("__arg2", arg2);
 		if( arg3 != null )

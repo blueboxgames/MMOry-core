@@ -272,31 +272,15 @@ class Player
 		return false;
 	}
 
+
 	public function achieveReward(league:Int, index:Int) : Int
 	{
 		var reward:TrophyReward = game.arenas.get(league).rewards[index];
-		if( get_point() < reward.point )
-		{
-			trace("reward [" + reward + "] can not achieve with " + get_point() + " point.");
-			return MessageTypes.RESPONSE_NOT_ALLOWED;
-		}
+		var response = reward.achievavle(get_point(), getResource(ResourceType.R25_REWARD_STEP), true);
+		if( response != MessageTypes.RESPONSE_SUCCEED )
+			return response;
 
-		var lastRewardStep = getResource(ResourceType.R25_REWARD_STEP);
-		if( lastRewardStep != reward.step - 1 )
-		{
-			if( lastRewardStep == reward.step - 2 )
-			{
-				var prevType:Int = index == 0 ? game.arenas.get(league - 1).rewards[2].key : game.arenas.get(league).rewards[index - 1].key;
-				if( !ResourceType.isEvent(prevType) )
-					return MessageTypes.RESPONSE_NOT_ALLOWED;
-			}
-			else
-			{
-				trace("reward.step " + reward.step + " can not achieve in current league.");
-				return MessageTypes.RESPONSE_NOT_ALLOWED;
-			}
-		}
-		trace("reward.step " + reward.step + " lastRewardStep " + lastRewardStep);
+		trace("reward.step " + reward.step + " lastRewardStep " + getResource(ResourceType.R25_REWARD_STEP));
 
 		resources.set(ResourceType.R25_REWARD_STEP, reward.step);
 		#if java
@@ -306,9 +290,9 @@ class Player
 		addCard(reward.key);
 		resources.increase(reward.key, reward.value);
 		#end
-		return MessageTypes.RESPONSE_SUCCEED;
+		return response;
 	}
-
+	
 	#if flash
 	public function dashboadTabEnabled(index:Int) : Bool
 	{

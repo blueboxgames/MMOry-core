@@ -1,5 +1,6 @@
 package com.gerantech.mmory.core.others;
 
+import com.gerantech.mmory.core.constants.MessageTypes;
 import com.gerantech.mmory.core.constants.ResourceType;
 
 /**
@@ -38,13 +39,30 @@ class TrophyReward
     return this.reached(maxPoint) && step < this.step; 
   }
 
+  public function achievavle(point:Int, lastStep:Int, isLeague:Bool):Int
   {
-    return this.point <= this.game.player.get_point(); 
-  }
+    if( point < this.point )
+    {
+      trace("reward [" + this + "] can not achieve with " + point + " point.");
+      return MessageTypes.RESPONSE_NOT_ALLOWED;
+    }
 
-  public function collectible() : Bool
-  {
-    return this.reached() && this.game.player.getResource(ResourceType.R25_REWARD_STEP) < step; 
+    if( lastStep != this.step - 1 )
+    {
+      if( lastStep == this.step - 2 && isLeague )
+      {
+        var prevType:Int = index == 0 ? game.arenas.get(league - 1).lastReward().key : game.arenas.get(league).rewards[index - 1].key;
+        if( !ResourceType.isEvent(prevType) )
+          return MessageTypes.RESPONSE_NOT_ALLOWED;
+      }
+      else
+      {
+        trace("this.step " + this.step + " can not achieve in current league.");
+        return MessageTypes.RESPONSE_NOT_ALLOWED;
+      }
+    }
+
+    return MessageTypes.RESPONSE_SUCCEED;
   }
 
   public function toString() : String

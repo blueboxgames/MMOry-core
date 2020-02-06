@@ -39,7 +39,7 @@ class TrophyReward
     return this.reached(maxPoint) && step < this.step; 
   }
 
-  public function achievavle(point:Int, lastStep:Int, isLeague:Bool):Int
+  public function achievable(point:Int, lastStep:Int, isLeague:Bool):Int
   {
     if( point < this.point )
     {

@@ -276,12 +276,11 @@ class Player
 	public function achieveReward(league:Int, index:Int) : Int
 	{
 		var reward:TrophyReward = game.arenas.get(league).rewards[index];
-		var response = reward.achievavle(get_point(), getResource(ResourceType.R25_REWARD_STEP), true);
+		var response = reward.achievable(get_point(), getResource(ResourceType.R25_REWARD_STEP), true);
 		if( response != MessageTypes.RESPONSE_SUCCEED )
 			return response;
 
 		trace("reward.step " + reward.step + " lastRewardStep " + getResource(ResourceType.R25_REWARD_STEP));
-
 		resources.set(ResourceType.R25_REWARD_STEP, reward.step);
 		#if java
 		if( ResourceType.isBook(reward.key) )

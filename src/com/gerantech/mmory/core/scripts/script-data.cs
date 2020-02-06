@@ -904,9 +904,7 @@ if( __type == 48 )
 	return switch( __arg0 )
 	{
 		case 0:		1;
-		case 1:		2;
-		case 2:		3;
-		default:	1;
+		default:	2;
 	}
 }
 
@@ -925,11 +923,8 @@ if( __type == 52 )
 {
 	return switch( __arg0 )
 	{
-		case 0:		"6:1";
-		case 1:		"6:2";
-		case 2:		"6:3";
-		case 3:		"6:4";
-		default:	"6:0";
+		case 0:		"6:0";
+		default:	"6:1";
 	}
 }
 
@@ -938,10 +933,9 @@ if( __type == 53 )
 {
 	return switch( __arg0 )
 	{
-		case 0:		10;
-		case 1:		15;
-		case 2:		20;
-		default:	20;
+		case 1:		5;
+		case 2:		10;
+		default:	0;
 	}
 }
 

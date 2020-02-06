@@ -22,6 +22,7 @@ class Game
 	public var arenas:IntArenaMap;
 	public var player:Player;
 	public var lobby:Lobby;
+	public var buddyRoad:Arena;
 
 	public function new()
 	{
@@ -39,6 +40,9 @@ class Game
 		for( i in 0...ls.length ) 
 			this.arenas.set(i, new Arena(this, i,	i > 0 ? Std.int(ls[i - 1][0]) + 1 : -4, ls[i][0], ls[i][1], ls[i][2]));
 
+		Arena.STEP = 0;
+		var r:Array<Any> = ScriptEngine.get(ScriptEngine.T82_BUDDY_ROAD);
+		this.buddyRoad = new Arena(this, 1,	0, Std.int(r[0]), r[1], r[2]);
 
 		this.player = new Player(this, data);
 		this.exchanger = new Exchanger(this);

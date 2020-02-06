@@ -59,6 +59,7 @@ class ScriptEngine
 	static public var T69_BATTLE_ELIXIR_RATIO:Int = 69;
 
 	static public var T81_TROPHY_ROAD:Int = 81;
+	static public var T82_BUDDY_ROAD:Int = 82;
 
 	static var script:String;
 	static var version:Float;

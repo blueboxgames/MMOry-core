@@ -31,6 +31,9 @@ class Arena
 			if( index > 0 )
 				STEP ++;
 		}
-		}
+	}
+	public function lastReward():TrophyReward
+	{
+		return this.rewards[this.rewards.length - 1];
 	}
 }

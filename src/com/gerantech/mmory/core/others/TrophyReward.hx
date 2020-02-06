@@ -28,7 +28,16 @@ class TrophyReward
     this.step = step;
   }
 
-  public function reached() : Bool
+  public function reached(maxPoint:Int) : Bool
+  {
+    return this.point <= maxPoint; 
+  }
+
+  public function collectible(maxPoint:Int, step:Int) : Bool
+  {
+    return this.reached(maxPoint) && step < this.step; 
+  }
+
   {
     return this.point <= this.game.player.get_point(); 
   }

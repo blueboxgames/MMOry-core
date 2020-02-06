@@ -11,7 +11,7 @@ import com.gerantech.mmory.core.utils.maps.IntIntMap;
 class LoginData
 {
 	public static var coreSize:Int = 0;
-	public var coreVersion:String = "3100.0204102156";//do not change len.
+	public var coreVersion:String = "3100.0207120437";//do not change len.
 	public var noticeVersion:Int = 2800;
 	public var forceVersion:Int = 2800;
 	public var resources:IntIntMap;
@@ -34,7 +34,7 @@ class LoginData
 		resources.set(ResourceType.R2_POINT, -4);
 		resources.set(ResourceType.R3_CURRENCY_SOFT, 100);
 		resources.set(ResourceType.R4_CURRENCY_HARD, 50);
-		resources.set(ResourceType.R6_TICKET, 10);
+		// resources.set(ResourceType.R6_TICKET, 0);
 		resources.set(CardTypes.C101, 1);
 		resources.set(CardTypes.C102, 1);
 		resources.set(CardTypes.C104, 1);

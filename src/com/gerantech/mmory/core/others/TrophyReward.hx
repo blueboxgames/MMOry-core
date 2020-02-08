@@ -39,11 +39,11 @@ class TrophyReward
     return this.reached(maxPoint) && step < this.step; 
   }
 
-  public function achievable(point:Int, lastStep:Int, isLeague:Bool):Int
+  public function achievable(maxPoint:Int, lastStep:Int, isLeague:Bool):Int
   {
-    if( point < this.point )
+    if( maxPoint < this.point )
     {
-      trace("reward [" + this + "] can not achieve with " + point + " point.");
+      trace("reward [" + this + "] can not achieve with " + maxPoint + " point.");
       return MessageTypes.RESPONSE_NOT_ALLOWED;
     }
 
@@ -53,11 +53,14 @@ class TrophyReward
       {
         var prevType:Int = index == 0 ? game.arenas.get(league - 1).lastReward().key : game.arenas.get(league).rewards[index - 1].key;
         if( !ResourceType.isEvent(prevType) )
+        {
+          trace("last step is " + lastStep + ". after challenge, you can not achieve in step " + this.step + ".");
           return MessageTypes.RESPONSE_NOT_ALLOWED;
+        }
       }
       else
       {
-        trace("this.step " + this.step + " can not achieve in current league.");
+        trace("last step is " + lastStep + ", you can not achieve in step " + this.step + ".");
         return MessageTypes.RESPONSE_NOT_ALLOWED;
       }
     }

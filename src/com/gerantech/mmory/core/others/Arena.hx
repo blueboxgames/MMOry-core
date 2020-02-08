@@ -36,4 +36,12 @@ class Arena
 	{
 		return this.rewards[this.rewards.length - 1];
 	}
+
+	public function calculateStep(maxPoint:Int) : Int
+	{
+		for (reward in this.rewards)
+			if( reward.point > maxPoint )
+				return reward.step - 1;
+		return lastReward().step; 
+	}
 }

@@ -44,13 +44,17 @@ class TrophyReward
     if( maxPoint < this.point )
     {
       trace("reward [" + this + "] can not achieve with " + maxPoint + " point.");
-      return MessageTypes.RESPONSE_NOT_ALLOWED;
+      return MessageTypes.RESPONSE_MUST_WAIT;
     }
 
     if( lastStep != this.step - 1 )
     {
+      if( lastStep >= this.step )
+        return MessageTypes.RESPONSE_ALREADY_SENT;
+
       if( lastStep == this.step - 2 && isLeague )
       {
+        
         var prevType:Int = index == 0 ? game.arenas.get(league - 1).lastReward().key : game.arenas.get(league).rewards[index - 1].key;
         if( !ResourceType.isEvent(prevType) )
         {

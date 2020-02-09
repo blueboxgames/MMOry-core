@@ -5,6 +5,7 @@ package com.gerantech.mmory.core.others;
  */
 class Arena 
 {
+	static public var STEP:Int;
 	public var index:Int;
 	public var min:Int;
 	public var max:Int;
@@ -26,7 +27,21 @@ class Arena
 		for( i in 0...len )
 		{
 			kayVal = list[i].split(":");
-			this.rewards.push(new TrophyReward(game, index, i, Std.parseInt(kayVal[0]), Std.parseInt(kayVal[1]), Std.parseInt(kayVal[2])));
+			this.rewards.push(new TrophyReward(game, index, i, Std.parseInt(kayVal[0]), Std.parseInt(kayVal[1]), Std.parseInt(kayVal[2]), STEP));
+			if( index > 0 )
+				STEP ++;
 		}
+	}
+	public function lastReward():TrophyReward
+	{
+		return this.rewards[this.rewards.length - 1];
+	}
+
+	public function calculateStep(maxPoint:Int) : Int
+	{
+		for (reward in this.rewards)
+			if( reward.point > maxPoint )
+				return reward.step - 1;
+		return lastReward().step; 
 	}
 }

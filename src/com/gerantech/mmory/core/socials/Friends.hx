@@ -12,13 +12,17 @@ class Friends {
   public var invitee:Int;
   public var inviterStep:Int;
   public var inviteeStep:Int;
+  public var inviterStart:Int;
+  public var inviteeStart:Int;
 
-	public function new(id:Int, inviter:Int, invitee:Int, inviterStep:Int, inviteeStep:Int, state:Int) {
+	public function new(id:Int, inviter:Int, invitee:Int, inviterStep:Int, inviteeStep:Int, inviterStart:Int, inviteeStart:Int, state:Int) {
     this.id = id;
     this.state = state;
     this.inviter = inviter;
     this.invitee = invitee;
     this.inviterStep = inviterStep;
     this.inviteeStep = inviteeStep;
+    this.inviterStart = inviterStart;
+    this.inviteeStart = inviteeStart;
 	}
 }

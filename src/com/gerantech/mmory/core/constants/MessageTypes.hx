@@ -32,17 +32,17 @@ class MessageTypes
 
 	
 	//public static var JOIN_LOBBY_REQUEST_SENT:Int = 1;
-    //public static var JOIN_LOBBY_SUCCEED:Int = 0;
-   // public static var JOIN_LOBBY_NOT_ALLOWED:Int = -1;
-    public static var JOIN_LOBBY_MULTI_LOBBY_ILLEGAL:Int = -2;
+	//public static var JOIN_LOBBY_SUCCEED:Int = 0;
+	// public static var JOIN_LOBBY_NOT_ALLOWED:Int = -1;
+	public static var JOIN_LOBBY_MULTI_LOBBY_ILLEGAL:Int = -2;
 	//public static var JOIN_LOBBY_REQUEST_ALREADY_SENT:Int = -3;
-	
-    public static var RESPONSE_SENT:Int = 1;
-    public static var RESPONSE_SUCCEED:Int = 0;
-    public static var RESPONSE_NOT_ALLOWED:Int = -1;
+
+	public static var RESPONSE_SENT:Int = 1;
+	public static var RESPONSE_SUCCEED:Int = 0;
+	public static var RESPONSE_NOT_ALLOWED:Int = -1;
 	public static var RESPONSE_ALREADY_SENT:Int = -3;
-    public static var RESPONSE_NOT_FOUND:Int = -4;
-    public static var RESPONSE_UNKNOWN_ERROR:Int = -5;
+	public static var RESPONSE_NOT_FOUND:Int = -4;
+	public static var RESPONSE_UNKNOWN_ERROR:Int = -5;
 	
 	public static var RESPONSE_NOT_ENOUGH_REQS:Int = -6;
 	public static var RESPONSE_MUST_WAIT:Int = -7;

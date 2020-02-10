@@ -39,7 +39,7 @@ class Contacts {
 
 	public function positionalCorrection():Void {
 		var correction:Float = Math.max(penetration - CMath.PENETRATION_ALLOWANCE, 0.0) / (a.invMass + b.invMass) * CMath.PENETRATION_CORRETION;
-		a.setPosition(a.x + normalX * -a.invMass * correction, a.y + normalY * -a.invMass * correction, GameObject.NaN);
-		b.setPosition(b.x + normalX *  b.invMass * correction, b.y + normalY *  b.invMass * correction, GameObject.NaN);
+		a.setPosition(a.x + normalX * -a.invMass * correction, a.y + normalY * -a.invMass * correction, GameObject.NaN, true);
+		b.setPosition(b.x + normalX *  b.invMass * correction, b.y + normalY *  b.invMass * correction, GameObject.NaN, true);
 	}
 }

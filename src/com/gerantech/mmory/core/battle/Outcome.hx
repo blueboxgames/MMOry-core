@@ -50,6 +50,7 @@ class Outcome
 
 			// soft-currency
 			var sc = Math.max(0, alliseStar) + Math.min(league.index * 2, Math.max(0, alliesGame.player.get_point() - alliesGame.player.get_softs())) * battleField.field.mode;
+			sc *= ScriptEngine.getInt(ScriptEngine.T48_CHALLENGE_REWARDCOEF, index); 
 			var softs:Int = 2 * cast(sc, Int);
 			if( softs != 0 && alliesGame.player.get_battleswins() > 4 )
 				ret.set(ResourceType.R3_CURRENCY_SOFT, softs);
@@ -88,7 +89,7 @@ class Outcome
 			return 0;
 
 		// var diff = alliseStar - axisStar;
-		return ScriptEngine.getInt(ScriptEngine.T48_CHALLENGE_REWARDCOEF, index ) * (alliseStar > axisStar ? WIN_POINT : LOSE_PONT);
+		return alliseStar > axisStar ? WIN_POINT : LOSE_PONT;
 	}
 
 	static  function getEmptySlots(alliesGame:Game, now:Int) : Array<Int>

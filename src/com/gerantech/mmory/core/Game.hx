@@ -1,10 +1,9 @@
 package com.gerantech.mmory.core;
-import com.gerantech.mmory.core.scripts.ScriptEngine;
 import com.gerantech.mmory.core.InitData;
 import com.gerantech.mmory.core.Player;
-import com.gerantech.mmory.core.others.Arena;
 import com.gerantech.mmory.core.exchanges.Exchanger;
-
+import com.gerantech.mmory.core.others.Arena;
+import com.gerantech.mmory.core.scripts.ScriptEngine;
 import com.gerantech.mmory.core.socials.Lobby;
 import com.gerantech.mmory.core.utils.maps.IntArenaMap;
 
@@ -23,6 +22,7 @@ class Game
 	public var arenas:IntArenaMap;
 	public var player:Player;
 	public var lobby:Lobby;
+	public var friendRoad:Arena;
 
 	public function new()
 	{
@@ -30,17 +30,22 @@ class Game
 	}
 	public function init(data:InitData) 
 	{
-		appVersion = data.appVersion;
-		market = data.market;
-		sessionsCount = data.sessionsCount;
+		this.market = data.market;
+		this.appVersion = data.appVersion;
+		this.sessionsCount = data.sessionsCount;
 
-		arenas = new IntArenaMap();
+		Arena.STEP = 0;
+		this.arenas = new IntArenaMap();
 		var ls:Array<Array<Any>> = ScriptEngine.get(ScriptEngine.T81_TROPHY_ROAD);
 		for( i in 0...ls.length ) 
-			arenas.set(i, new Arena(this, i,	i > 0 ? Std.int(ls[i - 1][0]) + 1 : -4, ls[i][0], ls[i][1], ls[i][2]));	
+			this.arenas.set(i, new Arena(this, i,	i > 0 ? Std.int(ls[i - 1][0]) + 1 : -4, ls[i][0], ls[i][1], ls[i][2]));
 
-		player = new Player(this, data);
-		exchanger = new Exchanger(this);
-		lobby = new Lobby(this);
+		this.player = new Player(this, data);
+		this.exchanger = new Exchanger(this);
+		this.lobby = new Lobby(this);
+
+		Arena.STEP = 0;
+		var r:Array<Any> = ScriptEngine.get(ScriptEngine.T82_BUDDY_ROAD);
+		this.friendRoad = new Arena(this, 1,	0, Std.int(r[0]), r[1], r[2]);
 	}
 }

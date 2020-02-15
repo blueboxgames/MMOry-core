@@ -681,7 +681,7 @@ if( __type == 26 )
 		
 		default		:	1.0;
 	}
-	return ret * 270;
+	return ret * 290;
 }
 
 
@@ -722,7 +722,7 @@ if( __type == 15 )
 		
 		default		:	1.0	;
 	}
-	return ret * 270;
+	return ret * 290;
 }
 
 

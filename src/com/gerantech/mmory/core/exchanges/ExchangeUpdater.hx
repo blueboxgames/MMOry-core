@@ -69,7 +69,7 @@ class ExchangeUpdater
 		this.add(ExchangeType.C123_MAGIC, 0, 0, ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.fixedRound(Exchanger.toHard(Exchanger.estimateBookOutcome(ExchangeType.BOOK_58_AMBER,	arena, game.player.splitTestCoef))),	ExchangeType.BOOK_58_AMBER	+ ":" + arena);
 		
 		if( this.game.player.get_point() > 40 && this.game.player.get_point() < 60 && this.game.player.getResource(ResourceType.R6_TICKET) < 12 )
-			this.addBundle(1, ExchangeType.C31_BUNDLE, 0, this.now + (1 * 24 * 3600), "5:1999", "6:123, 4:50");
+			this.addBundle(1, ExchangeType.C31_BUNDLE, 0, this.now + (1 * 24 * 3600), "5:1999", "3:5000, 4:50");
 	}
 
 	public function add(type:Int, numExchanges:Int, expireAt:Int, reqStr:String, outStr:String) : Void

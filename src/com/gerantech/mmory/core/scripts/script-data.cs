@@ -200,8 +200,8 @@ if( __type == 10 )
 	return ret = switch( __arg0 )
 	{
 		case	117	: -100;
-		case	120	: -100;
 		case	118	: -100;
+		case	120	: -100;
 
 		default		:	0;
 	}

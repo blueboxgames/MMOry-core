@@ -273,7 +273,7 @@ class BattleField
 			return this.addSpell(card, side, x, y);
 		
 		for(i in 0...card.quantity)
-			this.addUnit(card, side, CoreUtils.getXPosition(card.quantity, i, x), com.gerantech.mmory.core.utils.CoreUtils.getYPosition(card.quantity, i, y), 0, time);
+			this.addUnit(card, side, CoreUtils.getXPosition(card.quantity, i, x), com.gerantech.mmory.core.utils.CoreUtils.getYPosition(card.quantity, i, y), card.z, time);
 
 		return unitId - 1;
 	}

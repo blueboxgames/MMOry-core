@@ -46,12 +46,12 @@ class BattleField
 	static public  var SUMMON_AREA_BOTH:Int = 3;
 
 	static public var CAMERA_ANGLE:Float = 0.766;// sin of 50 angle
-	static public var DEBUG_MODE:Bool = false;
 	static public var DELTA_TIME:Int = 25;
 
 	static public var MAX_LATENCY:Int = 4000;
 	
 	public var state:Int = 0;
+	public var debugMode:Bool;
 	public var singleMode:Bool;
 	public var friendlyMode:Int;
 	public var field:FieldData;

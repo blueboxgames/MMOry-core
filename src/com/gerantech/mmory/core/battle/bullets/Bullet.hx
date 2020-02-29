@@ -1,6 +1,7 @@
 package com.gerantech.mmory.core.battle.bullets;
 import com.gerantech.mmory.core.battle.GameObject;
 import com.gerantech.mmory.core.battle.units.Card;
+import com.gerantech.mmory.core.battle.units.Unit;
 import com.gerantech.mmory.core.constants.CardTypes;
 
 /**
@@ -9,7 +10,8 @@ import com.gerantech.mmory.core.constants.CardTypes;
  */ 
 class Bullet extends GameObject
 {
-	public var targetId:Int = -1;
+	public var unit:Unit;
+	public var target:Unit;
 	var sx:Float;
 	var sy:Float;
 	var sz:Float;
@@ -22,9 +24,11 @@ class Bullet extends GameObject
 	var deltaZ:Float;
 	var explodeTime:Float = -1;
 
-	public function new(battleField:BattleField, id:Int, card:Card, side:Int, x:Float, y:Float, z:Float, fx:Float, fy:Float, fz:Float) 
+	public function new(battleField:BattleField, unit:Unit, target:Unit, id:Int, card:Card, side:Int, x:Float, y:Float, z:Float, fx:Float, fy:Float, fz:Float) 
 	{
 		super(id, battleField, card, side, x, y, z);
+		this.unit = unit;
+		this.target = target;
 		this.summonTime = battleField.now + card.bulletShootDelay;
 		this.sx = this.x;
 		this.sy = this.y;
@@ -32,7 +36,7 @@ class Bullet extends GameObject
 		this.fx = fx;
 		this.fy = fy;
 		this.fz = fz;
-		createPath();
+		this.createPath();
 	}
 	
 	function createPath() 
@@ -49,9 +53,6 @@ class Bullet extends GameObject
 			deltaZ = deltaX / dx * dz;
 		else
 			deltaZ = card.bulletSpeed;
-		
-		//if( card.type == 151)
-			//trace("==>id" + id + " x" + x + " y:" + y + " z:" + z + " fx:" + fx + " fy:" + fy + " fz:" + fz + " dx:" + dx + " dy:" + dy + " dz:" + dz + " deltaX:" + deltaX + " deltaY:" + deltaY + " deltaZ:" + deltaZ);
 	}
 
 	override public function update() : Void
@@ -72,16 +73,14 @@ class Bullet extends GameObject
 	{
 		if( summonTime == 0 )
 			return;
-		summonTime = 0;
-		// prevent shooting while projectile is dead.
-		var unitId:Int = Std.int((id - id % 10000) / 10000);
-		var unit = battleField.getUnit(unitId);
-
-		if( !CardTypes.isSpell(card.type) && !card.explosive && unit != null && unit.disposed() )
+		
+		// prevent shooting while unit disposed.
+		if( !card.explosive && unit != null && unit.disposed() )
 		{
 			dispose();
 			return;
 		}
+		summonTime = 0;
 		setState(GameObject.STATE_1_DIPLOYED);
 	}
 	
@@ -89,12 +88,11 @@ class Bullet extends GameObject
 	{
 		if( explodeTime > -1 )
 			return;
-		var unit = battleField.getUnit(targetId);
-		if( card.bulletForceKill && unit != null && !unit.disposed() )
+		if( target != null && !target.disposed() )
 		{
-			this.fx = unit.x;
-			this.fy = unit.y;
-			this.fz = unit.z;
+			this.fx = target.x;
+			this.fy = target.y;
+			this.fz = target.z;
 			createPath();
 		}
 		setPosition(dx != 0 ? x + deltaX : GameObject.NaN, dy != 0 ? y + deltaY : GameObject.NaN, dz != 0 ? z + deltaZ : GameObject.NaN);

@@ -289,7 +289,7 @@ class BattleField
 	function addSpell(card:Card, side:Int, x:Float, y:Float) : Int
 	{
 		var offset = GraphicMetrics.getSpellStartPoint(card.type);
-		var spell = new Bullet(this, spellId, card, side, x + offset.x, y + offset.y, offset.z, x, y, 0);
+		var spell = new Bullet(this, null, null, spellId, card, side, x + offset.x, y + offset.y, offset.z, x, y, 0);
 		bullets.push(spell);
 		spellId ++;
 		return spellId - 1;
@@ -297,12 +297,10 @@ class BattleField
 
 	public function addBullet(unit:Unit, side:Int, x:Float, y:Float, target:Unit) : Void 
 	{
-		var b = new Bullet(this, unit.bulletId, unit.card, side, x, y, 0, target.x, target.y, 0);
-		b.targetId = target.id;
+		var b = new Bullet(this, unit, unit.card.bulletForceKill ? target : null, unit.bulletId, unit.card, side, x, y, 0, target.x, target.y, 0);
 		bullets.push(b);
 		unit.bulletId ++;
 	}
-	
 	
 	public function getSide(id:Int) : Int
 	{

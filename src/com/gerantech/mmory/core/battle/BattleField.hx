@@ -46,12 +46,12 @@ class BattleField
 	static public  var SUMMON_AREA_BOTH:Int = 3;
 
 	static public var CAMERA_ANGLE:Float = 0.766;// sin of 50 angle
-	static public var DEBUG_MODE:Bool = false;
 	static public var DELTA_TIME:Int = 25;
 
 	static public var MAX_LATENCY:Int = 4000;
 	
 	public var state:Int = 0;
+	public var debugMode:Bool;
 	public var singleMode:Bool;
 	public var friendlyMode:Int;
 	public var field:FieldData;
@@ -273,7 +273,7 @@ class BattleField
 			return this.addSpell(card, side, x, y);
 		
 		for(i in 0...card.quantity)
-			this.addUnit(card, side, CoreUtils.getXPosition(card.quantity, i, x), com.gerantech.mmory.core.utils.CoreUtils.getYPosition(card.quantity, i, y), 0, time);
+			this.addUnit(card, side, CoreUtils.getXPosition(card.quantity, i, x), com.gerantech.mmory.core.utils.CoreUtils.getYPosition(card.quantity, i, y), card.z, time);
 
 		return unitId - 1;
 	}
@@ -289,7 +289,7 @@ class BattleField
 	function addSpell(card:Card, side:Int, x:Float, y:Float) : Int
 	{
 		var offset = GraphicMetrics.getSpellStartPoint(card.type);
-		var spell = new Bullet(this, spellId, card, side, x + offset.x, y + offset.y, offset.z, x, y, 0);
+		var spell = new Bullet(this, null, null, spellId, card, side, x + offset.x, y + offset.y, offset.z, x, y, 0);
 		bullets.push(spell);
 		spellId ++;
 		return spellId - 1;
@@ -297,12 +297,10 @@ class BattleField
 
 	public function addBullet(unit:Unit, side:Int, x:Float, y:Float, target:Unit) : Void 
 	{
-		var b = new Bullet(this, unit.bulletId, unit.card, side, x, y, 0, target.x, target.y, 0);
-		b.targetId = target.id;
+		var b = new Bullet(this, unit, unit.card.bulletForceKill ? target : null, unit.bulletId, unit.card, side, x, y, 0, target.x, target.y, 0);
 		bullets.push(b);
 		unit.bulletId ++;
 	}
-	
 	
 	public function getSide(id:Int) : Int
 	{

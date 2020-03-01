@@ -317,6 +317,8 @@ class Unit extends Colleague
 			return;
 		if( this.card.explosive && !this.isDump )
 			this.attack(this);
+		if( this.health > 0 )
+			this.health = 0;
 		super.dispose();
 	}
 	

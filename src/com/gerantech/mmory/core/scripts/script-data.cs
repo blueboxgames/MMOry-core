@@ -200,8 +200,8 @@ if( __type == 10 )
 	return ret = switch( __arg0 )
 	{
 		case	117	: -100;
-		case	120	: -100;
 		case	118	: -100;
+		case	120	: -100;
 
 		default		:	0;
 	}
@@ -510,7 +510,7 @@ if( __type == 22 )
 		case	101	:	0.30	;
 		case	102	:	0.25	;
 		case	103	:	0.057	;
-		case	104	:	0.20	;
+		case	104	:	0.30	;
 		case	105	:	0.40	;
 		case	106	:	0.16	;
 		case	107	:	0.50	;
@@ -554,7 +554,7 @@ if( __type == 23 )
 		case	101	:	2.0 ;
 		case	102	:	2.1	;
 		case	103	:	0.8	;
-		case	104	:	1.4	;
+		case	104	:	1.8	;
 		case	105	:	2.2 ;
 		case	106	:	1.5 ;
 		case	107	:	1.0	;
@@ -587,52 +587,40 @@ if( __type == 23 )
 }
 
 
-// // bulletShootDelay
-// if( __type == 24 )
-// {
-// 	var ret = switch( __arg0 )
-// 	{
-// 		case	101	:	0.0	;
-// 		case	102	:	0.7	;
-// 		case	103	:	0.7	;
-// 		case	104	:	0.5	;
-// 		case	105	:	0.0	;
-// 		case	106	:	0.5	;
-// 		case	107	:	0.0	;
-// 		case	108	:	0.0	;
-// 		case	109	:	0.5	;
-// 		case	110	:	0.7	;
-// 		case	111	:	0.5	;
-// 		case	112	:	0.4 ;
-// 		case	113	:	0.4 ;
-// 		case	114	:	0.7	;
-// 		case	115	:	0.2	;
-// 		case	116	:	0.6	;	
-// 		case	117	: 0.7 ;
-// 		case	118	: 0.0 ;
-// 		case	119	: 0.6 ;
-
-// 		case	201	:	0.5	;
-// 		case	221	:	0.5	;
-// 		case	222	:	0.5	;
-// 		case	223	:	0.5	;
-		
-// 		default		:	1.0;
-// 	}
-// 	return ret * 700 ;
-// }
-
 // bulletShootDelay
 if( __type == 24 )
 {
 	var ret = switch( __arg0 )
-	{		
-		// case	104	:	6	;
-		default		:	0;
-	}
-	return ret;
-}
+	{
+		case	101	:	0.0	;
+		case	102	:	0.7	;
+		case	103	:	0.7	;
+		case	104	:	1.3	;
+		case	105	:	0.0	;
+		case	106	:	0.5	;
+		case	107	:	0.0	;
+		case	108	:	0.0	;
+		case	109	:	0.5	;
+		case	110	:	0.7	;
+		case	111	:	0.5	;
+		case	112	:	0.4 ;
+		case	113	:	0.4 ;
+		case	114	:	0.7	;
+		case	115	:	0.2	;
+		case	116	:	0.6	;	
+		case	117	: 0.7 ;
+		case	118	: 0.0 ;
+		case	119	: 0.6 ;
 
+		case	201	:	0.5	;
+		case	221	:	0.5	;
+		case	222	:	0.5	;
+		case	223	:	0.5	;
+		
+		default		:	1.0;
+	}
+	return ret * 700 ;
+}
 
 // bulletRangeMin
 if( __type == 25 )

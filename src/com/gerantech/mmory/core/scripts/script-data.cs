@@ -32,7 +32,6 @@ if( __type == -1 )
 		case	120	:	0	;
 		case	121	:	0	;
 
-
 		case	151	:	8	;
 		case	152	:	10	;
 		
@@ -107,7 +106,6 @@ if( __type == 2 )
 		case 119 :  3 ;
 		case 120 :  2 ;
 		case 121 :  3 ;
-
 
 		case 151 :  4	;
 		case 152 :  3	;
@@ -241,7 +239,6 @@ if( __type == 11 )
 		case	222	:	0;
 		case	223	:	1.30;
 		
-		
 		default		:	0.00;
 	}
 	return ret * 0.085 * 1;
@@ -276,7 +273,6 @@ if( __type == 12 )
 		case	119	: 1.50;
 		case	120	: 0.15;
 		case	121	:	0.15;
-
 
 		case	201	:	5.00;
 		case	202	:	6.00;
@@ -317,8 +313,6 @@ if( __type == 13 )
 		case	120	:	30	;
 		case	121	:	32	;
 
-
-		
 		case	201	:	60	;
 		case	202	:	55	;
 		case	221	:	35	;
@@ -357,7 +351,6 @@ if( __type == 14 )
 		case	120	: 0.35;
 		case	121	:	0.35;
 
-
 		case	151	:	1.00;
 
 		case	201	:	0.90;
@@ -365,7 +358,6 @@ if( __type == 14 )
 		case	221	:	0.90;
 		case	222	:	0.90;
 		case	223	:	0.50;
-		case	119	: 0.50;
 		
 		default		:	1.00;
 	}
@@ -384,7 +376,7 @@ if( __type == 16 )
 	}
 }
 
-// focus unit (Building only target)
+// focusUnit (Building only target)
 if( __type == 17 )
 {
 	return switch( __arg0 )
@@ -398,50 +390,29 @@ if( __type == 17 )
 }
 
 
-// focus height
+// focusHeight
 if( __type == 18 )
 {
 	return switch( __arg0 )
 	{
 		case	101	:	-105;
-		case	102	:	-30	;
-		case	103	:	-30	;
 		case	104	:	-105;
-		case	105	:	-30	;
-		case	106	:	-30	;
-		case	107	:	-30	;
 		case	108	:	-105;
-		case	109	:	-30	;
 		case	110	:	-105;
 		case	111	:	-105;
-		case	112	:	-30 ;
-		case	113	:	-30 ;
-		case	114	:	-30	;
-		case	115	:	-30	;
-		case	116	:	-30	;
 		case	117	: -105 ;
-		case	118	: -30 ;
-		case	119	: -30	;
 		case	120	: -105 ;
-		case	121	:	-30	;
-
-
-		case  151 : -30 ;
+		case  151 : -105;
 		case  152 : -105;
-
-		
 		case 	201 : -105;
-		case 	221 :	-30 ;
 		case	222	:	-105;
-		case	223	:	-30	;
-		case	224	: -30	;
 
-		default		:	-1;
+		default		:	-30;
 	}
 }
 
 
-// self damage. Buildings that has self damage
+// selfDamage. Buildings that has self damage
 if( __type == 19 )
 {
 	var coef = switch( __arg0 )
@@ -484,7 +455,6 @@ if( __type == 21 )
 		case	120	: 1.3 ;
 		case	121	:	1.3	;
 
-
 		case	151	:	1.2 ;
 		case	152	:	0.8	;
 		
@@ -511,10 +481,10 @@ if( __type == 22 )
 		case	102	:	0.25	;
 		case	103	:	0.057	;
 		case	104	:	0.30	;
-		case	105	:	0.40	;
+		case	105	:	0.60	;
 		case	106	:	0.16	;
 		case	107	:	0.50	;
-		case	108	:	0.09	;
+		case	108	:	0.08	;
 		case	109	:	-0.1	;
 		case	110	:	0.17	;
 		case	111	:	0.24	;
@@ -528,7 +498,6 @@ if( __type == 22 )
 		case	119	:	0.20	; 
 		case	120	:	0.14	;
 		case	121	:	0.057	;
-
 		
 		case	151	:	0.70	;
 		case	152	:	0.40 	;
@@ -573,7 +542,6 @@ if( __type == 23 )
 		case	120	: 2.0 ;
 		case	121	:	0.8	;
 
-		
 		case 	201 :	1.2 ;
 		case	202	:	100	;
 		case 	221 :	1.0 ;
@@ -596,7 +564,7 @@ if( __type == 24 )
 		case	102	:	0.7	;
 		case	103	:	0.7	;
 		case	104	:	1.3	;
-		case	105	:	0.0	;
+		case	105	:	1.0	;
 		case	106	:	0.5	;
 		case	107	:	0.0	;
 		case	108	:	0.0	;
@@ -617,16 +585,18 @@ if( __type == 24 )
 		case	222	:	0.5	;
 		case	223	:	0.5	;
 		
-		default		:	1.0;
+		default		:	0.0;
 	}
 	return ret * 700 ;
 }
+
 
 // bulletRangeMin
 if( __type == 25 )
 {
 	return 0;
 }
+
 
 // bulletRangeMax
 // H = min 1.5 , max 1.8
@@ -658,7 +628,6 @@ if( __type == 26 )
 		case	119	: 1.6		;
 		case	120	: 0.4		;
 		case	121	:	0.2		;
-
 
 		case 	201 : 1.5 	;
 		case	202	:	0.0 	;
@@ -700,7 +669,6 @@ if( __type == 15 )
 		case	120	: 1.0 ;
 		case	121	:	0.7	;
 
-		
 		case 	201 : 1.5 ;
 		case	202	:	0.0	;
 		case 	221 :	1.6 ;
@@ -726,7 +694,7 @@ if( __type == 27 )
 		case	102	:	0.50	;
 		case	103	:	0.50	;
 		case	104	:	10.0	;
-		case	105	:	7.00	;
+		case	105	:	10.00	;
 		case	106	:	16.0	;
 		case	107	:	14.0	;
 		case	108	:	0.50	;
@@ -743,7 +711,6 @@ if( __type == 27 )
 		case	119	: 0.50  ;
 		case	120	: 0.50  ;
 		case	121	:	0.50	;
-
 		
 		case	151	:	17.0	;
 		case	152	:	20.0	;
@@ -760,17 +727,15 @@ if( __type == 27 )
 	return ret * 10;
 }
 
+
 // bulletExplodeDelay
 if( __type == 28 )
 {
-	return switch( __arg0 )
-	{
-		case	106	:	0	;
-		default		:	0	;
-	}
+	return 0;
 }
 
-// force kill
+
+// forceKill
 if( __type == 29 )
 {
 	return switch( __arg0 )
@@ -794,6 +759,30 @@ if( __type == 29 )
 	}
 }
 
+
+// bulletDamageHeight
+if( __type == 30 )
+{
+	return switch( __arg0 )
+	{
+		case	101	:	-105;
+		case	104	:	-105;
+		case	106	:	-105;
+		case	107	:	-105;
+		case	108	:	-105;
+		case	110	:	-105;
+		case	111	:	-105;
+		case	116	: -105 ;
+		case	117	: -105 ;
+		case	120	: -105 ;
+		case  151 : -105;
+		case  152 : -105;
+		case 	201 : -105;
+		case	222	:	-105;
+
+		default		:	-30;
+	}
+}
 
 // =================== Challenges ====================== 
 

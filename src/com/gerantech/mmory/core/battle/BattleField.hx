@@ -356,6 +356,8 @@ class BattleField
 		{
 			if( u.disposed() )
 				continue;
+			if( u.z < bullet.card.bulletDamageHeight )
+				continue;
 			distance = Math.abs(com.gerantech.mmory.core.utils.CoreUtils.getDistance(u.x, u.y, bullet.x, bullet.y)) - bullet.card.bulletDamageArea - u.card.sizeH;
 			if( ((bullet.card.bulletDamage < 0 && u.side == bullet.side) || (bullet.card.bulletDamage >= 0 && (u.side != bullet.side || bullet.card.explosive))) && distance <= 0 )
 			{

@@ -46,6 +46,7 @@ class Card
 	public var bulletDamageArea:Float = 180;
 	public var bulletExplodeDelay:Float = 0;
 	public var bulletForceKill:Bool = false;
+	public var bulletDamageHeight:Int = -10;
 	static public var radiusMax:Float = 0; 
 
 	public function new(game:Game, type:Int, level:Int)
@@ -87,9 +88,8 @@ class Card
 		bulletRangeMax = ScriptEngine.get(ScriptEngine.T26_BULLET_RANGE_MAX, type, level);
 		bulletDamageArea = ScriptEngine.get(ScriptEngine.T27_BULLET_DAMAGE_AREA, type, level);
 		bulletExplodeDelay = ScriptEngine.getInt(ScriptEngine.T28_BULLET_EXPLODE_DELAY, type, level);
-#if java
 		bulletForceKill = ScriptEngine.getBool(ScriptEngine.T29_BULLET_FORCE_KILL, type, level);
-#end		
+		bulletDamageHeight = ScriptEngine.getInt(ScriptEngine.T30_BULLET_DAMAGE_HEIGHT, type, level);
 	}
 	
 	static var RARITY_START_LEVEL = [0, 2, 6, 9];

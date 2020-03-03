@@ -35,6 +35,7 @@ class ScriptEngine
 	static public var T27_BULLET_DAMAGE_AREA:Int = 27;
 	static public var T28_BULLET_EXPLODE_DELAY:Int = 28;
 	static public var T29_BULLET_FORCE_KILL:Int = 29;
+	static public var T30_BULLET_DAMAGE_HEIGHT:Int = 30;
 
 	static public var T41_CHALLENGE_MODE:Int = 41;
 	static public var T42_CHALLENGE_TYPE:Int = 42;

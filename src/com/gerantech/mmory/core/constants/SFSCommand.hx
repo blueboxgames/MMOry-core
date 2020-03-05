@@ -68,36 +68,21 @@ class SFSCommands {
 	public static final QUEST_INIT:String = "questInit";
   public static final QUEST_REWARD_COLLECT:String = "questRewardCollect";
 
-	public static function getDeadline(command:String):Int {
-		switch (command) {
-			case BATTLE_START:
+	public static function getDeadline(c:String):Int {
+		if (c == BATTLE_JOIN)
 				return 14000;
-			case BATTLE_CANCEL:
-			case BATTLE_LEAVE:
-			case BATTLE_SUMMON:
-			case BATTLE_SEND_STICKER:
-			case INBOX_OPEN:
-			case INBOX_CONFIRM:
-			case INBOX_BROADCAST:
-			case ISSUE_GET:
-			case ISSUE_REPORT:
-			case ISSUE_TRACK:
-			case LOBBY_LEAVE:
-			case LOBBY_EDIT:
-			case REGISTER_PUSH:
-			case VERIFY_PURCHASE:
-			case BUDDY_BATTLE:
-			case CARD_NEW:
+		if (c == BATTLE_START)
+			return 30000;
+		if (c == BATTLE_CANCEL || c == BATTLE_LEAVE || c == BATTLE_SUMMON || c == BATTLE_SEND_STICKER || c == INBOX_OPEN || c == INBOX_CONFIRM
+			|| c == INBOX_BROADCAST || c == ISSUE_GET || c == ISSUE_REPORT || c == ISSUE_TRACK || c == LOBBY_LEAVE || c == LOBBY_EDIT || c == REGISTER_PUSH
+			|| c == VERIFY_PURCHASE || c == BUDDY_BATTLE || c == CARD_NEW)
 				return -1;
-		}
-		return 3000;
+		return 4000;
 	}
 
-	public static function getCanceled(command:String):String {
-		switch (command) {
-			case BATTLE_CANCEL:
+	public static function getCanceled(c:String):String {
+		if (c == BATTLE_CANCEL)
 				return BATTLE_START;
-		}
 		return null;
 	}
 }

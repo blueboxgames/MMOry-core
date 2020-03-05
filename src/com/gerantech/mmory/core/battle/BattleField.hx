@@ -63,6 +63,7 @@ class BattleField
 	public var bullets:Array<Bullet>;
 	public var now:Float = 0;
 	public var startAt:Int = 0;
+	public var createAt:Int = 0;
 	public var deltaTime:Int = 25;
 	public var side:Int = 0;
 	public var spellId:Int = 1000000;
@@ -83,15 +84,11 @@ class BattleField
 		super();
 		#end
 	}
-	public function initialize(game_0:Game, game_1:Game, field:FieldData, side:Int, startAt:Float, now:Float, hasExtraTime:Bool, friendlyMode:Int) : Void
+
+	public function create(game_0:Game, game_1:Game, field:FieldData, side:Int, createAt:Float, hasExtraTime:Bool, friendlyMode:Int) : Void
 	{
 		this.side = side;
-		this.now = now;
-		this.startAt = Math.round(startAt);
-		this.pauseTime = (startAt + 2000) * 1000;
-		this.resetTime = (startAt + 2000) * 1000;
 		this.field = field;
-		this.singleMode = game_1.player.cards.keys().length == 0;
 		this.friendlyMode = friendlyMode;
 		this.extraTime = hasExtraTime ? field.times.get(3) : 0;
 		
@@ -102,7 +99,6 @@ class BattleField
 		this.games = new Array<Game>();
 		this.games[0] = game_0;
 		this.games[1] = game_1;
-		
 		#if java
 		if( singleMode )
 		{
@@ -117,7 +113,6 @@ class BattleField
 				var arenaScope = game_0.arenas.get(arena).max - game_0.arenas.get(arena).min;
 				game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R2_POINT,	Math.round( Math.max(0, game_0.player.get_point() + Math.random() * arenaScope - arenaScope * 0.5) ) );
 			}
-			trace("startAt:" + this.startAt + " now:" + this.now + " difficulty:" + this.difficulty + " mode:" + this.field.mode);
 
 			// bot elixir is easier and player elixir is faster in tutorial
 			this.elixirUpdater.normalSpeeds[0] *= ScriptEngine.get(ScriptEngine.T69_BATTLE_ELIXIR_RATIO, field.mode, 0, game_0.player.get_battleswins());
@@ -150,6 +145,19 @@ class BattleField
 			decks.set(1, getDeckCards(game_1, game_1.player.getSelectedDeck().toArray(true), friendlyMode));
 #end
 		elixirUpdater.init();
+		this.createAt = Math.round(createAt / 1000);
+		this.state = STATE_1_CREATED;
+		trace("createAt:" + this.createAt + " difficulty:" + this.difficulty + " mode:" + this.field.mode);
+	}
+	
+	public function start(startAt:Float, now:Float):Void
+	{
+		this.now = now;
+		this.startAt = Math.round(startAt / 1000);
+		this.pauseTime = (startAt + 2000) * 1000;
+		this.resetTime = (startAt + 2000) * 1000;
+		this.state = STATE_2_STARTED;
+		trace("startAt:" + this.startAt + " now:" + this.now);
 	}
 	
 	static public function getDeckCards(game:Game, cardsTypes:Array<Int>, friendlyMode:Int) : IntCardMap

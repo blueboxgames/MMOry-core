@@ -122,28 +122,12 @@ class BattleField
 			trace ("es 1:" + ScriptEngine.get(ScriptEngine.T69_BATTLE_ELIXIR_RATIO, field.mode, 1, game_0.player.get_battleswins()) + " field.mode:" + field.mode + " battleswins" + game_0.player.get_battleswins());
 		}
 		
-		// add inital units
-		if( field.mode != Challenge.MODE_1_TOUCHDOWN )
-		{
-			// var len = field.mode == Challenge.MODE_2_BAZAAR ? 2 : 6;
-			var hqType = ScriptEngine.get(ScriptEngine.T54_CHALLENGE_INITIAL_UNITS, field.mode, false);
-			var heroType = ScriptEngine.get(ScriptEngine.T54_CHALLENGE_INITIAL_UNITS, field.mode, true);
-			while( unitId < 6 )
-			{
-				var side = unitId % 2;
-				var card = new com.gerantech.mmory.core.battle.units.Card(games[side], unitId > 1 ? heroType : hqType, friendlyMode > 0 ? 9 : games[side].player.get_level(0));
-				this.addUnit(card, side, Math.ffloor(field.targets[unitId * 2]), Math.ffloor(field.targets[unitId * 2 + 1]), card.z, this.now);
-			}
-		}
-		
 		// create decks	
 		decks = new IntIntCardMap();
-		// if( game_0.player.get_battleswins() < 3 )
-		// 	decks.set(0, getDeckCards(game_0, game_0.loginData.initialDecks.get(game_0.player.get_battleswins()).toArray(false), friendlyMode));
-		// else
 			decks.set(0, getDeckCards(game_0, game_0.player.getSelectedDeck().toArray(game_0.player.get_battleswins() > 3 ), friendlyMode));
 			decks.set(1, getDeckCards(game_1, game_1.player.getSelectedDeck().toArray(true), friendlyMode));
 #end
+
 		elixirUpdater.init();
 		this.createAt = Math.round(createAt / 1000);
 		this.state = STATE_1_CREATED;
@@ -156,6 +140,21 @@ class BattleField
 		this.startAt = Math.round(startAt / 1000);
 		this.pauseTime = (startAt + 2000) * 1000;
 		this.resetTime = (startAt + 2000) * 1000;
+
+		// add inital units
+		if( field.mode != Challenge.MODE_1_TOUCHDOWN )
+		{
+			// var len = field.mode == Challenge.MODE_2_BAZAAR ? 2 : 6;
+			var hqType = ScriptEngine.getInt(ScriptEngine.T54_CHALLENGE_INITIAL_UNITS, field.mode, false);
+			var heroType = ScriptEngine.getInt(ScriptEngine.T54_CHALLENGE_INITIAL_UNITS, field.mode, true);
+			while( unitId < 6 )
+			{
+				var side = unitId % 2;
+				var card = new com.gerantech.mmory.core.battle.units.Card(games[side], unitId > 1 ? heroType : hqType, friendlyMode > 0 ? 9 : games[side].player.get_level(0));
+				this.addUnit(card, side, Math.ffloor(field.targets[unitId * 2]), Math.ffloor(field.targets[unitId * 2 + 1]), card.z, this.now);
+			}
+		}
+
 		this.state = STATE_2_STARTED;
 		trace("startAt:" + this.startAt + " now:" + this.now);
 	}

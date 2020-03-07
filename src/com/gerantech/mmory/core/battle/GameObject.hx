@@ -65,7 +65,7 @@ class GameObject
 		if( this.state == state )
 			return false;
 		this.state = state;
-		fireEvent(id, com.gerantech.mmory.core.events.BattleEvent.STATE_CHANGE, state);
+		this.fireEvent(id, com.gerantech.mmory.core.events.BattleEvent.STATE_CHANGE, state);
 		return true;
 	}
 

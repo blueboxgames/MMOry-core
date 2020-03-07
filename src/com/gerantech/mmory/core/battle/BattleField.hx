@@ -107,7 +107,7 @@ class BattleField
 			game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R1_XP, game_0.player.get_xp() + Math.round(Math.random() * 60 - 30) + 35);
 
 			game_1.player.fillCards();
-			
+
 			if( this.difficulty != 0 )
 			{
 				var arenaScope = game_0.arenas.get(arena).max - game_0.arenas.get(arena).min;
@@ -124,9 +124,9 @@ class BattleField
 		
 		// create decks	
 		decks = new IntIntCardMap();
-			decks.set(0, getDeckCards(game_0, game_0.player.getSelectedDeck().toArray(game_0.player.get_battleswins() > 3 ), friendlyMode));
-			decks.set(1, getDeckCards(game_1, game_1.player.getSelectedDeck().toArray(true), friendlyMode));
-#end
+		decks.set(0, getDeckCards(game_0, game_0.player.getSelectedDeck().toArray(game_0.player.get_battleswins() > 3 ), friendlyMode));
+		decks.set(1, getDeckCards(game_1, game_1.player.getSelectedDeck().toArray(true), friendlyMode));
+		#end
 
 		elixirUpdater.init();
 		this.createAt = Math.round(createAt / 1000);
@@ -365,14 +365,16 @@ class BattleField
 				continue;
 			if( u.z < bullet.card.bulletDamageHeight )
 				continue;
-			distance = Math.abs(com.gerantech.mmory.core.utils.CoreUtils.getDistance(u.x, u.y, bullet.x, bullet.y)) - bullet.card.bulletDamageArea - u.card.sizeH;
-			if( ((bullet.card.bulletDamage < 0 && u.side == bullet.side) || (bullet.card.bulletDamage >= 0 && (u.side != bullet.side || bullet.card.explosive))) && distance <= 0 )
-			{
-				u.hit(bullet.card.bulletDamage);
+			if( bullet.card.bulletDamage > 0 && !bullet.card.explosive && u.side == bullet.side )//side mate prevention
+				continue;
+			if( bullet.card.bulletDamage < 0 && u.side != bullet.side )//heal enemies prevention
+				continue;
+			if( Math.abs(com.gerantech.mmory.core.utils.CoreUtils.getDistance(u.x, u.y, bullet.x, bullet.y)) - bullet.card.bulletDamageArea - u.card.sizeH > 0 )//is far
+				continue;
+			u.hit(bullet.card.bulletDamage);
 	#if java
-				hitUnits.add(u.id);
+			hitUnits.add(u.id);
 	#end
-			}
 		}
 	#if java
 		if( unitsHitCallback != null )

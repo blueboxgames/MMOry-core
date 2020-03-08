@@ -141,6 +141,7 @@ class BattleField
 		this.pauseTime = (startAt + 2000) * 1000;
 		this.resetTime = (startAt + 2000) * 1000;
 
+		#if java
 		// add inital units
 		if( field.mode != Challenge.MODE_1_TOUCHDOWN )
 		{
@@ -154,6 +155,7 @@ class BattleField
 				this.addUnit(card, side, Math.ffloor(field.targets[unitId * 2]), Math.ffloor(field.targets[unitId * 2 + 1]), card.z, this.now);
 			}
 		}
+		#end
 
 		this.state = STATE_2_STARTED;
 		trace("startAt:" + this.startAt + " now:" + this.now);

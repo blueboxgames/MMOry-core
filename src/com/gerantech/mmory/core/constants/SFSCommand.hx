@@ -82,7 +82,7 @@ class SFSCommands {
 
 	public static function getCanceled(c:String):String {
 		if (c == BATTLE_CANCEL)
-			return BATTLE_START;
+			return BATTLE_JOIN;
 		return null;
 	}
 }

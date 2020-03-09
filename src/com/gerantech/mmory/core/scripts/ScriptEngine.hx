@@ -25,6 +25,7 @@ class ScriptEngine
 	static public var T17_FOCUS_UNIT:Int = 17;
 	static public var T18_FOCUS_HEIGHT:Int = 18;
 	static public var T19_SELF_DAMMAGE:Int = 19;
+	static public var T20_SELF_TARGET:Int = 20;
 
 	static public var T21_BULLET_SPEED:Int = 21;
 	static public var T22_BULLET_DAMAGE:Int = 22;

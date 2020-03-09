@@ -176,7 +176,7 @@ class Unit extends Colleague
 			if( dis > d )
 			{
 				this.targetIndex = Math.floor(i / 2);
-				this.cachedTargetX = tx;
+				this.cachedTargetX = tx + (tx > BattleField.WIDTH * 0.5 ? -10 : 10);
 				this.cachedTargetY = ty;
 				dis = d;
 			}

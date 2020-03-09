@@ -36,6 +36,7 @@ class Card
 	public var focusUnit:Bool = true;
 	public var focusHeight:Int = 200;
 	public var selfDammage:Float = 0;
+	public var selfTarget:Bool;
 	
 	public var bulletSpeed:Float = 1.0;
 	public var bulletDamage:Float = 1.05;
@@ -47,7 +48,7 @@ class Card
 	public var bulletExplodeDelay:Float = 0;
 	public var bulletForceKill:Bool = false;
 	public var bulletDamageHeight:Int = -10;
-	static public var radiusMax:Float = 0; 
+	static public var radiusMax:Float = 40; 
 
 	public function new(game:Game, type:Int, level:Int)
 	{
@@ -72,12 +73,13 @@ class Card
 		health = ScriptEngine.get(ScriptEngine.T12_HEALTH, type, level);
 		sizeV = ScriptEngine.get(ScriptEngine.T14_SIZE_V, type);
 		sizeH = ScriptEngine.get(ScriptEngine.T13_SIZE_H, type);
-		radiusMax = Math.max(radiusMax, sizeH);
+		// radiusMax = Math.max(radiusMax, sizeH);
 		focusRange = ScriptEngine.get(ScriptEngine.T15_FOCUS_RANGE, type);
 		explosive = ScriptEngine.getBool(ScriptEngine.T16_EXPLOSIVE, type);
 		focusUnit = ScriptEngine.getBool(ScriptEngine.T17_FOCUS_UNIT, type);
 		focusHeight = ScriptEngine.getInt(ScriptEngine.T18_FOCUS_HEIGHT, type);
 		selfDammage = ScriptEngine.get(ScriptEngine.T19_SELF_DAMMAGE, type, health);
+		selfTarget = ScriptEngine.getBool(ScriptEngine.T20_SELF_TARGET, type);
 		
 		// bullet data
 		bulletSpeed = ScriptEngine.get(ScriptEngine.T21_BULLET_SPEED, type, level);

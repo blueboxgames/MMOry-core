@@ -428,6 +428,19 @@ if( __type == 19 )
 }
 
 
+// self target
+if( __type == 20 )
+{
+	return switch( __arg0 )
+	{
+		case	105	:	true;
+		case	107	:	true;
+		case	118	: true;
+		default		:	false;
+	}
+}
+
+
 // bulletSpeed
 if( __type == 21 )
 {

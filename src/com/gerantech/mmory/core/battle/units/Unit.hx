@@ -111,7 +111,7 @@ class Unit extends Colleague
 				if( CoreUtils.getDistance(this.x, this.y, enemy.x, enemy.y) <= this.card.bulletRangeMax + enemy.card.sizeH + card.sizeH )
 				{
 				// if( id == 6)trace("attack " + enemyId);
-					this.attack(enemy);
+					this.attack(card.selfTarget ? this : enemy);
 					return;
 				}
 			}

@@ -2,7 +2,6 @@ package com.gerantech.mmory.core.battle.bullets;
 import com.gerantech.mmory.core.battle.GameObject;
 import com.gerantech.mmory.core.battle.units.Card;
 import com.gerantech.mmory.core.battle.units.Unit;
-import com.gerantech.mmory.core.constants.CardTypes;
 
 /**
  * ...

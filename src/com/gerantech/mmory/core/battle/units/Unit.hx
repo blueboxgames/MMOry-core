@@ -18,7 +18,7 @@ class Unit extends Colleague
 	public var cardHealth:Float;
 	public var bulletId:Int = 0;
 	var attackTime:Float = 0;
-	var cachedEnemy:Int = -1;
+	var cachedEnemy:Unit;
 	var cachedTargetX:Float = 0;
 	var cachedTargetY:Float = 0;
 	var targetIndex:Int = 100;
@@ -98,12 +98,11 @@ class Unit extends Colleague
 	{
 		if( this.state < GameObject.STATE_2_MORTAL )
 			return;
-		var enemyId = this.getNearestEnemy();
-		if( enemyId > -1 )
+		var enemy = this.getNearestEnemy();
+		if( enemy != null )
 		{
-			var enemy = this.battleField.getUnit(enemyId);
-			var newEnemyFound = this.cachedEnemy != enemyId;
-			this.cachedEnemy = enemyId;
+			var newEnemyFound = this.cachedEnemy == null || this.cachedEnemy.id != enemy.id;
+			this.cachedEnemy = enemy;
 			this.targetIndex = 100;
 
 			if( this.attackTime < this.battleField.now )
@@ -112,7 +111,7 @@ class Unit extends Colleague
 				if( CoreUtils.getDistance(this.x, this.y, enemy.x, enemy.y) <= this.card.bulletRangeMax + enemy.card.sizeH + card.sizeH )
 				{
 				// if( id == 6)trace("attack " + enemyId);
-					this.attack(enemy);
+					this.attack(card.selfTarget ? this : enemy);
 					return;
 				}
 			}
@@ -177,7 +176,7 @@ class Unit extends Colleague
 			if( dis > d )
 			{
 				this.targetIndex = Math.floor(i / 2);
-				this.cachedTargetX = tx;
+				this.cachedTargetX = tx + (tx > BattleField.WIDTH * 0.5 ? -10 : 10);
 				this.cachedTargetY = ty;
 				dis = d;
 			}
@@ -238,18 +237,17 @@ class Unit extends Colleague
 	}
 
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= attack -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-	private function getNearestEnemy() : Int
+	private function getNearestEnemy() : Unit
 	{
-		var unit = this.battleField.getUnit(this.cachedEnemy);
-		if( this.cachedEnemy != -1 && unit != null && !unit.disposed() )
-			if( CoreUtils.getDistance(this.x, this.y, unit.x, unit.y) <= this.card.focusRange )
+		if( this.cachedEnemy != null && !this.cachedEnemy.disposed() )
+			if( CoreUtils.getDistance(this.x, this.y, this.cachedEnemy.x, this.cachedEnemy.y) <= this.card.focusRange )
 				return this.cachedEnemy;
 		
 		maxDistanseSkip ++;
 		if( maxDistanseSkip < 10 )
-			return -1;
+			return null;
 		maxDistanseSkip = 0;
-		var ret:Int = -1;
+		var ret:Unit = null;
 		var distance:Float = this.card.focusRange;
 		for( u in this.battleField.units )
 		{
@@ -272,7 +270,7 @@ class Unit extends Colleague
 			if( dis <= distance )
 			{
 				distance = dis;
-				ret = u.id;
+				ret = u;
 			}
 		}
 		return ret;

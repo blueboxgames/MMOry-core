@@ -63,6 +63,7 @@ class BattleField
 	public var bullets:Array<Bullet>;
 	public var now:Float = 0;
 	public var startAt:Int = 0;
+	public var createAt:Int = 0;
 	public var deltaTime:Int = 25;
 	public var side:Int = 0;
 	public var spellId:Int = 1000000;
@@ -83,15 +84,11 @@ class BattleField
 		super();
 		#end
 	}
-	public function initialize(game_0:Game, game_1:Game, field:FieldData, side:Int, startAt:Float, now:Float, hasExtraTime:Bool, friendlyMode:Int) : Void
+
+	public function create(game_0:Game, game_1:Game, field:FieldData, side:Int, createAt:Float, hasExtraTime:Bool, friendlyMode:Int) : Void
 	{
 		this.side = side;
-		this.now = now;
-		this.startAt = Math.round(startAt);
-		this.pauseTime = (startAt + 2000) * 1000;
-		this.resetTime = (startAt + 2000) * 1000;
 		this.field = field;
-		this.singleMode = game_1.player.cards.keys().length == 0;
 		this.friendlyMode = friendlyMode;
 		this.extraTime = hasExtraTime ? field.times.get(3) : 0;
 		
@@ -102,7 +99,6 @@ class BattleField
 		this.games = new Array<Game>();
 		this.games[0] = game_0;
 		this.games[1] = game_1;
-		
 		#if java
 		if( singleMode )
 		{
@@ -111,13 +107,12 @@ class BattleField
 			game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R1_XP, game_0.player.get_xp() + Math.round(Math.random() * 60 - 30) + 35);
 
 			game_1.player.fillCards();
-			
+
 			if( this.difficulty != 0 )
 			{
 				var arenaScope = game_0.arenas.get(arena).max - game_0.arenas.get(arena).min;
 				game_1.player.resources.set(com.gerantech.mmory.core.constants.ResourceType.R2_POINT,	Math.round( Math.max(0, game_0.player.get_point() + Math.random() * arenaScope - arenaScope * 0.5) ) );
 			}
-			trace("startAt:" + this.startAt + " now:" + this.now + " difficulty:" + this.difficulty + " mode:" + this.field.mode);
 
 			// bot elixir is easier and player elixir is faster in tutorial
 			this.elixirUpdater.normalSpeeds[0] *= ScriptEngine.get(ScriptEngine.T69_BATTLE_ELIXIR_RATIO, field.mode, 0, game_0.player.get_battleswins());
@@ -127,12 +122,32 @@ class BattleField
 			trace ("es 1:" + ScriptEngine.get(ScriptEngine.T69_BATTLE_ELIXIR_RATIO, field.mode, 1, game_0.player.get_battleswins()) + " field.mode:" + field.mode + " battleswins" + game_0.player.get_battleswins());
 		}
 		
+		// create decks	
+		decks = new IntIntCardMap();
+		decks.set(0, getDeckCards(game_0, game_0.player.getSelectedDeck().toArray(game_0.player.get_battleswins() > 3 ), friendlyMode));
+		decks.set(1, getDeckCards(game_1, game_1.player.getSelectedDeck().toArray(true), friendlyMode));
+		#end
+
+		elixirUpdater.init();
+		this.createAt = Math.round(createAt / 1000);
+		this.state = STATE_1_CREATED;
+		trace("createAt:" + this.createAt + " difficulty:" + this.difficulty + " mode:" + this.field.mode);
+	}
+	
+	public function start(startAt:Float, now:Float):Void
+	{
+		this.now = now;
+		this.startAt = Math.round(startAt / 1000);
+		this.pauseTime = (startAt + 2000) * 1000;
+		this.resetTime = (startAt + 2000) * 1000;
+
+		#if java
 		// add inital units
 		if( field.mode != Challenge.MODE_1_TOUCHDOWN )
 		{
 			// var len = field.mode == Challenge.MODE_2_BAZAAR ? 2 : 6;
-			var hqType = ScriptEngine.get(ScriptEngine.T54_CHALLENGE_INITIAL_UNITS, field.mode, false);
-			var heroType = ScriptEngine.get(ScriptEngine.T54_CHALLENGE_INITIAL_UNITS, field.mode, true);
+			var hqType = ScriptEngine.getInt(ScriptEngine.T54_CHALLENGE_INITIAL_UNITS, field.mode, false);
+			var heroType = ScriptEngine.getInt(ScriptEngine.T54_CHALLENGE_INITIAL_UNITS, field.mode, true);
 			while( unitId < 6 )
 			{
 				var side = unitId % 2;
@@ -140,16 +155,10 @@ class BattleField
 				this.addUnit(card, side, Math.ffloor(field.targets[unitId * 2]), Math.ffloor(field.targets[unitId * 2 + 1]), card.z, this.now);
 			}
 		}
-		
-		// create decks	
-		decks = new IntIntCardMap();
-		// if( game_0.player.get_battleswins() < 3 )
-		// 	decks.set(0, getDeckCards(game_0, game_0.loginData.initialDecks.get(game_0.player.get_battleswins()).toArray(false), friendlyMode));
-		// else
-			decks.set(0, getDeckCards(game_0, game_0.player.getSelectedDeck().toArray(game_0.player.get_battleswins() > 3 ), friendlyMode));
-			decks.set(1, getDeckCards(game_1, game_1.player.getSelectedDeck().toArray(true), friendlyMode));
-#end
-		elixirUpdater.init();
+		#end
+
+		this.state = STATE_2_STARTED;
+		trace("startAt:" + this.startAt + " now:" + this.now);
 	}
 	
 	static public function getDeckCards(game:Game, cardsTypes:Array<Int>, friendlyMode:Int) : IntCardMap
@@ -358,14 +367,16 @@ class BattleField
 				continue;
 			if( u.z < bullet.card.bulletDamageHeight )
 				continue;
-			distance = Math.abs(com.gerantech.mmory.core.utils.CoreUtils.getDistance(u.x, u.y, bullet.x, bullet.y)) - bullet.card.bulletDamageArea - u.card.sizeH;
-			if( ((bullet.card.bulletDamage < 0 && u.side == bullet.side) || (bullet.card.bulletDamage >= 0 && (u.side != bullet.side || bullet.card.explosive))) && distance <= 0 )
-			{
-				u.hit(bullet.card.bulletDamage);
+			if( bullet.card.bulletDamage > 0 && !bullet.card.explosive && u.side == bullet.side )//side mate prevention
+				continue;
+			if( bullet.card.bulletDamage < 0 && u.side != bullet.side )//heal enemies prevention
+				continue;
+			if( Math.abs(com.gerantech.mmory.core.utils.CoreUtils.getDistance(u.x, u.y, bullet.x, bullet.y)) - bullet.card.bulletDamageArea - u.card.sizeH > 0 )//is far
+				continue;
+			u.hit(bullet.card.bulletDamage);
 	#if java
-				hitUnits.add(u.id);
+			hitUnits.add(u.id);
 	#end
-			}
 		}
 	#if java
 		if( unitsHitCallback != null )

@@ -256,7 +256,7 @@ if( __type == 12 )
 		case	102	:	3.50;
 		case	103	:	0.15;
 		case	104	:	1.00;
-		case	105	:	2.80;
+		case	105	:	1.80;
 		case	106	:	0.50;
 		case	107	:	0.50;
 		case	108	:	0.50;
@@ -494,7 +494,7 @@ if( __type == 22 )
 		case	102	:	0.25	;
 		case	103	:	0.057	;
 		case	104	:	0.30	;
-		case	105	:	0.60	;
+		case	105	:	0.50	;
 		case	106	:	0.16	;
 		case	107	:	0.50	;
 		case	108	:	0.08	;
@@ -574,7 +574,7 @@ if( __type == 24 )
 	var ret = switch( __arg0 )
 	{
 		case	101	:	0.0	;
-		case	102	:	0.7	;
+		case	102	:	1.5	;
 		case	103	:	0.7	;
 		case	104	:	1.2	;
 		case	105	:	0.8	;

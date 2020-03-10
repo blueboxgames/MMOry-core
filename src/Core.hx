@@ -10,6 +10,7 @@ import com.gerantech.mmory.core.socials.Friends;
 import com.gerantech.mmory.core.interfaces.IUnitHitCallback;
 import com.gerantech.mmory.core.constants.SegmentType;
 import com.gerantech.mmory.core.constants.StickerType;
+import com.gerantech.mmory.core.constants.SFSCommand;
 import com.gerantech.mmory.core.constants.TroopType;
 import com.gerantech.mmory.core.utils.GraphicMetrics;
 import com.gerantech.mmory.core.constants.CardTypes;

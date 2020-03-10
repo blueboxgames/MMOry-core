@@ -94,7 +94,7 @@ if( __type == 2 )
 		case 107 :  3	;
 		case 108 :  3	;
 		case 109 :  4	;
-		case 110 :  2	;
+		case 110 :  4	;
 		case 111 :  6	;
 		case 112 :  5	;
 		case 113 :  3	;
@@ -428,6 +428,19 @@ if( __type == 19 )
 }
 
 
+// self target
+if( __type == 20 )
+{
+	return switch( __arg0 )
+	{
+		case	105	:	true;
+		case	107	:	true;
+		case	118	: true;
+		default		:	false;
+	}
+}
+
+
 // bulletSpeed
 if( __type == 21 )
 {
@@ -614,7 +627,7 @@ if( __type == 26 )
 		case	102	:	0.2		;
 		case	103	:	0.2		;
 		case	104	:	0.9		;
-		case	105	:	0.1 	;
+		case	105	:	0.2 	;
 		case	106	:	1.6		;
 		case	107	:	0.3		;
 		case	108	:	1.3		;
@@ -646,13 +659,14 @@ if( __type == 26 )
 
 
 // focusRange
+// min value is 0.4
 if( __type == 15 )
 {
 	var ret = switch( __arg0 )
 	{
 		case	101	:	1.8 ;
 		case	102	:	1.3	;
-		case	103	:	0.7	;
+		case	103	:	0.8	;
 		case	104	:	1.5	;
 		case	105	:	1.0	;
 		case	106	:	1.6	;
@@ -775,9 +789,9 @@ if( __type == 30 )
 		case	108	:	-105;
 		case	110	:	-105;
 		case	111	:	-105;
-		case	116	: -105 ;
-		case	117	: -105 ;
-		case	120	: -105 ;
+		case	116	: -105;
+		case	117	: -105;
+		case	120	: -105;
 		case  151 : -105;
 		case  152 : -105;
 		case 	201 : -105;

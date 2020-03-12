@@ -93,11 +93,19 @@ class Unit extends Colleague
 		}
 	}
 	
+	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= healing -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+	private function healing() 
+	{
+		if( this.side != -1 && this.side > -4 && this.card.selfDammage != 0 )
+			this.setHealth(this.health - this.card.selfDammage * this.battleField.deltaTime);
+	}
+	
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= decide -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	private function decide() 
 	{
 		if( this.state < GameObject.STATE_2_MORTAL )
 			return;
+		this.healing();
 		var enemy = this.getNearestEnemy();
 		if( enemy != null )
 		{

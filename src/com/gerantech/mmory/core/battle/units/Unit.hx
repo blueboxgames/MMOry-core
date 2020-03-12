@@ -43,7 +43,7 @@ class Unit extends Colleague
 		this.immortalTime = this.summonTime;
 		
 		// fake health for tutorial
-		var h:Float = this.card.health;
+		var h:Float = this.side == -1 ? 0.01 : this.card.health;
 		if( card.game.player.isBot() && battleField.games[0].player.get_battleswins() < 7 )
 			h = (0.2 + Math.min(0.8, (battleField.games[0].player.get_battleswins() + 1) / 10)) * h;
 		this.cardHealth = h;
@@ -61,8 +61,6 @@ class Unit extends Colleague
 		if( this.summonTime > this.battleField.now )
 			return;
 		
-		if( this.card.selfDammage != 0 )
-			this.setHealth(this.health - this.card.selfDammage * this.battleField.deltaTime);
 		this.finalizeDeployment();
 		this.finalizeImmortal();
 		this.decide();
@@ -106,6 +104,7 @@ class Unit extends Colleague
 		if( this.state < GameObject.STATE_2_MORTAL )
 			return;
 		this.healing();
+		this.capture();
 		var enemy = this.getNearestEnemy();
 		if( enemy != null )
 		{
@@ -245,6 +244,42 @@ class Unit extends Colleague
 		this.setPosition(x + cx, y + cy, GameObject.NaN);
 	}
 
+	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= capture -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+	private function capture() : Void
+	{
+		if( this.side > -1 )
+			return;
+		maxDistanseSkip ++;
+		if( maxDistanseSkip < 10 )
+			return;
+		maxDistanseSkip = 0;
+		var hasSide_0 = false;
+		var hasSide_1 = false;
+		for( u in this.battleField.units )
+		{
+			if( u == null || u.disposed() || u.summonTime != 0 )
+				continue;
+			if( CoreUtils.getDistance(this.x, this.y, u.x, u.y) > this.card.focusRange )
+				continue;
+			if( u.side == 0 )
+				hasSide_0 = true;
+			if( u.side == 1 )
+				hasSide_1 = true;
+		}
+
+		if( hasSide_0 && hasSide_1 )
+			this.side = -4;
+		else if( hasSide_0 )
+			this.side = -3;
+		else if( hasSide_1 )
+			this.side = -2;
+		else
+			this.side = -1;
+		
+		if( this.side < -1 )
+			trace(this.side);
+	}
+
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= attack -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	private function getNearestEnemy() : Unit
 	{
@@ -265,7 +300,7 @@ class Unit extends Colleague
 		for( u in this.battleField.units )
 		{
 			// prevent disposed and deploying units
-			if( u == null || u.disposed() || u.summonTime != 0 )
+			if( u == null || u.disposed() || u.summonTime != 0 || u.side < 0 )
 				continue;
 			// prevent team-mates attack
 			if( this.card.bulletDamage >= 0 && this.side == u.side )

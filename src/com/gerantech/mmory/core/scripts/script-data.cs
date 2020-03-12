@@ -890,21 +890,33 @@ if( __type == 53 )
 	}
 }
 
-// challenge initial units(mode:Int, isHero:Bool):Int
+// challenge initial units(mode:Int, id:Int):[Int,Int]
 if( __type == 54 )
 {
-	if( __arg1 )
-	return switch( __arg0 )
+	var type = -1;
+	if( __arg1 < 2 )
 	{
+		// HQ
+		type = switch( __arg0 )
+		{
+			case 0:		201;
+			case 2:		202;
+			case 3:		__arg1 == 0 ? 241 : -1;
+			default:	-1;
+		}
+	}
+	else
+	{
+		// HERO
+		type = switch( __arg0 )
+	{
+			case 0:		222;
 		case 2:		224;
-		default:	222;
+			default:	-1;
+		}
 	}
 
-	return switch( __arg0 )
-	{
-		case 2:		202;
-		default:	201;
-	}
+	return [type, __arg0 == 3 ? -1 : __arg1 % 2];
 }
 
 

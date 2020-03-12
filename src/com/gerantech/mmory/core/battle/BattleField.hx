@@ -143,16 +143,16 @@ class BattleField
 
 		#if java
 		// add inital units
-		if( field.mode != Challenge.MODE_1_TOUCHDOWN )
+		for(i in 0...6)
 		{
-			// var len = field.mode == Challenge.MODE_2_BAZAAR ? 2 : 6;
-			var hqType = ScriptEngine.getInt(ScriptEngine.T54_CHALLENGE_INITIAL_UNITS, field.mode, false);
-			var heroType = ScriptEngine.getInt(ScriptEngine.T54_CHALLENGE_INITIAL_UNITS, field.mode, true);
-			while( unitId < 6 )
+			var data:Array<Int> = ScriptEngine.get(ScriptEngine.T54_CHALLENGE_INITIAL_UNITS, field.mode, i);
+			var cardType = data[0];
+			var side = cast(Math.max(data[1], 0), Int);
+			// trace(i, field.mode, data);
+			if( cardType > -1 )
 			{
-				var side = unitId % 2;
-				var card = new com.gerantech.mmory.core.battle.units.Card(games[side], unitId > 1 ? heroType : hqType, friendlyMode > 0 ? 9 : games[side].player.get_level(0));
-				this.addUnit(card, side, Math.ffloor(field.targets[unitId * 2]), Math.ffloor(field.targets[unitId * 2 + 1]), card.z, this.now);
+				var card = new com.gerantech.mmory.core.battle.units.Card(games[side], cardType, friendlyMode > 0 ? 9 : games[side].player.get_level(0));
+				this.addUnit(card, data[1], Math.ffloor(field.targets[unitId * 2]), Math.ffloor(field.targets[unitId * 2 + 1]), card.z, this.now);
 			}
 		}
 		#end

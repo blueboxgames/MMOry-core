@@ -124,7 +124,7 @@ class Unit extends Colleague
 			
 			// follow enemy
 			if( this.card.speed <= 0 )
-				return;
+				return;// building units
 			if( newEnemyFound )
 			{
 				// if( id == 6)trace("move " + enemyId);
@@ -138,12 +138,13 @@ class Unit extends Colleague
 
 		// move to target
 		if( this.card.speed <= 0 )
-			return;
+			return;// building units
 		if( this.targetIndex == 100 )
 			this.targetIndex = -1;
 		this.findTarget();
 		this.move();
 	}
+
 	private function findTarget():Void
 	{
 		if( this.targetIndex > -1 )
@@ -239,6 +240,10 @@ class Unit extends Colleague
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= attack -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	private function getNearestEnemy() : Unit
 	{
+		// none defensive units
+		if( card.bulletDamage == 0 )
+			return null;
+
 		if( this.cachedEnemy != null && !this.cachedEnemy.disposed() )
 			if( CoreUtils.getDistance(this.x, this.y, this.cachedEnemy.x, this.cachedEnemy.y) <= this.card.focusRange )
 				return this.cachedEnemy;

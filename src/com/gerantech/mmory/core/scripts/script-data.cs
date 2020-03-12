@@ -2,7 +2,7 @@
 // version
 if( __type == -2 )
 {
-	return 2100;
+	return 3500;
 }
 
 // chance
@@ -44,35 +44,19 @@ if( __type == 0 )
 {
 	return switch( __arg0 )
 	{
-		case	101	:	 0	;
-		case	102	:	 0	;
-		case	103	:	 0	;
 		case	104	:	 1	;
-		case	105	:	 0	;
-		case	106	:	 0	;
 		case	107	:	 2	;
 		case	108	:	 1	;
-		case	109	:	 0	;
-		case	110	:	 0	;
-		case	111	:	 0	;
-		case	112	:	 0	;
-		case	113	:	 0	;
-		case	114	:	 0	;
 		case	115	:	 1	;
 		case	116	:	 1	;
 		case	117	:	 1	;
 		case	118	:  2	;
 		case	119	:  1	;
-		case	120	:	 0	;
-		case	121	:	 0	;
 		
 		case	151	:	 1	;
-		case	152	:	 0	;
-		case	153	:	 0	;
 		case	154	:	 1	;
 		case	155	:	 1	;
 		case	156	:	 2	;
-		case	157	:	 0	;
 		case	158	:	 1	;
 		case	159	:	 2	;
 		
@@ -104,7 +88,6 @@ if( __type == 2 )
 		case 117 :  5 ;
 		case 118 :  3	;
 		case 119 :  3 ;
-		case 120 :  2 ;
 		case 121 :  3 ;
 
 		case 151 :  4	;
@@ -112,7 +95,6 @@ if( __type == 2 )
 
 		default	 :  2	;
 	}
-	//return ret;
 }
 
 
@@ -124,36 +106,18 @@ if( __type == 3 )
 {
 	return switch( __arg0 )
 	{
-		case	101	:	 1	;
-		case	102	:	 1	;
 		case	103	:	 12	;
-		case	104	:	 1	;
-		case	105	:	 1	;
-		case	106	:	 1	;
-		case	107	:	 1	;
 		case	108	:	 2	;
-		case	109	:	 1	;
 		case	110	:	 3	;
 		case	111	:	 2	;
 		case	112	:	 4	;
-		case	113	:	 1	;
 		case	114	:	 3	;
-		case	115	:	 1	;
-		case	116	:	 1	;
 		case	117	:	 9	;
-		case  118 :	 1	;
-		case	119	:	 1	;
 		case	120	:	 3	;
 		case	121	:	 3	;
-	
-		case	151	:	 1	;
-		case	152	:	 1	;
-		case	201	:	 1	;
-		case	202	:	 1	;
-		
+
 		default: 		 1	;
 	}
-	return ret;
 }
 
 // summonTime
@@ -233,15 +197,11 @@ if( __type == 11 )
 		case	120	: 1.10;
 		case	121	:	1.10;
 
-		case	201	:	0.00;
-		case	202	:	0.00;
-		case	221	:	0;
-		case	222	:	0;
 		case	223	:	1.30;
 		
 		default		:	0.00;
 	}
-	return ret * 0.085 * 1;
+	return ret * 0.085;
 }
 
 // health

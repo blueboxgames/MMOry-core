@@ -365,6 +365,8 @@ class BattleField
 		{
 			if( u.disposed() )
 				continue;
+			if( u.side < 0 )
+				continue;
 			if( u.z < bullet.card.bulletDamageHeight )
 				continue;
 			if( bullet.card.bulletDamage > 0 && !bullet.card.explosive && u.side == bullet.side )//side mate prevention
@@ -429,6 +431,8 @@ class BattleField
 	
 	public function getColorIndex(side:Int) : Int
 	{
+		if( side < 0 )
+			return side;
 		return side == this.side ? 0 : 1;
 	}
 	public function getTime(index:Int):Int
@@ -451,7 +455,7 @@ class BattleField
 
 	public function getSummonState(side:Int):Int
 	{
-		if( field.mode == Challenge.MODE_1_TOUCHDOWN )
+		if( field.mode == Challenge.MODE_1_TOUCHDOWN || field.mode == Challenge.MODE_3_ZONE )
 			return SUMMON_AREA_THIRD;
 		
 		// Get unit
@@ -489,6 +493,10 @@ class BattleField
 			if( field.mode == Challenge.MODE_1_TOUCHDOWN )
 			{
 				top = HEIGHT * 0.6666 + SUMMON_PADDING;
+			}
+			else if( field.mode == Challenge.MODE_3_ZONE )
+			{
+				top = HEIGHT * 0.75 + SUMMON_PADDING;
 			}
 			else
 			{

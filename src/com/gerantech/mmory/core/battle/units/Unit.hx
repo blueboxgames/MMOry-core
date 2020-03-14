@@ -43,11 +43,11 @@ class Unit extends Colleague
 		this.immortalTime = this.summonTime;
 		
 		// fake health for tutorial
-		var h:Float = this.side == -1 ? 0.01 : this.card.health;
+		var h:Float = this.card.health;
 		if( card.game.player.isBot() && battleField.games[0].player.get_battleswins() < 7 )
 			h = (0.2 + Math.min(0.8, (battleField.games[0].player.get_battleswins() + 1) / 10)) * h;
 		this.cardHealth = h;
-		this.setHealth(h);
+		this.setHealth(this.side == -1 ? 0.01 : h);
 		
 		this.bulletId = id * 10000;
 		this.defaultTargetIndex = CardTypes.isHero(card.type) ? id : 1 - this.side;
@@ -94,8 +94,12 @@ class Unit extends Colleague
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= healing -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	private function healing() 
 	{
-		if( this.side != -1 && this.side > -4 && this.card.selfDammage != 0 )
-			this.setHealth(this.health - this.card.selfDammage * this.battleField.deltaTime);
+		if( this.card.selfDammage == 0 )
+			return;
+		if( this.side != -1 && this.side > -4 )
+			this.setHealth(this.health - this.card.selfDammage * this.battleField.deltaTime);// auto heal or damag
+		else
+			this.setHealth(Math.max(0.01, this.health + this.card.selfDammage * this.battleField.deltaTime));// return to initial health
 	}
 	
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= decide -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

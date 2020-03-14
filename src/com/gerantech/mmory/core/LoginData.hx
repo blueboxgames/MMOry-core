@@ -11,9 +11,9 @@ import com.gerantech.mmory.core.utils.maps.IntIntMap;
 class LoginData
 {
 	public static var coreSize:Int = 0;
-	public var coreVersion:String = "3400.0309213343";//do not change len.
-	public var noticeVersion:Int = 3400;
-	public var forceVersion:Int = 3400;
+	public var coreVersion:String = "3500.0314200315";//do not change len.
+	public var noticeVersion:Int = 3500;
+	public var forceVersion:Int = 3500;
 	public var resources:IntIntMap;
 	public var buildingsLevel:IntIntMap;
 	public var exchanges:IntList;

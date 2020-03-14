@@ -172,6 +172,19 @@ class BattleField
 		return ret;
 	}
 
+	public function getCard(side:Int, type:Int, level:Int) : Card
+	{
+		var card = decks.get(side < 0 ? 0 : side).get(type);
+		if( card == null )
+		{
+			trace("create new card while battling ==> side:", side, "type:", type, "level:", level);
+			card = new Card(games[side < 0 ? 0 : side], type, level);
+		}
+		card.focusRange = ScriptEngine.get(ScriptEngine.T15_FOCUS_RANGE, type, field.mode);
+		card.focusUnit = ScriptEngine.getBool(ScriptEngine.T17_FOCUS_UNIT, type, field.mode);
+		return card;
+	}
+
 	public function update(deltaTime:Int) : Void
 	{
 		if( deltaTime == 0 || state < STATE_1_CREATED || state > STATE_3_PAUSED )
@@ -273,7 +286,7 @@ class BattleField
 		if( time < this.now )
 			time = this.now;
 		
-		var card = decks.get(side).get(type);
+		var card = getCard(side, type, games[side].player.cards.get(type).level);
 		decks.get(side).queue_removeAt(index);
 		decks.get(side).enqueue(type);
 		elixirUpdater.updateAt(side, elixirUpdater.bars[side] - card.elixirSize);

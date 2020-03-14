@@ -391,7 +391,7 @@ class BattleField
 		if( state > STATE_2_STARTED )
 			return;
 		pioneerSide = side;
-		resetTime = now + 2000;
+		resetTime = now + 3000;
 		pauseTime = now;
 		state = STATE_3_PAUSED;
 	}
@@ -400,11 +400,22 @@ class BattleField
 	{
 		pauseTime = now + 2000000; 
 		resetTime = now + 2000000;
+
+		if( pioneerSide == -1 )
+			elixirUpdater.init();
+
 		for( unit in this.units )
 		{
 			if( unit.disposed() )
 				continue;
-			if( unit.side == pioneerSide )
+			if( pioneerSide == -1 )
+			{
+				if( unit.side > -1 )
+					unit.dispose();
+				else
+					unit.setHealth(0.01);
+			}
+			else if( unit.side == pioneerSide )
 			{
 				if( pioneerSide == 0 && unit.y < HEIGHT * 0.5 )
 						unit.dispose();

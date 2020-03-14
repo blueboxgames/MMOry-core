@@ -41,9 +41,6 @@ class GameObject
 	@:isVar
 	public var side(default, set):Int;
 	private function set_side(value:Int):Int {
-		if (this.side == value)
-			return this.side;
-		this.fireEvent(id, com.gerantech.mmory.core.events.BattleEvent.SIDE_CHANGE, this.side);
 		return this.side = value;
 	}
 

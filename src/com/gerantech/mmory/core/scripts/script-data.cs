@@ -241,6 +241,8 @@ if( __type == 12 )
 		case	223	:	2.50;
 		case	224	: 2.60;
 		
+		case	241	:	2.00;
+
 		default		:	1.00;
 	}
 	return (ret * Math.pow(1.095, __arg1 - 1)) * 1.5;
@@ -278,7 +280,8 @@ if( __type == 13 )
 		case	221	:	35	;
 		case	222	:	40	;
 		case	223	:	35	;
-		case	119	:	50	;
+		
+		case	241	:	0		;
 		
 		default		:	30	;
 	}
@@ -375,10 +378,12 @@ if( __type == 18 )
 // selfDamage. Buildings that has self damage
 if( __type == 19 )
 {
+	// unit life time
 	var coef = switch( __arg0 )
 	{
-		case	116	:	35; 	// unit life time
-		case	119	: 30;		// unit life time
+		case	116	:	35; 	
+		case	119	: 30;
+		case	241	: -9;
 
 		default		:	0;
 	}
@@ -482,6 +487,8 @@ if( __type == 22 )
 		case	223	:	0.25	;
 		case	224	:	0.30	; 
 		
+		case	241	:	0.00	;
+
 		default		:	1.00	;
 	}
 	return (ret * Math.pow(1.095, __arg1 - 1));
@@ -649,6 +656,8 @@ if( __type == 15 )
 		case	222	:	1.9	;
 		case	223	:	1.6	;
 		case	224	: 1.6	;
+		
+		case	241	: 0.2	;
 		
 		default		:	1.0	;
 	}

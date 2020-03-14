@@ -267,7 +267,7 @@ class Unit extends Colleague
 				continue;
 			if( u.side == 0 )
 				hasSide_0 = true;
-			if( u.side == 1 )
+			else if( u.side == 1 )
 				hasSide_1 = true;
 		}
 
@@ -279,9 +279,6 @@ class Unit extends Colleague
 			this.side = -2;
 		else
 			this.side = -1;
-		
-		if( this.side < -1 )
-			trace(this.side);
 	}
 
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= attack -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -345,7 +342,7 @@ class Unit extends Colleague
 		this.setHealth(this.health - damage);
 	}
 
-	private function setHealth(health:Float) : Float
+	public function setHealth(health:Float) : Float
 	{
 		if( health > this.cardHealth )
 			health = this.cardHealth;

@@ -228,12 +228,12 @@ class BattleField
 				fireEvent(0, BattleEvent.PAUSE, state);
 			}
 		}
-
-		// -=-=-=-=-=-=-=-=-=-  UPDATE EXIXIR-BARS  -=-=-=-=-=-=-=-=-=-=-=-
-		elixirUpdater.update(deltaTime, getDuration() > getTime(1));
-
+		
 		if( state > STATE_2_STARTED )
 			return;
+		
+		// -=-=-=-=-=-=-=-=-=-  UPDATE EXIXIR-BARS  -=-=-=-=-=-=-=-=-=-=-=-
+		elixirUpdater.update(deltaTime, getDuration() > getTime(1));
 		
 		// -=-=-=-=-=-=-=-=-  UPDATE AND REMOVE UNITS  -=-=-=-=-=-=-=-=-=-=
 		// Creates a garbage array, adds unit id's to an array and sorts them
@@ -431,9 +431,9 @@ class BattleField
 			else if( unit.side == pioneerSide )
 			{
 				if( pioneerSide == 0 && unit.y < HEIGHT * 0.5 )
-						unit.dispose();
+					unit.dispose();
 				else if( pioneerSide == 1 && unit.y > HEIGHT * 0.5 )
-						unit.dispose();
+					unit.dispose();
 			}
 		}
 		state = STATE_2_STARTED;

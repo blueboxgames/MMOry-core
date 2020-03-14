@@ -342,6 +342,8 @@ if( __type == 16 )
 // focusUnit (Building only target)
 if( __type == 17 )
 {
+	if( __arg1 == 3 )
+		return true;
 	return switch( __arg0 )
 	{
 		case	107	:	false;
@@ -661,7 +663,7 @@ if( __type == 15 )
 		
 		default		:	1.0	;
 	}
-	return ret * 290;
+	return ret * __arg1 == 3 ? 540 : 320;
 }
 
 

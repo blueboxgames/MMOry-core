@@ -24,6 +24,7 @@
 -swf bin\flash\core.swc
 
 # --next
+# -lib hscript
 # -cp src
 # -main Core
 # -as3 bin\flash\src

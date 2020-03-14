@@ -22,7 +22,6 @@ class GameObject
 	public var x:Float;
 	public var y:Float;
 	public var z:Float = 0;
-	public var side:Int;
 	public var card:Card;
 	public var state:Int;
 	public var isDump:Bool;
@@ -37,6 +36,12 @@ class GameObject
 		this.side = side;
 		this.card = card;
 		this.setPosition(x, y, z, true);
+	}
+
+	@:isVar
+	public var side(default, set):Int;
+	private function set_side(value:Int):Int {
+		return this.side = value;
 	}
 
 	public function update() : Void

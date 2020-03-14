@@ -36,6 +36,9 @@ class SFSCommands {
 	public static final INFRACTIONS_GET:String = "infractionsGet";
 	public static final INFRACTIONS_DELETE:String = "infractionsDelete";
 	public static final SEARCH_IN_CHATS:String = "searchInChats";
+	public static final SPECTATE_JOIN:String = "spectateJoin";
+	public static final SPECTATE_LEAVE:String = "spectateLeave";
+	public static final SPECTATE_UPDATE:String = "su";
 
 	public static final LOBBY_CREATE:String = "lobbyCreate";
 	public static final LOBBY_DATA:String = "lobbyData";
@@ -74,7 +77,7 @@ class SFSCommands {
 		if (c == BATTLE_START)
 			return 30000;
 		if (c == BATTLE_CANCEL || c == BATTLE_LEAVE || c == BATTLE_SUMMON || c == BATTLE_SEND_STICKER || c == INBOX_OPEN || c == INBOX_CONFIRM
-			|| c == INBOX_BROADCAST || c == ISSUE_GET || c == ISSUE_REPORT || c == ISSUE_TRACK || c == LOBBY_LEAVE || c == LOBBY_EDIT || c == REGISTER_PUSH
+			|| c == INBOX_BROADCAST || c == ISSUE_GET || c == ISSUE_REPORT || c == ISSUE_TRACK || c == SPECTATE_LEAVE || c == SPECTATE_UPDATE || c == LOBBY_LEAVE || c == LOBBY_EDIT || c == REGISTER_PUSH
 			|| c == VERIFY_PURCHASE || c == BUDDY_BATTLE || c == CARD_NEW)
 			return -1;
 		return 4000;

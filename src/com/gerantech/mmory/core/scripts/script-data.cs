@@ -2,7 +2,7 @@
 // version
 if( __type == -2 )
 {
-	return 2100;
+	return 3500;
 }
 
 // chance
@@ -44,35 +44,19 @@ if( __type == 0 )
 {
 	return switch( __arg0 )
 	{
-		case	101	:	 0	;
-		case	102	:	 0	;
-		case	103	:	 0	;
 		case	104	:	 1	;
-		case	105	:	 0	;
-		case	106	:	 0	;
 		case	107	:	 2	;
 		case	108	:	 1	;
-		case	109	:	 0	;
-		case	110	:	 0	;
-		case	111	:	 0	;
-		case	112	:	 0	;
-		case	113	:	 0	;
-		case	114	:	 0	;
 		case	115	:	 1	;
 		case	116	:	 1	;
 		case	117	:	 1	;
 		case	118	:  2	;
 		case	119	:  1	;
-		case	120	:	 0	;
-		case	121	:	 0	;
 		
 		case	151	:	 1	;
-		case	152	:	 0	;
-		case	153	:	 0	;
 		case	154	:	 1	;
 		case	155	:	 1	;
 		case	156	:	 2	;
-		case	157	:	 0	;
 		case	158	:	 1	;
 		case	159	:	 2	;
 		
@@ -104,7 +88,6 @@ if( __type == 2 )
 		case 117 :  5 ;
 		case 118 :  3	;
 		case 119 :  3 ;
-		case 120 :  2 ;
 		case 121 :  3 ;
 
 		case 151 :  4	;
@@ -112,7 +95,6 @@ if( __type == 2 )
 
 		default	 :  2	;
 	}
-	//return ret;
 }
 
 
@@ -124,36 +106,18 @@ if( __type == 3 )
 {
 	return switch( __arg0 )
 	{
-		case	101	:	 1	;
-		case	102	:	 1	;
 		case	103	:	 12	;
-		case	104	:	 1	;
-		case	105	:	 1	;
-		case	106	:	 1	;
-		case	107	:	 1	;
 		case	108	:	 2	;
-		case	109	:	 1	;
 		case	110	:	 3	;
 		case	111	:	 2	;
 		case	112	:	 4	;
-		case	113	:	 1	;
 		case	114	:	 3	;
-		case	115	:	 1	;
-		case	116	:	 1	;
 		case	117	:	 9	;
-		case  118 :	 1	;
-		case	119	:	 1	;
 		case	120	:	 3	;
 		case	121	:	 3	;
-	
-		case	151	:	 1	;
-		case	152	:	 1	;
-		case	201	:	 1	;
-		case	202	:	 1	;
-		
+
 		default: 		 1	;
 	}
-	return ret;
 }
 
 // summonTime
@@ -233,15 +197,11 @@ if( __type == 11 )
 		case	120	: 1.10;
 		case	121	:	1.10;
 
-		case	201	:	0.00;
-		case	202	:	0.00;
-		case	221	:	0;
-		case	222	:	0;
 		case	223	:	1.30;
 		
 		default		:	0.00;
 	}
-	return ret * 0.085 * 1;
+	return ret * 0.085;
 }
 
 // health
@@ -281,6 +241,8 @@ if( __type == 12 )
 		case	223	:	2.50;
 		case	224	: 2.60;
 		
+		case	241	:	2.00;
+
 		default		:	1.00;
 	}
 	return (ret * Math.pow(1.095, __arg1 - 1)) * 1.5;
@@ -318,7 +280,8 @@ if( __type == 13 )
 		case	221	:	35	;
 		case	222	:	40	;
 		case	223	:	35	;
-		case	119	:	50	;
+		
+		case	241	:	0		;
 		
 		default		:	30	;
 	}
@@ -379,6 +342,8 @@ if( __type == 16 )
 // focusUnit (Building only target)
 if( __type == 17 )
 {
+	if( __arg1 == 3 )
+		return true;
 	return switch( __arg0 )
 	{
 		case	107	:	false;
@@ -415,10 +380,12 @@ if( __type == 18 )
 // selfDamage. Buildings that has self damage
 if( __type == 19 )
 {
+	// unit life time
 	var coef = switch( __arg0 )
 	{
-		case	116	:	35; 	// unit life time
-		case	119	: 30;		// unit life time
+		case	116	:	35; 	
+		case	119	: 30;
+		case	241	: -9;
 
 		default		:	0;
 	}
@@ -522,6 +489,8 @@ if( __type == 22 )
 		case	223	:	0.25	;
 		case	224	:	0.30	; 
 		
+		case	241	:	0.00	;
+
 		default		:	1.00	;
 	}
 	return (ret * Math.pow(1.095, __arg1 - 1));
@@ -556,7 +525,6 @@ if( __type == 23 )
 		case	121	:	0.7	;
 
 		case 	201 :	1.2 ;
-		case	202	:	100	;
 		case 	221 :	1.0 ;
 		case 	222 :	1.5 ;
 		case 	223 :	1.1 ;
@@ -646,7 +614,6 @@ if( __type == 26 )
 		case	121	:	0.2		;
 
 		case 	201 : 1.5 	;
-		case	202	:	0.0 	;
 		case 	221 : 0.5 	;
 		case 	222 : 1.6 	;
 		case 	223 : 0.4 	;
@@ -687,15 +654,16 @@ if( __type == 15 )
 		case	121	:	0.7	;
 
 		case 	201 : 1.5 ;
-		case	202	:	0.0	;
 		case 	221 :	1.6 ;
 		case	222	:	1.9	;
 		case	223	:	1.6	;
 		case	224	: 1.6	;
 		
+		case	241	: 0.2	;
+		
 		default		:	1.0	;
 	}
-	return ret * 290;
+	return ret * __arg1 == 3 ? 540 : 320;
 }
 
 
@@ -933,21 +901,33 @@ if( __type == 53 )
 	}
 }
 
-// challenge initial units(mode:Int, isHero:Bool):Int
+// challenge initial units(mode:Int, id:Int):[Int,Int]
 if( __type == 54 )
 {
-	if( __arg1 )
-	return switch( __arg0 )
+	var type = -1;
+	if( __arg1 < 2 )
 	{
+		// HQ
+		type = switch( __arg0 )
+		{
+			case 0:		201;
+			case 2:		202;
+			case 3:		__arg1 == 0 ? 241 : -1;
+			default:	-1;
+		}
+	}
+	else
+	{
+		// HERO
+		type = switch( __arg0 )
+	{
+			case 0:		222;
 		case 2:		224;
-		default:	222;
+			default:	-1;
+		}
 	}
 
-	return switch( __arg0 )
-	{
-		case 2:		202;
-		default:	201;
-	}
+	return [type, __arg0 == 3 ? -1 : __arg1 % 2];
 }
 
 

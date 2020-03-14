@@ -74,9 +74,9 @@ class Card
 		sizeV = ScriptEngine.get(ScriptEngine.T14_SIZE_V, type);
 		sizeH = ScriptEngine.get(ScriptEngine.T13_SIZE_H, type);
 		// radiusMax = Math.max(radiusMax, sizeH);
-		focusRange = ScriptEngine.get(ScriptEngine.T15_FOCUS_RANGE, type);
+		focusRange = ScriptEngine.get(ScriptEngine.T15_FOCUS_RANGE, type, 0);
 		explosive = ScriptEngine.getBool(ScriptEngine.T16_EXPLOSIVE, type);
-		focusUnit = ScriptEngine.getBool(ScriptEngine.T17_FOCUS_UNIT, type);
+		focusUnit = ScriptEngine.getBool(ScriptEngine.T17_FOCUS_UNIT, type, 0);
 		focusHeight = ScriptEngine.getInt(ScriptEngine.T18_FOCUS_HEIGHT, type);
 		selfDammage = ScriptEngine.get(ScriptEngine.T19_SELF_DAMMAGE, type, health);
 		selfTarget = ScriptEngine.getBool(ScriptEngine.T20_SELF_TARGET, type);

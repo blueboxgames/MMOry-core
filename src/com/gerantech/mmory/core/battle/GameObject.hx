@@ -23,7 +23,7 @@ class GameObject
 	public var y:Float;
 	public var z:Float = 0;
 	public var card:Card;
-	public var state:Int;
+	public var state:Int = -1;
 	public var isDump:Bool;
 	public var summonTime:Float = 0;
 	public var battleField:BattleField;
@@ -36,6 +36,7 @@ class GameObject
 		this.side = side;
 		this.card = card;
 		this.setPosition(x, y, z, true);
+		this.setState(GameObject.STATE_0_INITIALIZED);
 	}
 
 	@:isVar
@@ -58,10 +59,10 @@ class GameObject
 			this.y = y;
 		if( z > NaN )
 			this.z = z;
-		#if flash
+#if flash
 		if( !forced )
-			setState(GameObject.STATE_4_MOVING);
-		#end
+			this.setState(GameObject.STATE_4_MOVING);
+#end
 		return true;
 	}
 

@@ -68,10 +68,9 @@ class BattleField
 	public var spellId:Int = 1000000;
 	public var games:Array<Game>;
 	public var numSummonedUnits:Int;
-	public var pauseTime:Float;
 	public var elixirUpdater:ElixirUpdater;
 	var pioneerSide:Int;
-	var resetTime:Float = -1;
+	var resetTime:Float = 0;
 	var remainigTime:Int = 0;
 
 	public var state(default, set):Int = 0;
@@ -148,8 +147,6 @@ class BattleField
 	{
 		this.now = now;
 		this.startAt = Math.round(startAt / 1000);
-		this.pauseTime = (startAt + 2000) * 1000;
-		this.resetTime = (startAt + 2000) * 1000;
 
 		#if java
 		// add inital units
@@ -218,26 +215,9 @@ class BattleField
 		this.deltaTime = deltaTime;
 		this.now += deltaTime;
 		// -=-=-=-=-=-=-=-  UPDATE TIME-STATE  -=-=-=-=-=-=-=-=-=-
-		if( resetTime <= this.now )
-			killPioneers();
+		if( this.now >= this.resetTime )
+			this.killPioneers();
 		
-		// trace((resetTime - now) + " delta " + (pauseTime - now) + " state " + state);
-		if( pauseTime > now )
-		{
-			if( state == STATE_3_PAUSED )
-			{
-				state = STATE_2_STARTED;
-				fireEvent(0, BattleEvent.PAUSE, state);
-			}
-		}
-		else
-		{
-			if( state == STATE_2_STARTED )
-			{
-				state = STATE_3_PAUSED;
-				fireEvent(0, BattleEvent.PAUSE, state);
-			}
-		}
 
 		if( this.state > STATE_2_STARTED )
 			return;
@@ -411,21 +391,21 @@ class BattleField
 	
 	public function requestKillPioneers(side:Int) : Void
 	{
-		if( state > STATE_2_STARTED )
+		if( this.state != STATE_2_STARTED )
 			return;
-		pioneerSide = side;
-		resetTime = now + 3000;
-		pauseTime = now;
-		state = STATE_3_PAUSED;
+		this.pioneerSide = side;
+		this.resetTime = now + 3000;
+		this.state = STATE_3_PAUSED;
 	}
 
 	function killPioneers() : Void
 	{
-		pauseTime = now + 2000000; 
-		resetTime = now + 2000000;
+		if( this.state != STATE_3_PAUSED )
+			return;
 
-		if( pioneerSide == -1 )
-			elixirUpdater.init();
+
+		if( this.pioneerSide == -1 )
+			this.elixirUpdater.init();
 
 		for( unit in this.units )
 		{

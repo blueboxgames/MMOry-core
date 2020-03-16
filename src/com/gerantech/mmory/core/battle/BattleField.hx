@@ -50,7 +50,6 @@ class BattleField
 
 	static public var MAX_LATENCY:Int = 4000;
 	
-	public var state:Int = 0;
 	public var debugMode:Bool;
 	public var singleMode:Bool;
 	public var friendlyMode:Int;
@@ -69,15 +68,25 @@ class BattleField
 	public var spellId:Int = 1000000;
 	public var games:Array<Game>;
 	public var numSummonedUnits:Int;
-	public var pauseTime:Float;
 	public var elixirUpdater:ElixirUpdater;
-	var pioneerSide:Int;
-	var resetTime:Float = -1;
+	var pioneerSide:Int = -2;
+	var resetTime:Float = 0;
 	var remainigTime:Int = 0;
-#if java 
+
+	public var state(default, set):Int = 0;
+	private function set_state(value:Int):Int
+	{
+		if( this.state == value )
+			return this.state;
+		this.state = value;
+		this.fireEvent(0, BattleEvent.STATE_CHANGE, this.state);
+		return this.state;
+	}
+
+	#if java 
 	public var unitsHitCallback:com.gerantech.mmory.core.interfaces.IUnitHitCallback;
 	var unitId:Int = 0;
-#end
+	#end
 	public function new()
 	{
 		#if flash
@@ -138,8 +147,6 @@ class BattleField
 	{
 		this.now = now;
 		this.startAt = Math.round(startAt / 1000);
-		this.pauseTime = (startAt + 2000) * 1000;
-		this.resetTime = (startAt + 2000) * 1000;
 
 		#if java
 		// add inital units
@@ -208,32 +215,15 @@ class BattleField
 		this.deltaTime = deltaTime;
 		this.now += deltaTime;
 		// -=-=-=-=-=-=-=-  UPDATE TIME-STATE  -=-=-=-=-=-=-=-=-=-
-		if( resetTime <= this.now )
-			killPioneers();
+		if( this.now >= this.resetTime )
+			this.killPioneers();
 		
-		// trace((resetTime - now) + " delta " + (pauseTime - now) + " state " + state);
-		if( pauseTime > now )
-		{
-			if( state == STATE_3_PAUSED )
-			{
-				state = STATE_2_STARTED;
-				fireEvent(0, BattleEvent.PAUSE, state);
-			}
-		}
-		else
-		{
-			if( state == STATE_2_STARTED )
-			{
-				state = STATE_3_PAUSED;
-				fireEvent(0, BattleEvent.PAUSE, state);
-			}
-		}
-		
-		if( state > STATE_2_STARTED )
+
+		if( this.state > STATE_2_STARTED )
 			return;
 		
 		// -=-=-=-=-=-=-=-=-=-  UPDATE EXIXIR-BARS  -=-=-=-=-=-=-=-=-=-=-=-
-		elixirUpdater.update(deltaTime, getDuration() > getTime(1));
+		this.elixirUpdater.update(deltaTime, this.getDuration() > this.getTime(1));
 		
 		// -=-=-=-=-=-=-=-=-  UPDATE AND REMOVE UNITS  -=-=-=-=-=-=-=-=-=-=
 		// Creates a garbage array, adds unit id's to an array and sorts them
@@ -258,12 +248,12 @@ class BattleField
 			return;
 		var remaning:Int = this.remainigTime + 0;
 		this.remainigTime = 0;	
-		update(remaning);
+		this.update(remaning);
 	}
 
 	public function getDuration() : Float
 	{
-		return now / 1000 - startAt;
+		return this.now / 1000 - this.startAt;
 	}
 	#if java
 	public function summonUnit(type:Int, side:Int, x:Float, y:Float, time:Float) : Int
@@ -274,13 +264,17 @@ class BattleField
 		
 		if( side == 0 )
 		{
-			numSummonedUnits ++;
+			this.numSummonedUnits ++;
 			var ptoffset = ScriptEngine.getInt(ScriptEngine.T64_BATTLE_PAUSE_TIME, field.mode, games[0].player.get_battleswins(), numSummonedUnits);
-			if( ptoffset > 0 )
-				pauseTime = now + ptoffset;
+			if( ptoffset > -1 )
+			{
+				this.resetTime = now + ptoffset; // resume
+				if( ptoffset > 0 )
+					this.state = STATE_3_PAUSED; // pause
+			}
 		}
 
-		if(this.now - time > MAX_LATENCY)
+		if( this.now - time > MAX_LATENCY )
 			return MessageTypes.RESPONSE_NOT_ALLOWED;
 
 		if( time < this.now )
@@ -401,21 +395,26 @@ class BattleField
 	
 	public function requestKillPioneers(side:Int) : Void
 	{
-		if( state > STATE_2_STARTED )
+		if( this.state != STATE_2_STARTED )
 			return;
-		pioneerSide = side;
-		resetTime = now + 3000;
-		pauseTime = now;
-		state = STATE_3_PAUSED;
+		this.pioneerSide = side;
+		this.resetTime = now + 3000;
+		this.state = STATE_3_PAUSED;
 	}
 
 	function killPioneers() : Void
 	{
-		pauseTime = now + 2000000; 
-		resetTime = now + 2000000;
+		if( this.state != STATE_3_PAUSED )
+			return;
 
-		if( pioneerSide == -1 )
-			elixirUpdater.init();
+		if( this.pioneerSide == -2 )
+		{
+			this.state = STATE_2_STARTED;
+			return;	
+		}
+
+		if( this.pioneerSide == -1 )
+			this.elixirUpdater.init();
 
 		for( unit in this.units )
 		{
@@ -428,20 +427,20 @@ class BattleField
 				else
 					unit.setHealth(0.01);
 			}
-			else if( unit.side == pioneerSide )
+			else if( unit.side == this.pioneerSide )
 			{
-				if( pioneerSide == 0 && unit.y < HEIGHT * 0.5 )
+				if( this.pioneerSide == 0 && unit.y < HEIGHT * 0.5 )
 					unit.dispose();
 				else if( pioneerSide == 1 && unit.y > HEIGHT * 0.5 )
 					unit.dispose();
 			}
 		}
-		state = STATE_2_STARTED;
+		this.state = STATE_2_STARTED;
 	}
 	
 	public function dispose() : Void
 	{
-		state = STATE_5_DISPOSED;
+		this.state = STATE_5_DISPOSED;
 		// dispose all units
 		for( unit in this.units )
 			unit.dispose();

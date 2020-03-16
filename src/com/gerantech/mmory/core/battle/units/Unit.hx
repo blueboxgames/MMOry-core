@@ -70,7 +70,7 @@ class Unit extends Colleague
 			return;
 		
 		this.summonTime = 0;
-		this.setState(GameObject.STATE_1_DIPLOYED);
+		this.state = GameObject.STATE_1_DIPLOYED;
 	}
 	
 	private function finalizeImmortal() : Void
@@ -82,11 +82,12 @@ class Unit extends Colleague
 			this.battleField.field.air.add(this);
 		else
 			this.battleField.field.ground.add(this);
+		
 		if( card.speed <= 0 )
 			this.setStatic();
 
 		this.immortalTime = 0;
-		this.setState(GameObject.STATE_2_MORTAL);
+		this.state = GameObject.STATE_2_MORTAL;
 	}
 	
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= healing -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -127,7 +128,7 @@ class Unit extends Colleague
 			else
 			{
 				// if( id == 6)trace("wait " + enemyId);
-				this.setState(GameObject.STATE_3_WAITING);
+				this.state = GameObject.STATE_3_WAITING;
 				return;
 			}
 			
@@ -217,14 +218,14 @@ class Unit extends Colleague
 		return angle;
 	}
 
-	private function move() : Void
+	private function move() : Bool
 	{
 		if( this.deltaX == 0 && this.deltaY == 0 )
 		{
 			#if flash
-			this.setState(GameObject.STATE_3_WAITING);
+			this.state = GameObject.STATE_6_IDLE;
 			#end
-			return;
+			return false;
 		}
 
 		// turn to new target
@@ -234,16 +235,18 @@ class Unit extends Colleague
 			if( this.targetIndex == this.defaultTargetIndex )
 			{
 				this.deltaX = this.deltaY = 0;
-				return;
+				return false;
 			}
 			// if( id == 6) trace("new target");
 			this.targetIndex = -1;
 			this.findTarget();
 		}
 
+		this.state = GameObject.STATE_4_MOVING;
 		var cx:Float = this.deltaX * this.battleField.deltaTime;
 		var cy:Float = this.deltaY * this.battleField.deltaTime;
 		this.setPosition(x + cx, y + cy, GameObject.NaN);
+		return true;
 	}
 
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= capture -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -299,7 +302,7 @@ class Unit extends Colleague
 		for( u in this.battleField.units )
 		{
 			// prevent disposed and deploying units
-			if( u == null || u.disposed() || u.summonTime != 0 || u.side < 0 )
+			if( u == null || u.state < GameObject.STATE_3_WAITING || u.state > GameObject.STATE_6_IDLE || u.side < 0 )
 				continue;
 			// prevent team-mates attack
 			if( this.card.bulletDamage >= 0 && this.side == u.side )
@@ -325,11 +328,11 @@ class Unit extends Colleague
 	
 	private function attack(enemy:Unit) : Void
 	{
-		this.setState(GameObject.STATE_5_SHOOTING);
 #if java
 		this.battleField.addBullet(this, side, x, y, enemy);
 #end
 		this.attackTime = this.battleField.now + this.card.bulletShootGap;
+		this.state = GameObject.STATE_5_SHOOTING;
 	}
 	
 	public function hit(damage:Float) : Void

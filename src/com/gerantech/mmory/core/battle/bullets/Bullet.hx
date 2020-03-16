@@ -80,7 +80,7 @@ class Bullet extends GameObject
 			return;
 		}
 		summonTime = 0;
-		setState(GameObject.STATE_1_DIPLOYED);
+		this.state = GameObject.STATE_1_DIPLOYED;
 	}
 	
 	function move() : Void
@@ -109,8 +109,8 @@ class Bullet extends GameObject
 	
 	function explode() 
 	{
-		setState(GameObject.STATE_5_SHOOTING);
-		battleField.explodeBullet(this);
+		this.state = GameObject.STATE_5_SHOOTING;
+		this.battleField.explodeBullet(this);
 		dispose();
 	}
 }

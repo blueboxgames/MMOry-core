@@ -152,8 +152,7 @@ if( __type == 4 )
 		
 		default 	: 	 0.0	;
 	}
-	ret *= 1000;
-	return ret;
+	return ret * 1000;
 }
 
 // z
@@ -981,25 +980,16 @@ if( __type == 63 )
 // getPauseTime(mode:Int, battleWins:Int, numSummonedUnits:Int) : Int
 if( __type == 64 )
 {
-	if( __arg2 == 1 ) // numSummonedUnits
-	{
-		// mode 0
-		if( __arg0 == 0 )
-		return switch( __arg1 )
-		{
-			default	:	0;
-		}
+	if( __arg0 != 0 || __arg1 != 1 ) // only second battle in boss-car
+		return -1;
 
-		// mode 1
-		return switch( __arg1 )
-		{
-			default	:	0;
-		}
-	}
+	if( __arg2 == 1 ) // pause
+		return 200000;
 
-	if( __arg2 == 2 ) // numSummonedUnits
-		return 2000000;
+	if( __arg2 == 2 ) // resume
 	return 0;
+	
+	return -1;
 }
 
 // summonPos(mode:Int, type:String, battleIndex*10+numSummonedUnits:Int):Array

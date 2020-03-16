@@ -69,7 +69,7 @@ class BattleField
 	public var games:Array<Game>;
 	public var numSummonedUnits:Int;
 	public var elixirUpdater:ElixirUpdater;
-	var pioneerSide:Int;
+	var pioneerSide:Int = -2;
 	var resetTime:Float = 0;
 	var remainigTime:Int = 0;
 
@@ -264,11 +264,15 @@ class BattleField
 		
 		if( side == 0 )
 		{
-			numSummonedUnits ++;
+			this.numSummonedUnits ++;
 			var ptoffset = ScriptEngine.getInt(ScriptEngine.T64_BATTLE_PAUSE_TIME, field.mode, games[0].player.get_battleswins(), numSummonedUnits);
+			if( ptoffset > -1 )
+			{
+				this.resetTime = now + ptoffset; // resume
 				if( ptoffset > 0 )
-				pauseTime = now + ptoffset;
+					this.state = STATE_3_PAUSED; // pause
 			}
+		}
 
 		if( this.now - time > MAX_LATENCY )
 			return MessageTypes.RESPONSE_NOT_ALLOWED;
@@ -403,6 +407,11 @@ class BattleField
 		if( this.state != STATE_3_PAUSED )
 			return;
 
+		if( this.pioneerSide == -2 )
+		{
+			this.state = STATE_2_STARTED;
+			return;	
+		}
 
 		if( this.pioneerSide == -1 )
 			this.elixirUpdater.init();

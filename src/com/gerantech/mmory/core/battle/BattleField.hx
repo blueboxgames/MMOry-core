@@ -50,7 +50,6 @@ class BattleField
 
 	static public var MAX_LATENCY:Int = 4000;
 	
-	public var state:Int = 0;
 	public var debugMode:Bool;
 	public var singleMode:Bool;
 	public var friendlyMode:Int;
@@ -74,10 +73,21 @@ class BattleField
 	var pioneerSide:Int;
 	var resetTime:Float = -1;
 	var remainigTime:Int = 0;
-#if java 
+
+	public var state(default, set):Int = 0;
+	private function set_state(value:Int):Int
+	{
+		if( this.state == value )
+			return this.state;
+		this.state = value;
+		this.fireEvent(0, BattleEvent.STATE_CHANGE, this.state);
+		return this.state;
+	}
+
+	#if java 
 	public var unitsHitCallback:com.gerantech.mmory.core.interfaces.IUnitHitCallback;
 	var unitId:Int = 0;
-#end
+	#end
 	public function new()
 	{
 		#if flash
@@ -228,12 +238,12 @@ class BattleField
 				fireEvent(0, BattleEvent.PAUSE, state);
 			}
 		}
-		
-		if( state > STATE_2_STARTED )
+
+		if( this.state > STATE_2_STARTED )
 			return;
 		
 		// -=-=-=-=-=-=-=-=-=-  UPDATE EXIXIR-BARS  -=-=-=-=-=-=-=-=-=-=-=-
-		elixirUpdater.update(deltaTime, getDuration() > getTime(1));
+		this.elixirUpdater.update(deltaTime, this.getDuration() > this.getTime(1));
 		
 		// -=-=-=-=-=-=-=-=-  UPDATE AND REMOVE UNITS  -=-=-=-=-=-=-=-=-=-=
 		// Creates a garbage array, adds unit id's to an array and sorts them
@@ -258,12 +268,12 @@ class BattleField
 			return;
 		var remaning:Int = this.remainigTime + 0;
 		this.remainigTime = 0;	
-		update(remaning);
+		this.update(remaning);
 	}
 
 	public function getDuration() : Float
 	{
-		return now / 1000 - startAt;
+		return this.now / 1000 - this.startAt;
 	}
 	#if java
 	public function summonUnit(type:Int, side:Int, x:Float, y:Float, time:Float) : Int
@@ -276,11 +286,11 @@ class BattleField
 		{
 			numSummonedUnits ++;
 			var ptoffset = ScriptEngine.getInt(ScriptEngine.T64_BATTLE_PAUSE_TIME, field.mode, games[0].player.get_battleswins(), numSummonedUnits);
-			if( ptoffset > 0 )
+				if( ptoffset > 0 )
 				pauseTime = now + ptoffset;
-		}
+			}
 
-		if(this.now - time > MAX_LATENCY)
+		if( this.now - time > MAX_LATENCY )
 			return MessageTypes.RESPONSE_NOT_ALLOWED;
 
 		if( time < this.now )
@@ -428,20 +438,20 @@ class BattleField
 				else
 					unit.setHealth(0.01);
 			}
-			else if( unit.side == pioneerSide )
+			else if( unit.side == this.pioneerSide )
 			{
-				if( pioneerSide == 0 && unit.y < HEIGHT * 0.5 )
+				if( this.pioneerSide == 0 && unit.y < HEIGHT * 0.5 )
 					unit.dispose();
 				else if( pioneerSide == 1 && unit.y > HEIGHT * 0.5 )
 					unit.dispose();
 			}
 		}
-		state = STATE_2_STARTED;
+		this.state = STATE_2_STARTED;
 	}
 	
 	public function dispose() : Void
 	{
-		state = STATE_5_DISPOSED;
+		this.state = STATE_5_DISPOSED;
 		// dispose all units
 		for( unit in this.units )
 			unit.dispose();

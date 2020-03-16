@@ -218,14 +218,14 @@ class Unit extends Colleague
 		return angle;
 	}
 
-	private function move() : Void
+	private function move() : Bool
 	{
 		if( this.deltaX == 0 && this.deltaY == 0 )
 		{
 			#if flash
 			this.state = GameObject.STATE_6_IDLE;
 			#end
-			return;
+			return false;
 		}
 
 		// turn to new target
@@ -235,16 +235,18 @@ class Unit extends Colleague
 			if( this.targetIndex == this.defaultTargetIndex )
 			{
 				this.deltaX = this.deltaY = 0;
-				return;
+				return false;
 			}
 			// if( id == 6) trace("new target");
 			this.targetIndex = -1;
 			this.findTarget();
 		}
 
+		this.state = GameObject.STATE_4_MOVING;
 		var cx:Float = this.deltaX * this.battleField.deltaTime;
 		var cy:Float = this.deltaY * this.battleField.deltaTime;
 		this.setPosition(x + cx, y + cy, GameObject.NaN);
+		return true;
 	}
 
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= capture -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -300,7 +302,7 @@ class Unit extends Colleague
 		for( u in this.battleField.units )
 		{
 			// prevent disposed and deploying units
-			if( u == null || u.disposed() || u.summonTime != 0 || u.side < 0 )
+			if( u == null || u.state < GameObject.STATE_3_WAITING || u.state > GameObject.STATE_6_IDLE || u.side < 0 )
 				continue;
 			// prevent team-mates attack
 			if( this.card.bulletDamage >= 0 && this.side == u.side )

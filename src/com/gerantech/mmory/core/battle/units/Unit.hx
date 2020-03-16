@@ -286,11 +286,12 @@ class Unit extends Colleague
 	private function getNearestEnemy() : Unit
 	{
 		// none defensive units
-		if( card.bulletDamage == 0 )
+		if( this.card.bulletDamage == 0 )
 			return null;
 
+		var distance:Float = this.card.focusRange + this.card.sizeH;
 		if( this.cachedEnemy != null && !this.cachedEnemy.disposed() )
-			if( CoreUtils.getDistance(this.x, this.y, this.cachedEnemy.x, this.cachedEnemy.y) <= this.card.focusRange )
+			if( CoreUtils.getDistance(this.x, this.y, this.cachedEnemy.x, this.cachedEnemy.y) <= distance + this.cachedEnemy.card.sizeH)
 				return this.cachedEnemy;
 		
 		maxDistanseSkip ++;
@@ -298,14 +299,13 @@ class Unit extends Colleague
 			return null;
 		maxDistanseSkip = 0;
 		var ret:Unit = null;
-		var distance:Float = this.card.focusRange;
 		for( u in this.battleField.units )
 		{
 			// prevent disposed and deploying units
-			if( u == null || u.state < GameObject.STATE_3_WAITING || u.state > GameObject.STATE_6_IDLE || u.side < 0 )
+			if( u == null || u.state < GameObject.STATE_2_MORTAL || u.state > GameObject.STATE_6_IDLE || u.side < 0 )
 				continue;
 			// prevent team-mates attack
-			if( this.card.bulletDamage >= 0 && this.side == u.side )
+			if( this.card.bulletDamage > 0 && this.side == u.side )
 				continue;
 			// prevent axis units for building target cards 
 			if( !this.card.focusUnit && u.card.speed > 0 && CardTypes.isTroop(u.card.type) )
@@ -316,7 +316,7 @@ class Unit extends Colleague
 			// prevent healing of enemy, buildings, self and full-health
 			if( this.card.bulletDamage < 0 && (this.side != u.side || u.card.speed <= 0 || u.id == this.id || u.health >= u.cardHealth) )
 				continue;			
-			var dis = CoreUtils.getDistance(this.x, this.y, u.x, u.y);
+			var dis = CoreUtils.getDistance(this.x, this.y, u.x, u.y) - u.card.sizeH;
 			if( dis <= distance )
 			{
 				distance = dis;

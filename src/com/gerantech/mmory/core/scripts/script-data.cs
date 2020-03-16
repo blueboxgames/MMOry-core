@@ -601,7 +601,7 @@ if( __type == 26 )
 		case	109	:	1.0		;
 		case	110	:	0.9		;
 		case	111	:	0.9		;
-		case	112	:	0.4 	;
+		case	112	:	0.3 	;
 		case	113	:	0.4 	;
 		case	114	:	0.4		;
 		case	115	:	0.5		;
@@ -658,11 +658,11 @@ if( __type == 15 )
 		case	223	:	1.6	;
 		case	224	: 1.6	;
 		
-		case	241	: 0.2	;
+		case	241	: 1.0	;
 		
 		default		:	1.0	;
 	}
-	return ret * __arg1 == 3 ? 540 : 320;
+	return ret * (__arg1 == 3 ? 320 : 290);
 }
 
 
@@ -854,8 +854,8 @@ if( __type == 47 )
 {
 	return switch( __arg0 )
 	{
-		case 2:		__arg1 ? 3.0 : 2.0;
-		default:	__arg1 ? 2.5 : 1.5;
+		case 2:		(__arg1 ? 3.0 : 2.0);
+		default:	(__arg1 ? 2.5 : 1.5);
 	}
 }
 
@@ -911,7 +911,7 @@ if( __type == 54 )
 		{
 			case 0:		201;
 			case 2:		202;
-			case 3:		__arg1 == 0 ? 241 : -1;
+			case 3:		(__arg1 == 0 ? 241 : -1);
 			default:	-1;
 		}
 	}
@@ -926,7 +926,7 @@ if( __type == 54 )
 		}
 	}
 
-	return [type, __arg0 == 3 ? -1 : __arg1 % 2];
+	return [type, __arg0 == 3 ? -1 : (__arg1 % 2)];
 }
 
 

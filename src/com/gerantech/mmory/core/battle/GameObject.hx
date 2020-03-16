@@ -16,6 +16,7 @@ class GameObject
 	static public var STATE_3_WAITING:Int = 3;
 	static public var STATE_4_MOVING:Int = 4;
 	static public var STATE_5_SHOOTING:Int = 5;
+	static public var STATE_6_IDLE:Int = 6;
 	static public var STATE_8_DIPOSED:Int = 8;
 
 	public var id:Int;
@@ -23,7 +24,6 @@ class GameObject
 	public var y:Float;
 	public var z:Float = 0;
 	public var card:Card;
-	public var state:Int = -1;
 	public var isDump:Bool;
 	public var summonTime:Float = 0;
 	public var battleField:BattleField;
@@ -36,13 +36,22 @@ class GameObject
 		this.side = side;
 		this.card = card;
 		this.setPosition(x, y, z, true);
-		this.setState(GameObject.STATE_0_INITIALIZED);
+		this.state = GameObject.STATE_0_INITIALIZED;
 	}
 
-	@:isVar
 	public var side(default, set):Int;
 	private function set_side(value:Int):Int {
 		return this.side = value;
+	}
+
+	public var state(default, set):Int = -1;
+	private function set_state(value:Int):Int
+	{
+		if( this.state == value )
+			return this.state;
+		this.state = value;
+		this.fireEvent(id, com.gerantech.mmory.core.events.BattleEvent.STATE_CHANGE, this.state);
+		return this.state;
 	}
 
 	public function update() : Void
@@ -59,19 +68,10 @@ class GameObject
 			this.y = y;
 		if( z > NaN )
 			this.z = z;
-#if flash
-		if( !forced )
-			this.setState(GameObject.STATE_4_MOVING);
-#end
-		return true;
-	}
-
-	function setState(state:Int) : Bool
-	{
-		if( this.state == state )
-			return false;
-		this.state = state;
-		this.fireEvent(id, com.gerantech.mmory.core.events.BattleEvent.STATE_CHANGE, state);
+// #if flash
+// 		if( !forced )
+// 			this.state = GameObject.STATE_4_MOVING;
+// #end
 		return true;
 	}
 
@@ -85,12 +85,12 @@ class GameObject
 
 	public function dispose() : Void
 	{
-		setState(GameObject.STATE_8_DIPOSED);
+		this.state = GameObject.STATE_8_DIPOSED;
 	}
 
 	public function disposed() : Bool
 	{
-		return state == GameObject.STATE_8_DIPOSED;
+		return this.state == GameObject.STATE_8_DIPOSED;
 	}
 
 	#if flash

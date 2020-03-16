@@ -78,7 +78,7 @@ class Unit extends Colleague
 		if( this.immortalTime == 0 || this.immortalTime > this.battleField.now )
 			return;
 		
-		if( card.z < 0 )
+		if( card.z < 0 || side < 0 )
 			this.battleField.field.air.add(this);
 		else
 			this.battleField.field.ground.add(this);

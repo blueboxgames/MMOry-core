@@ -280,7 +280,7 @@ if( __type == 13 )
 		case	222	:	40	;
 		case	223	:	35	;
 		
-		case	241	:	0		;
+		case	241	:	1		;
 		
 		default		:	30	;
 	}

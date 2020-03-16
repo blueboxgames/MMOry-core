@@ -64,6 +64,8 @@
 	"flame-base.json":		{	"mode":"prev"	},
 	"e.mp3":							{	"mode":"prev"	},
 	"kill.mp3":						{	"mode":"prev"	},
+	"201.atf":						{	"mode":"prev"	},
+	"201.xml":						{	"mode":"prev"	},
 
 	"map-0.atf":					{	},
 	"map-0.xml":					{	},
@@ -160,8 +162,6 @@
 	"152-attack.mp3":			{	},
 	"152-summon.mp3":			{	},
 	"201-attack.mp3":			{	},
-	"201.atf":						{	},
-	"201.xml":						{	},
 	"202.atf":						{	},
 	"202.xml":						{	},
 	"222-attack.mp3":			{	},

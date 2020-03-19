@@ -914,13 +914,15 @@ if( __type == 62 )
 		default	: 1;
 	}
 
-	// mode 1
+	if( __arg0 == 3 ) // mode 3
 	return switch( __arg1 )
 	{
-		case 0	: 2;
-		case 2	: 2;
-		default	: 1;
+		case 0	: 0;
+		default	: 3;
 	}
+
+	// else
+	return 1;
 }
 
 //numRound(mode:Int, battleWins:Int) : Int
@@ -934,12 +936,17 @@ if( __type == 63 )
 		default	:	2;
 	}
 
-	// mode 1
+	// mode 3
+	if( __arg0 == 3 )
 	return switch( __arg1 )
 	{
-		case 0	: 2;
-		default	:	2;
+		case 0	: 3;
+		case 1	: 3;
+		default	:	1;
 	}
+
+	// else
+	return 2;
 }
 
 // getPauseTime(mode:Int, battleWins:Int, numSummonedUnits:Int) : Int

@@ -773,40 +773,9 @@ if( __type == 30 )
 // getMode(index:Int) : Int
 if( __type == 41 )
 {
-	var split = __arg1 % 3;
-
-	if( split == 0 )
-	return switch( __arg0 )
-	{
-		case 0:		0;
-		case 1:		2;
-		case 2:		1;
-		case 3:		3;
-		default:	0;
+	var split = (__arg1) % 4;
+	return (__arg0 + split) % 4;
 	}
-
-	if( split == 1 )
-	return switch( __arg0 )
-	{
-		case 0:		2;
-		case 1:		0;
-		case 2:		1;
-		case 3:		3;
-		default:	0;
-	}
-
-	if( split == 2 )
-	return switch( __arg0 )
-	{
-		case 0:		1;
-		case 1:		0;
-		case 2:		2;
-		case 3:		3;
-		default:	0;
-	}
-
-	return __arg0;
-}
 
 // getType(index:Int) : Int
 if( __type == 42 )

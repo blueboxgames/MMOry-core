@@ -270,7 +270,7 @@ class BattleField
 			{
 				this.resetTime = now + ptoffset; // resume
 				if( ptoffset > 0 )
-					this.state = STATE_3_PAUSED; // pause
+				this.state = STATE_3_PAUSED; // pause
 			}
 		}
 

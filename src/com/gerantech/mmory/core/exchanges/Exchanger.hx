@@ -387,100 +387,71 @@ class Exchanger
 		var totalCards = ScriptEngine.getInt(ScriptEngine.T93_PACK_CARDS, type, arena, 0, game.player.id);
 		var numCommons = totalCards - numRares - numEpics;
 		var opened = game.player.getResource(ResourceType.R21_BOOK_OPENED_BATTLE);
-		// trace("type:" + type + " opened:" + opened + " numSlots:" + numSlots + " numRars:" + numRars + " numEpics:" + numEpics + " totalCards:" + totalCards);
-		var slotSize = Math.floor(Math.max(1, totalCards / numSlots));
+		// trace("type:" + type + " opened:" + opened + " numSlots:" + numSlots + " numRares:" + numRares + " numEpics:" + numEpics + " totalCards:" + totalCards);
 		var numCards:Int = 0;
-		var accCards:Int = 0;
 		var rarity:Int;
 		while( numSlots > 0 )
 		{
-			rarity = 0;
-			numCards = numSlots == 1 ? Math.floor(slotSize * 0.9 + Math.random() * slotSize * 0.1) : totalCards - accCards;
+			if( opened == 0 )
+			{
+				ret.set(CardTypes.INITIAL, 1);
+				break;
+			}
+			
 			if( numEpics > 0 )
 			{
 				rarity = 2;
-				numCards = Std.int(Math.min(numEpics, numCards));
+				numCards = numEpics;
 				numEpics = 0;
 			}
-			else if( numRars > 0 )
+			else if( numRares > 0 )
 			{
 				rarity = 1;
-				numCards = Std.int(Math.min(numRars, numCards));
-				numRars = 0;
+				numCards = numRares;
+				numRares = 0;
 			}
-			accCards += numCards;
-
-			// trace("addNewCard => numSlots:" + numSlots + " rarity:" + rarity + " isDaily:" + isDaily + " accCards:" + accCards + " accCards:" + accCards);
-			if( numSlots == 1 && !isDaily ) // last slot
-				addNewCard(ret, opened);
 			else
-				addRandomSlot(ret, numCards, rarity);
+			{
+				rarity = 0;
+				numCards = numSlots > 1 ? Math.ceil(numCommons / numSlots) : numCommons;
+				numCommons -= numCards;
+			}
+
+			// trace("addNewCard => numSlots:" + numSlots + " rarity:" + rarity + " isDaily:" + isDaily + " numCards:" + numCards + " numCommons:" + numCommons);
+			this.addRandomSlot(ret, numCards, rarity);
 			numSlots --;
-		}
+		}	
 		
 		// hards
 		if( isDaily )
-				ret.set( ResourceType.R4_CURRENCY_HARD, type - 50 );
+			ret.set(ResourceType.R4_CURRENCY_HARD, ScriptEngine.getInt(ScriptEngine.T95_PACK_HARDS, type));
 		
 		// softs
-		var softDec = ExchangeType.getNumSofts(type, arena, game.player.splitTestCoef) * 0.1;
-		ret.set( ResourceType.R3_CURRENCY_SOFT, Math.floor(softDec * 9 + Math.random() * softDec * 2) );
+		var softDec = ScriptEngine.getInt(ScriptEngine.T94_PACK_SOFTS, totalCards) * 0.1;
+		ret.set(ResourceType.R3_CURRENCY_SOFT, Math.floor(softDec * 9 + Math.random() * softDec * 2));
 		
 		return ret;
 	}
-	function addNewCard(map:IntIntMap, opened:Int) : Void
-	{
-		if( opened == 0 )
-		{
-			map.set(CardTypes.INITIAL, 1);
-			return;
-		}
-		if( opened == 1 )
-		{
-			map.set(CardTypes.C107, 1);
-			return;
-		}
-		if( opened == 2 )
-		{
-			map.set(CardTypes.C108, 1);
-			return;
-		}
-		
-/*		// try to find new card
-		var a = 0;
-		var allCards = game.player.getCards(-1, );
-		while( a < allCards.length )
-		{
-			var newCard = allCards[a];
-			if( !game.player.cards.exists(newCard) && ScriptEngine.getInt(-1, newCard) <= game.player.getResource(ResourceType.R21_BOOK_OPENED_BATTLE) )
-			{
-				map.set(newCard, 1);
-				return;
-			}
-			a ++;
-		}
-*/		addRandomSlot(map, 1, 0);
-	}
+
 	function addRandomSlot(map:IntIntMap, count:Int, rarity:Int) : Void
 	{
 		if( game.player.cards.keys().length <= map.keys().length )
 			return;
-		//trace("count:" + count + " rarity:" + rarity);
 		var random = game.player.getRandomCard(rarity);
 		if( random == -1 )
 		{
 			if( rarity > 0 )
-				addRandomSlot( map, count, rarity - 1 );
+				addRandomSlot(map, count, rarity - 1);
 			return;
 		}
 		
 		if( map.exists(random) )
 		{
-			addRandomSlot( map, count, Std.int(Math.max(0, rarity - 1)) );
+			addRandomSlot(map, count, Std.int(Math.max(0, rarity - 1)));
 			return;
 		}
 		
-		map.set( random, count );
+		map.set(random, count);
 	}
 	#end
 }

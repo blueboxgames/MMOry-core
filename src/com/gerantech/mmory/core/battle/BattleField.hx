@@ -467,7 +467,7 @@ class BattleField
 
 	private function fireEvent(dispatcherId:Int, type:String, data:Any) : Void
 	{
-		trace("fireEvent => id:" + dispatcherId + ", type:" + type + ", data:" + data);
+		// trace("fireEvent => id:" + dispatcherId + ", type:" + type + ", data:" + data);
 		#if java
 		// if( eventCallback != null )
 		// 	eventCallback.dispatch(dispatcherId, type, data);

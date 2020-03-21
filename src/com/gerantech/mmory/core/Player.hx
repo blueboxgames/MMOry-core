@@ -115,6 +115,7 @@ class Player
 	public function get_battlesCount():Int { return resources.get(ResourceType.R12_BATTLES); }
 	public function get_battleswins():Int { return resources.get(ResourceType.R13_BATTLES_WINS); }
 	public function get_winRate():Int { return resources.get(ResourceType.R16_WIN_RATE); }
+	public function get_rewardStep():Int { return resources.exists(ResourceType.R25_REWARD_STEP) ? resources.get(ResourceType.R25_REWARD_STEP) : -1; }
 	public function get_level(xp:Int):Int
 	{
 		if( xp == 0 )
@@ -276,11 +277,11 @@ class Player
 	public function achieveReward(league:Int, index:Int) : Int
 	{
 		var reward:TrophyReward = game.arenas.get(league).rewards[index];
-		var response = reward.achievable(get_point(), getResource(ResourceType.R25_REWARD_STEP), true);
+		var response = reward.achievable(get_point(), get_rewardStep(), true);
 		if( response != MessageTypes.RESPONSE_SUCCEED )
 			return response;
 
-		trace("reward.step " + reward.step + " lastRewardStep " + getResource(ResourceType.R25_REWARD_STEP));
+		trace("reward.step " + reward.step + " lastRewardStep " + get_rewardStep());
 		resources.set(ResourceType.R25_REWARD_STEP, reward.step);
 		#if java
 		if( ResourceType.isBook(reward.key) )

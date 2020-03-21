@@ -1130,4 +1130,139 @@ if( __type == 81 )
 if( __type == 82 )
 	return [2000,	  0, 	"0:4:10,	100:4:30,	250:4:50,	500:4:80,	1000:4:100,	3000:1:1"];
 
+// =================== PACKS ====================== 
+
+// getCooldown(type:Int):Int
+if( __type == 91 )
+{
+	return switch ( __arg0 )
+	{
+		case 41		: 24	* 3600;
+		case 43		: 2		* 3600;
+		case 51		: 5				  ;
+		case 52		: 3		* 3600;
+		case 53		: 8		* 3600;
+		case 54		: 12	* 3600;
+		case 57		: 24	* 3600;
+		case 59		: 24	* 3600;
+		case 101	: 3		* 3600;
+		case 104	: 24	* 3600;
+		default 	: 0					;
+	}
+}
+
+// getNumSlots(type:Int):Int
+if( __type == 92 )
+{
+	return switch ( __arg0 )
+	{
+		case 51 : 2;
+		case 52 : 3;
+		case 53 : 4;
+		case 54 : 5;
+		case 55 : 5;
+		case 56 : 6;
+		case 57 : 6;
+		case 58 : 6;
+		case 59 : 6;
+		default : 0;
+	}
+}
+
+// getTotalCards(type:Int, arena:Int, rarity:Int, coef:Float):Int
+if( __type == 93 )
+{
+	var ret = switch ( __arg0 )
+	{
+		case 51 : 3		+ 1		* __arg1;
+		case 52 : 4		+ 1		* __arg1;
+		case 53 : 10	+ 3		* __arg1;
+		case 54 : 20	+ 6		* __arg1;
+		case 55 : 35	+ 12	* __arg1;
+		case 56 : 70	+ 24	* __arg1;
+		case 57 : 80	+ 28	* __arg1;
+		case 58 : 120	+ 36	* __arg1;
+		case 59 : 150	+ 40	* __arg1;
+		default : 0;
+	}
+	ret = Math.ceil(ret);
+	
+	if( __arg2 >= 1 ) // rar
+	{
+		var init = switch ( __arg0 )
+		{
+			/*case 51 : ret * 0.09);
+			case 52 : ret * 0.15);
+			case 53 : ret * 0.49);
+			case 54 : Math.pow(ret * 0.065, 1.4));*/
+			case 55 : 2.5;
+			case 56 : 3.0;
+			case 57 : 3.2;
+			case 58 : 3.4;
+			case 59 : 3.6;
+			default : 0.0;
+		}
+		init += Math.pow(ret * 0.065, 1.35);
+		ret = init - init % 1;//floor
+	}
+
+	return ret;
+	
+	if( __arg2 >= 2 ) // epic
+	{
+		if( __arg0 < 56 )
+			return 0;
+
+		ret *= 0.08;//0.18
+		return ret - ret % 1;//floor
+	}
+}
+
+// packSofts(cards:Int):Int
+if( __type == 94 )
+{
+	var ret = Math.pow(__arg0, 1.5);
+	return ret - ret % 1;//floor
+}
+
+// packHards(type:Int):Int
+if( __type == 95 )
+	return __arg0 - 50;
+		
+// getFreeBookType(earnedBooks:Int) : Int
+if( __type == 97 )
+{
+	__arg0 %= 240; 
+	if( __arg0 == 89 || __arg0 == 157 || __arg0 == 199 || __arg0 == 229)
+		return 54;
+	if( __arg0 == 53 || __arg0 == 127 || __arg0 == 211)
+		return 55;
+	if( __arg0 == 89 || __arg0 == 173)
+		return 56;
+	if ( __arg0 == 19 )
+		return 57;
+	if ( __arg0 == 97 )
+		return 58;
+	if ( __arg0 == 167 )
+		return 59;
+	return 53;
+}
+
+// getBattleBookType(earnedBooks:Int) : Int
+if( __type == 98 )
+{
+	if( __arg0 < 4 ) // in tutorial
+		return 51;
+	__arg0 %= 240; 
+	if( __arg0 == 89 || __arg0 == 157 || __arg0 == 199 || __arg0 == 229)
+		return 54;
+	if( __arg0 == 53 || __arg0 == 127 || __arg0 == 211)
+		return 57;
+	if( __arg0 == 89 || __arg0 == 173)
+		return 59;
+	if( (__arg0 * 0.2 % 1) < 0.20 )
+		return 53;
+	return 52;
+}
+
 return 0;

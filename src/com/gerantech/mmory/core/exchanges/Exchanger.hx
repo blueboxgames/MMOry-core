@@ -63,7 +63,7 @@ class Exchanger
 			var res = isBattleBookReady(item.type, now);
 			if( res == MessageTypes.RESPONSE_SUCCEED || res == MessageTypes.RESPONSE_ALREADY_SENT )
 			{
-				item.expiredAt = now + ExchangeType.getCooldown(item.outcome);
+				item.expiredAt = now + ScriptEngine.getInt(ScriptEngine.T91_PACK_DELAY, item.outcome);
 				if( res == MessageTypes.RESPONSE_ALREADY_SENT )
 				{
 					item.requirements = new IntIntMap();
@@ -127,6 +127,7 @@ class Exchanger
 #end
 		
 		// reset item
+		var cooldown = ScriptEngine.getInt(ScriptEngine.T91_PACK_DELAY, item.type);
 		if( item.category == ExchangeType.C100_FREES )
 		{
 			game.player.resources.increase(ResourceType.R22_BOOK_OPENED_FREE, 1);
@@ -136,9 +137,9 @@ class Exchanger
 				item.numExchanges = item.expiredAt < now ? 1 : item.numExchanges + 1;
 			
 			if( item.type == ExchangeType.C104_STARS )
-				item.expiredAt = Math.round(Math.max(now, item.expiredAt + ExchangeType.getCooldown(item.type)));
+				item.expiredAt = Math.round(Math.max(now, item.expiredAt + cooldown));
 			else
-				item.expiredAt = now + ExchangeType.getCooldown(item.type);
+				item.expiredAt = now + cooldown;
 			
 			item.outcome = 0;
 			item.outcomes = new IntIntMap();
@@ -154,7 +155,7 @@ class Exchanger
 		else if( item.category == ExchangeType.C20_SPECIALS || item.category == ExchangeType.C30_BUNDLES || item.isIncreamental() )
 		{
 			if( item.type == ExchangeType.C43_ADS )
-				item.expiredAt = now + ExchangeType.getCooldown(item.type);
+				item.expiredAt = now + cooldown;
 			item.numExchanges ++;
 		}
 		
@@ -165,7 +166,7 @@ class Exchanger
 	public function findRandomOutcome(item:ExchangeItem, now:Int) : Void
 	{
 		var bookIndex = item.category == ExchangeType.C100_FREES ? game.player.getResource(ResourceType.R22_BOOK_OPENED_FREE) : getEarnedBattleBooks(now);
-		item.outcome = item.category == ExchangeType.C100_FREES ? getFreeBook(bookIndex) : getBattleBook(bookIndex);
+		item.outcome = ScriptEngine.getInt(item.category == ExchangeType.C100_FREES ? ScriptEngine.T97_PACK_FREE_TYPE : ScriptEngine.T98_PACK_BATTLE_TYPE, bookIndex);
 		item.outcomes = new IntIntMap();
 		item.outcomes.set(item.outcome, game.player.get_arena(0));
 	}
@@ -341,9 +342,11 @@ class Exchanger
 	
 	static public function estimateBookOutcome(type:Int, arena:Int, coef:Float) : IntIntMap
 	{
+		var cards = ScriptEngine.getInt(ScriptEngine.T93_PACK_CARDS, type, arena, 0, id);
 		var ret = new IntIntMap();
-		ret.set( CardTypes.C101, ExchangeType.getNumTotalCards(type, arena, coef, 0) );
-		ret.set( ResourceType.R3_CURRENCY_SOFT, ExchangeType.getNumSofts(type, arena, coef) );
+		ret.set(CardTypes.C101, cards);
+		ret.set(ResourceType.R4_CURRENCY_HARD, ScriptEngine.getInt(ScriptEngine.T94_PACK_SOFTS, cards));
+		ret.set(ResourceType.R4_CURRENCY_HARD, ScriptEngine.getInt(ScriptEngine.T95_PACK_HARDS, type));
 		return ret;
 	}
 	
@@ -378,10 +381,11 @@ class Exchanger
 	function getBookOutcomes(type:Int, arena:Int, isDaily:Bool = false) : IntIntMap
 	{
 		var ret = new IntIntMap();
-		var numSlots = ExchangeType.getNumSlots(type);
-		var numRars = ExchangeType.getNumTotalCards(type, arena, game.player.splitTestCoef, 1);
-		var numEpics = ExchangeType.getNumTotalCards(type, arena, game.player.splitTestCoef, 2);
-		var totalCards = ExchangeType.getNumTotalCards(type, arena, game.player.splitTestCoef, 0) - numRars - numEpics;
+		var numSlots = ScriptEngine.getInt(ScriptEngine.T92_PACK_SLOTS, type);
+		var numRares = ScriptEngine.getInt(ScriptEngine.T93_PACK_CARDS, type, arena, 1, game.player.id);
+		var numEpics = ScriptEngine.getInt(ScriptEngine.T93_PACK_CARDS, type, arena, 2, game.player.id);
+		var totalCards = ScriptEngine.getInt(ScriptEngine.T93_PACK_CARDS, type, arena, 0, game.player.id);
+		var numCommons = totalCards - numRares - numEpics;
 		var opened = game.player.getResource(ResourceType.R21_BOOK_OPENED_BATTLE);
 		// trace("type:" + type + " opened:" + opened + " numSlots:" + numSlots + " numRars:" + numRars + " numEpics:" + numEpics + " totalCards:" + totalCards);
 		var slotSize = Math.floor(Math.max(1, totalCards / numSlots));
@@ -479,44 +483,4 @@ class Exchanger
 		map.set( random, count );
 	}
 	#end
-
-	/*public static function getDailyChestType(numExchanges:Int) : Int
-	{
-		return ExchangeType.BOOK_M_54_BRONZE;
-	}*/
-	
-	private function getFreeBook(earnedBooks:Int) : Int
-	{
-		earnedBooks %= 240; 
-
-		if( earnedBooks == 89 || earnedBooks == 157 || earnedBooks == 199 || earnedBooks == 229)
-			return 54;//4
-		if( earnedBooks == 53 || earnedBooks == 127 || earnedBooks == 211)
-			return 55;//3
-		if( earnedBooks == 89 || earnedBooks == 173)
-			return 56;//2
-		if ( earnedBooks == 19 )
-			return 57;//1
-		if ( earnedBooks == 97 )
-			return 58;//1
-		if ( earnedBooks == 167 )
-			return 59;//1
-		return 53;//180
-	}
-	
-	private function getBattleBook(earnedBooks:Int) : Int
-	{
-		earnedBooks %= 240; 
-		if( earnedBooks < ScriptEngine.getInt(ScriptEngine.T61_BATTLE_NUM_TUTORS, game.player.id) )
-			return 51;//4
-		if( earnedBooks == 89 || earnedBooks == 157 || earnedBooks == 199 || earnedBooks == 229)
-			return 54;//4
-		if( earnedBooks == 53 || earnedBooks == 127 || earnedBooks == 211)
-			return 57;//3
-		if( earnedBooks == 89 || earnedBooks == 173)
-			return 59;//2
-		if( (earnedBooks * 0.2 % 1) < 0.20 )
-			return 53;//52	
-		return 52;//180
-	}
 }

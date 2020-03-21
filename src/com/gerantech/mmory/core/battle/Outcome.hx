@@ -38,15 +38,18 @@ class Outcome
 			ret.set(ResourceType.R2_POINT, point);
 		
 		// battle stats
-		ret.set(ResourceType.R12_BATTLES, 1);
-		ret.set(ResourceType.R30_CHALLENGES, battleField.field.mode + 6);
+		ret.set(ResourceType.R12_BATTLES_NUMS, 1);
 		if( league.index > 0 )
+		{
+			ret.set(ResourceType.R30_CHALLENGE_NUMS + battleField.field.mode + 1, 1);
 			ret.set(ResourceType.R17_STARS, alliseStar);
+		}
+		
 		if( alliseStar > axisStar )
 		{
-			// num wins
 			ret.set(ResourceType.R13_BATTLES_WINS, 1);
-			ret.set(ResourceType.R30_CHALLENGES, battleField.field.mode + 1);
+			if( league.index > 0 )
+				ret.set(ResourceType.R40_CHALLENGE_WINS + battleField.field.mode + 1, 1);
 
 			// soft-currency
 			var sc = Math.max(0, alliseStar) + Math.min(league.index * 2, Math.max(0, alliesGame.player.get_point() - alliesGame.player.get_softs())) * battleField.field.mode;

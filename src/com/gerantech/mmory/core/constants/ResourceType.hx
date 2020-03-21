@@ -16,7 +16,7 @@ class ResourceType
 	public static var R7_MAX_POINT:Int = 7;
 
 	public static var R11_OPERATIONS:Int = 11;
-	public static var R12_BATTLES:Int = 12;
+	public static var R12_BATTLES_NUMS:Int = 12;
 	public static var R13_BATTLES_WINS:Int = 13;
 	public static var R15_BATTLES_FRIENDLY:Int = 15;
 	public static var R16_WIN_RATE:Int = 16;
@@ -28,8 +28,8 @@ class ResourceType
 	public static var R26_OFFER_STEP:Int = 26;
 	public static var R27_FRIENDS:Int = 27;
 	
-	public static var R30_CHALLENGES:Int = 30;
-	public static var R40_QUESTS:Int = 40;
+	public static var R30_CHALLENGE_NUMS:Int = 30;
+	public static var R40_CHALLENGE_WINS:Int = 40;
 	
 	public function new() {}
 	static public function getName(type:Int) : String

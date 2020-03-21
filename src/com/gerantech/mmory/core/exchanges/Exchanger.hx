@@ -52,7 +52,7 @@ class Exchanger
 			return MessageTypes.RESPONSE_NOT_ALLOWED;
 		if( item.category == ExchangeType.C100_FREES )
 			findRandomOutcome(item, now);
-		else if( item.category == ResourceType.R30_CHALLENGES )
+		else if( item.category == ResourceType.R30_CHALLENGE_NUMS )
 			item.outcomes.set(item.type, 1);
 		// provide requirements
 		item.requirements = getRequierement(item, now);

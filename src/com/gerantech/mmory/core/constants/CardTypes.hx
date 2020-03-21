@@ -101,22 +101,6 @@ class CardTypes
 		return type > 150 && type < 200;
 	}
 
-	static public function isBuilding(type:Int) : Bool
-	{
-		var check:Bool = false;
-		if( type == C116 || type == C119 )
-			check = true;
-		return ( type > 200 && type < 220 ) || check;
-	}
-
-	static public function isFlying(type:Int): Bool
-	{
-		var check:Bool = false;
-		if( type == C117 || type == C118 )
-			check = true;
-		return check;
-	}
-
 	static public function isHero(type:Int) : Bool
 	{
 		return type > 220;

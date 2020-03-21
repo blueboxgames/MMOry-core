@@ -340,7 +340,7 @@ class Exchanger
 		return game.player.getResource(ResourceType.R21_BOOK_OPENED_BATTLE) + numClosed;
 	}
 	
-	static public function estimateBookOutcome(type:Int, arena:Int, coef:Float) : IntIntMap
+	static public function estimateBookOutcome(type:Int, arena:Int, id:Int) : IntIntMap
 	{
 		var cards = ScriptEngine.getInt(ScriptEngine.T93_PACK_CARDS, type, arena, 0, id);
 		var ret = new IntIntMap();

@@ -64,9 +64,9 @@ class ExchangeUpdater
 			this.add(ExchangeType.C104_STARS, 	0, now,	"",	"");
 
 		// _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_- MAGIC -_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
-		this.add(ExchangeType.C121_MAGIC, 0, 0, ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.fixedRound(Exchanger.toHard(Exchanger.estimateBookOutcome(ExchangeType.BOOK_55_PIRATE,	arena, game.player.splitTestCoef))),	ExchangeType.BOOK_55_PIRATE	+ ":" + arena);
-		this.add(ExchangeType.C122_MAGIC, 0, 0, ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.fixedRound(Exchanger.toHard(Exchanger.estimateBookOutcome(ExchangeType.BOOK_56_JUNGLE,	arena, game.player.splitTestCoef))),	ExchangeType.BOOK_56_JUNGLE	+ ":" + arena);
-		this.add(ExchangeType.C123_MAGIC, 0, 0, ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.fixedRound(Exchanger.toHard(Exchanger.estimateBookOutcome(ExchangeType.BOOK_58_AMBER,	arena, game.player.splitTestCoef))),	ExchangeType.BOOK_58_AMBER	+ ":" + arena);
+		this.add(ExchangeType.C121_MAGIC, 0, 0, ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.fixedRound(Exchanger.toHard(Exchanger.estimateBookOutcome(ExchangeType.BOOK_55_PIRATE,	arena, game.player.id))),	ExchangeType.BOOK_55_PIRATE	+ ":" + arena);
+		this.add(ExchangeType.C122_MAGIC, 0, 0, ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.fixedRound(Exchanger.toHard(Exchanger.estimateBookOutcome(ExchangeType.BOOK_56_JUNGLE,	arena, game.player.id))),	ExchangeType.BOOK_56_JUNGLE	+ ":" + arena);
+		this.add(ExchangeType.C123_MAGIC, 0, 0, ResourceType.R4_CURRENCY_HARD + ":" + Exchanger.fixedRound(Exchanger.toHard(Exchanger.estimateBookOutcome(ExchangeType.BOOK_58_AMBER,	arena, game.player.id))),	ExchangeType.BOOK_58_AMBER	+ ":" + arena);
 		
 		if( this.game.player.get_point() > 40 && this.game.player.get_point() < 60 && this.game.player.getResource(ResourceType.R6_TICKET) < 12 )
 			this.addBundle(1, ExchangeType.C31_BUNDLE, 0, this.now + (1 * 24 * 3600), "5:1999", "6:123, 4:50");

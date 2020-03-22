@@ -997,6 +997,33 @@ if( __type == 66 )
 		}
 	}
 
+	// mode 3
+	if( __arg0 == 3 )
+	{
+		if( __arg1 == "start" )
+		return switch( __arg2 )
+		{
+			case 0	: 	[2, 750, 1300, 500, false];
+			case 10	: 	[2, 750, 1300, 500, false];
+			default:	null;
+		}
+
+		if( __arg1 == "cover" )
+		return switch( __arg2 )
+		{
+			case 11	:		[1, 335, 1200, 500, false];
+			case 21	: 	[3, 610, 1200, 500, false];
+			default:	null;
+		}
+
+		if( __arg1 == "newround" )
+		return switch( __arg2 )
+		{
+			case 0	: [1, 540, 1200, 3000, false];
+			default:	null;
+		}
+	}
+
 	// others
 	if( __arg1 == "start" )
 	return switch( __arg2 )

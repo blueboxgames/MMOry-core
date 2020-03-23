@@ -20,7 +20,7 @@ class Outcome
 	{
 		var ret = new IntIntMap();
 		if( battleField.friendlyMode > 0 )
-    	{
+		{
 			ret.set(ResourceType.R15_BATTLES_FRIENDLY, 1);
 			return ret;
 		}
@@ -47,6 +47,7 @@ class Outcome
 		
 		if( alliseStar > axisStar )
 		{
+			ret.set(ResourceType.R7_MAX_POINT, 1);
 			ret.set(ResourceType.R13_BATTLES_WINS, 1);
 			if( league.index > 0 )
 				ret.set(ResourceType.R40_CHALLENGE_WINS + battleField.field.mode + 1, 1);

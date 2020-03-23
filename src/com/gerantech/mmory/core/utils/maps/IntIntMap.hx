@@ -70,9 +70,6 @@ class IntIntMap extends flash.events.EventDispatcher
 		#end
 		
 		dispatchChangeEvent(key, from, get(key), exists);
-		
-		if( key == ResourceType.R2_POINT && value > get(ResourceType.R7_MAX_POINT) )
-			set(ResourceType.R7_MAX_POINT, value);
 	}
 
 	/**

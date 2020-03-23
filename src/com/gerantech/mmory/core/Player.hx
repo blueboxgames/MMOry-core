@@ -211,10 +211,12 @@ class Player
 		var keys = bundle.keys();
 		var len = keys.length;
 		for (i in 0...len) 
-			addCard(keys[i]);
-		resources.increaseMap(bundle);
+			this.addCard(keys[i]);
+		this.resources.increaseMap(bundle);
+		if( bundle.exists(ResourceType.R2_POINT) && this.resources.get(ResourceType.R2_POINT) > this.resources.get(ResourceType.R7_MAX_POINT) )
+			this.resources.set(ResourceType.R7_MAX_POINT, this.resources.get(ResourceType.R2_POINT));
 	}
-
+	
 	public function addCard(type:Int) : Void
 	{
 		if( ResourceType.isCard(type) && !cards.exists(type) )

@@ -464,7 +464,7 @@ if( __type == 22 )
 		case	107	:	0.50	;
 		case	108	:	0.08	;
 		case	109	:	-0.1	;
-		case	110	:	0.17	;
+		case	110	:	0.15	;
 		case	111	:	0.24	;
 		case	112	:	0.20	;
 		case	113	:	0.30	;
@@ -509,7 +509,7 @@ if( __type == 23 )
 		case	107	:	1.0	;
 		case	108	:	1.2	;
 		case	109	:	1.2	;
-		case	110	:	1.2	;
+		case	110	:	1.3	;
 		case	111	:	1.3	;
 		case	112	:	2.1	;
 		case	113	:	1.2	;
@@ -539,14 +539,10 @@ if( __type == 24 )
 {
 	var ret = switch( __arg0 )
 	{
-		case	101	:	0.0	;
-		case	102	:	1.5	;
 		case	103	:	0.7	;
 		case	104	:	1.2	;
 		case	105	:	0.8	;
 		case	106	:	0.5	;
-		case	107	:	0.0	;
-		case	108	:	0.0	;
 		case	109	:	0.5	;
 		case	110	:	0.7	;
 		case	111	:	0.5	;
@@ -556,7 +552,6 @@ if( __type == 24 )
 		case	115	:	0.2	;
 		case	116	:	0.6	;	
 		case	117	: 0.2 ;
-		case	118	: 0.0 ;
 		case	119	: 0.6 ;
 		case	120	: 0.2 ;
 		case	121	:	0.7	;
@@ -589,7 +584,7 @@ if( __type == 26 )
 {
 	var ret =  switch( __arg0 )
 	{
-		case	101	:	1.8 	;
+		case	101	:	1.6 	;
 		case	102	:	0.2		;
 		case	103	:	0.2		;
 		case	104	:	0.9		;
@@ -600,7 +595,7 @@ if( __type == 26 )
 		case	109	:	1.0		;
 		case	110	:	0.9		;
 		case	111	:	0.9		;
-		case	112	:	0.3 	;
+		case	112	:	0.2 	;
 		case	113	:	0.4 	;
 		case	114	:	0.4		;
 		case	115	:	0.5		;

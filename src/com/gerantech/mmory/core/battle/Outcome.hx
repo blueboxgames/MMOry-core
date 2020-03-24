@@ -20,7 +20,7 @@ class Outcome
 	{
 		var ret = new IntIntMap();
 		if( battleField.friendlyMode > 0 )
-    	{
+		{
 			ret.set(ResourceType.R15_BATTLES_FRIENDLY, 1);
 			return ret;
 		}
@@ -38,15 +38,19 @@ class Outcome
 			ret.set(ResourceType.R2_POINT, point);
 		
 		// battle stats
-		ret.set(ResourceType.R12_BATTLES, 1);
-		ret.set(ResourceType.R30_CHALLENGES, battleField.field.mode + 6);
+		ret.set(ResourceType.R12_BATTLES_NUMS, 1);
 		if( league.index > 0 )
+		{
+			ret.set(ResourceType.R30_CHALLENGE_NUMS + battleField.field.mode + 1, 1);
 			ret.set(ResourceType.R17_STARS, alliseStar);
+		}
+		
 		if( alliseStar > axisStar )
 		{
-			// num wins
+			ret.set(ResourceType.R7_MAX_POINT, 1);
 			ret.set(ResourceType.R13_BATTLES_WINS, 1);
-			ret.set(ResourceType.R30_CHALLENGES, battleField.field.mode + 1);
+			if( league.index > 0 )
+				ret.set(ResourceType.R40_CHALLENGE_WINS + battleField.field.mode + 1, 1);
 
 			// soft-currency
 			var sc = Math.max(0, alliseStar) + Math.min(league.index * 2, Math.max(0, alliesGame.player.get_point() - alliesGame.player.get_softs())) * battleField.field.mode;
@@ -73,14 +77,8 @@ class Outcome
 	static function getPoint(battleField:BattleField, index:Int, alliseSide:Int, alliseStar:Int, axisStar:Int) : Int
 	{
 		var alliesGame = battleField.games[alliseSide];
-		var axisGame = battleField.games[alliseSide == 0 ? 1: 0];
 		if( alliesGame.player.get_point() < 0 )
-		{
-			if( alliseStar > axisStar )
-				return alliesGame.player.id % 2 == 0 ? 1 : 2;
-			else 
-				return 0;
-		}
+			return alliseStar > axisStar ? 1 : 0;
 
 		if( alliseStar == axisStar )
 			return 0;
@@ -88,11 +86,10 @@ class Outcome
 		if( alliesGame.player.get_point() < 20 && alliseStar < axisStar )
 			return 0;
 
-		// var diff = alliseStar - axisStar;
 		return alliseStar > axisStar ? WIN_POINT : LOSE_PONT;
 	}
 
-	static  function getEmptySlots(alliesGame:Game, now:Int) : Array<Int>
+	static function getEmptySlots(alliesGame:Game, now:Int) : Array<Int>
 	{
 		var ret = new Array<Int>();
 		var i = 0;

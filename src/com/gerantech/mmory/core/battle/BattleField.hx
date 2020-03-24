@@ -50,7 +50,6 @@ class BattleField
 
 	static public var MAX_LATENCY:Int = 4000;
 	
-	public var state:Int = 0;
 	public var debugMode:Bool;
 	public var singleMode:Bool;
 	public var friendlyMode:Int;
@@ -69,15 +68,25 @@ class BattleField
 	public var spellId:Int = 1000000;
 	public var games:Array<Game>;
 	public var numSummonedUnits:Int;
-	public var pauseTime:Float;
 	public var elixirUpdater:ElixirUpdater;
-	var pioneerSide:Int;
-	var resetTime:Float = -1;
+	var pioneerSide:Int = -2;
+	var resetTime:Float = 0;
 	var remainigTime:Int = 0;
-#if java 
+
+	public var state(default, set):Int = 0;
+	private function set_state(value:Int):Int
+	{
+		if( this.state == value )
+			return this.state;
+		this.state = value;
+		this.fireEvent(0, BattleEvent.STATE_CHANGE, this.state);
+		return this.state;
+	}
+
+	#if java 
 	public var unitsHitCallback:com.gerantech.mmory.core.interfaces.IUnitHitCallback;
 	var unitId:Int = 0;
-#end
+	#end
 	public function new()
 	{
 		#if flash
@@ -138,21 +147,19 @@ class BattleField
 	{
 		this.now = now;
 		this.startAt = Math.round(startAt / 1000);
-		this.pauseTime = (startAt + 2000) * 1000;
-		this.resetTime = (startAt + 2000) * 1000;
 
 		#if java
 		// add inital units
-		if( field.mode != Challenge.MODE_1_TOUCHDOWN )
+		for(i in 0...6)
 		{
-			// var len = field.mode == Challenge.MODE_2_BAZAAR ? 2 : 6;
-			var hqType = ScriptEngine.getInt(ScriptEngine.T54_CHALLENGE_INITIAL_UNITS, field.mode, false);
-			var heroType = ScriptEngine.getInt(ScriptEngine.T54_CHALLENGE_INITIAL_UNITS, field.mode, true);
-			while( unitId < 6 )
+			var data:Array<Int> = ScriptEngine.get(ScriptEngine.T54_CHALLENGE_INITIAL_UNITS, field.mode, i);
+			var cardType = data[0];
+			var side = cast(Math.max(data[1], 0), Int);
+			// trace(i, field.mode, data);
+			if( cardType > -1 )
 			{
-				var side = unitId % 2;
-				var card = new com.gerantech.mmory.core.battle.units.Card(games[side], unitId > 1 ? heroType : hqType, friendlyMode > 0 ? 9 : games[side].player.get_level(0));
-				this.addUnit(card, side, Math.ffloor(field.targets[unitId * 2]), Math.ffloor(field.targets[unitId * 2 + 1]), card.z, this.now);
+				var card = new com.gerantech.mmory.core.battle.units.Card(games[side], cardType, friendlyMode > 0 ? 9 : games[side].player.get_level(0));
+				this.addUnit(card, data[1], Math.ffloor(field.targets[unitId * 2]), Math.ffloor(field.targets[unitId * 2 + 1]), card.z, this.now);
 			}
 		}
 		#end
@@ -170,6 +177,19 @@ class BattleField
 				ret.set(c, friendlyMode > 0 ? new Card(game, c, 9) : game.player.cards.get(c));
 		// trace("id: " + game.player.id + "-> " + ret.queue_String());
 		return ret;
+	}
+
+	public function getCard(side:Int, type:Int, level:Int) : Card
+	{
+		var card = decks.get(side < 0 ? 0 : side).get(type);
+		if( card == null )
+		{
+			trace("create new card while battling ==> side:", side, "type:", type, "level:", level);
+			card = new Card(games[side < 0 ? 0 : side], type, level);
+		}
+		card.focusRange = ScriptEngine.get(ScriptEngine.T15_FOCUS_RANGE, type, field.mode);
+		card.focusUnit = ScriptEngine.getBool(ScriptEngine.T17_FOCUS_UNIT, type, field.mode);
+		return card;
 	}
 
 	public function update(deltaTime:Int) : Void
@@ -195,32 +215,15 @@ class BattleField
 		this.deltaTime = deltaTime;
 		this.now += deltaTime;
 		// -=-=-=-=-=-=-=-  UPDATE TIME-STATE  -=-=-=-=-=-=-=-=-=-
-		if( resetTime <= this.now )
-			killPioneers();
+		if( this.now >= this.resetTime )
+			this.killPioneers();
 		
-		// trace((resetTime - now) + " delta " + (pauseTime - now) + " state " + state);
-		if( pauseTime > now )
-		{
-			if( state == STATE_3_PAUSED )
-			{
-				state = STATE_2_STARTED;
-				fireEvent(0, BattleEvent.PAUSE, state);
-			}
-		}
-		else
-		{
-			if( state == STATE_2_STARTED )
-			{
-				state = STATE_3_PAUSED;
-				fireEvent(0, BattleEvent.PAUSE, state);
-			}
-		}
 
-		// -=-=-=-=-=-=-=-=-=-  UPDATE EXIXIR-BARS  -=-=-=-=-=-=-=-=-=-=-=-
-		elixirUpdater.update(deltaTime, getDuration() > getTime(1));
-
-		if( state > STATE_2_STARTED )
+		if( this.state > STATE_2_STARTED )
 			return;
+		
+		// -=-=-=-=-=-=-=-=-=-  UPDATE EXIXIR-BARS  -=-=-=-=-=-=-=-=-=-=-=-
+		this.elixirUpdater.update(deltaTime, this.getDuration() > this.getTime(1));
 		
 		// -=-=-=-=-=-=-=-=-  UPDATE AND REMOVE UNITS  -=-=-=-=-=-=-=-=-=-=
 		// Creates a garbage array, adds unit id's to an array and sorts them
@@ -245,12 +248,12 @@ class BattleField
 			return;
 		var remaning:Int = this.remainigTime + 0;
 		this.remainigTime = 0;	
-		update(remaning);
+		this.update(remaning);
 	}
 
 	public function getDuration() : Float
 	{
-		return now / 1000 - startAt;
+		return this.now / 1000 - this.startAt;
 	}
 	#if java
 	public function summonUnit(type:Int, side:Int, x:Float, y:Float, time:Float) : Int
@@ -261,19 +264,23 @@ class BattleField
 		
 		if( side == 0 )
 		{
-			numSummonedUnits ++;
+			this.numSummonedUnits ++;
 			var ptoffset = ScriptEngine.getInt(ScriptEngine.T64_BATTLE_PAUSE_TIME, field.mode, games[0].player.get_battleswins(), numSummonedUnits);
-			if( ptoffset > 0 )
-				pauseTime = now + ptoffset;
+			if( ptoffset > -1 )
+			{
+				this.resetTime = now + ptoffset; // resume
+				if( ptoffset > 0 )
+				this.state = STATE_3_PAUSED; // pause
+			}
 		}
 
-		if(this.now - time > MAX_LATENCY)
+		if( this.now - time > MAX_LATENCY )
 			return MessageTypes.RESPONSE_NOT_ALLOWED;
 
 		if( time < this.now )
 			time = this.now;
 		
-		var card = decks.get(side).get(type);
+		var card = getCard(side, type, games[side].player.cards.get(type).level);
 		decks.get(side).queue_removeAt(index);
 		decks.get(side).enqueue(type);
 		elixirUpdater.updateAt(side, elixirUpdater.bars[side] - card.elixirSize);
@@ -365,6 +372,8 @@ class BattleField
 		{
 			if( u.disposed() )
 				continue;
+			if( u.side < 0 )
+				continue;
 			if( u.z < bullet.card.bulletDamageHeight )
 				continue;
 			if( bullet.card.bulletDamage > 0 && !bullet.card.explosive && u.side == bullet.side )//side mate prevention
@@ -386,36 +395,52 @@ class BattleField
 	
 	public function requestKillPioneers(side:Int) : Void
 	{
-		if( state > STATE_2_STARTED )
+		if( this.state != STATE_2_STARTED )
 			return;
-		pioneerSide = side;
-		resetTime = now + 2000;
-		pauseTime = now;
-		state = STATE_3_PAUSED;
+		this.pioneerSide = side;
+		this.resetTime = now + 3000;
+		this.state = STATE_3_PAUSED;
 	}
 
 	function killPioneers() : Void
 	{
-		pauseTime = now + 2000000; 
-		resetTime = now + 2000000;
+		if( this.state != STATE_3_PAUSED )
+			return;
+
+		if( this.pioneerSide == -2 )
+		{
+			this.state = STATE_2_STARTED;
+			return;	
+		}
+
+		if( this.pioneerSide == -1 )
+			this.elixirUpdater.init();
+
 		for( unit in this.units )
 		{
 			if( unit.disposed() )
 				continue;
-			if( unit.side == pioneerSide )
+			if( pioneerSide == -1 )
 			{
-				if( pioneerSide == 0 && unit.y < HEIGHT * 0.5 )
-						unit.dispose();
+				if( unit.side > -1 )
+					unit.dispose();
+				else
+					unit.setHealth(0.01);
+			}
+			else if( unit.side == this.pioneerSide )
+			{
+				if( this.pioneerSide == 0 && unit.y < HEIGHT * 0.5 )
+					unit.dispose();
 				else if( pioneerSide == 1 && unit.y > HEIGHT * 0.5 )
-						unit.dispose();
+					unit.dispose();
 			}
 		}
-		state = STATE_2_STARTED;
+		this.state = STATE_2_STARTED;
 	}
 	
 	public function dispose() : Void
 	{
-		state = STATE_5_DISPOSED;
+		this.state = STATE_5_DISPOSED;
 		// dispose all units
 		for( unit in this.units )
 			unit.dispose();
@@ -429,6 +454,8 @@ class BattleField
 	
 	public function getColorIndex(side:Int) : Int
 	{
+		if( side < 0 )
+			return side;
 		return side == this.side ? 0 : 1;
 	}
 	public function getTime(index:Int):Int
@@ -440,7 +467,7 @@ class BattleField
 
 	private function fireEvent(dispatcherId:Int, type:String, data:Any) : Void
 	{
-		trace("fireEvent => id:" + dispatcherId + ", type:" + type + ", data:" + data);
+		// trace("fireEvent => id:" + dispatcherId + ", type:" + type + ", data:" + data);
 		#if java
 		// if( eventCallback != null )
 		// 	eventCallback.dispatch(dispatcherId, type, data);
@@ -451,7 +478,7 @@ class BattleField
 
 	public function getSummonState(side:Int):Int
 	{
-		if( field.mode == Challenge.MODE_1_TOUCHDOWN )
+		if( field.mode == Challenge.MODE_1_TOUCHDOWN || field.mode == Challenge.MODE_3_ZONE )
 			return SUMMON_AREA_THIRD;
 		
 		// Get unit
@@ -489,6 +516,10 @@ class BattleField
 			if( field.mode == Challenge.MODE_1_TOUCHDOWN )
 			{
 				top = HEIGHT * 0.6666 + SUMMON_PADDING;
+			}
+			else if( field.mode == Challenge.MODE_3_ZONE )
+			{
+				top = HEIGHT * 0.75 + SUMMON_PADDING;
 			}
 			else
 			{

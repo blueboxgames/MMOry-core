@@ -35,7 +35,6 @@ class Player
 	public var nickName:String = "no_nickName";
 	public var decks:IntIntIntMap;
 	public var selectedDeckIndex:Int = 0;
-	public var splitTestCoef:Float = 1;
 
 	private var game:Game;
 #if java
@@ -50,7 +49,6 @@ class Player
 		id = initData.id;
 		admin = isAdmin(id);
 		nickName = initData.nickName;
-		splitTestCoef = (id > 10010 && id % 2 == 0) ? 0.5 : 1;
 		
 		// add player resources, operations data
 		resources = initData.resources;
@@ -112,9 +110,10 @@ class Player
 	public function get_point():Int { return resources.get(ResourceType.R2_POINT); }
 	public function get_softs():Int { return resources.get(ResourceType.R3_CURRENCY_SOFT); }
 	public function get_hards():Int { return resources.get(ResourceType.R4_CURRENCY_HARD); }
-	public function get_battlesCount():Int { return resources.get(ResourceType.R12_BATTLES); }
+	public function get_battlesCount():Int { return resources.get(ResourceType.R12_BATTLES_NUMS); }
 	public function get_battleswins():Int { return resources.get(ResourceType.R13_BATTLES_WINS); }
 	public function get_winRate():Int { return resources.get(ResourceType.R16_WIN_RATE); }
+	public function get_rewardStep():Int { return resources.exists(ResourceType.R25_REWARD_STEP) ? resources.get(ResourceType.R25_REWARD_STEP) : -1; }
 	public function get_level(xp:Int):Int
 	{
 		if( xp == 0 )
@@ -212,10 +211,12 @@ class Player
 		var keys = bundle.keys();
 		var len = keys.length;
 		for (i in 0...len) 
-			addCard(keys[i]);
-		resources.increaseMap(bundle);
+			this.addCard(keys[i]);
+		this.resources.increaseMap(bundle);
+		if( bundle.exists(ResourceType.R2_POINT) && this.resources.get(ResourceType.R2_POINT) > this.resources.get(ResourceType.R7_MAX_POINT) )
+			this.resources.set(ResourceType.R7_MAX_POINT, this.resources.get(ResourceType.R2_POINT));
 	}
-
+	
 	public function addCard(type:Int) : Void
 	{
 		if( ResourceType.isCard(type) && !cards.exists(type) )
@@ -276,11 +277,11 @@ class Player
 	public function achieveReward(league:Int, index:Int) : Int
 	{
 		var reward:TrophyReward = game.arenas.get(league).rewards[index];
-		var response = reward.achievable(get_point(), getResource(ResourceType.R25_REWARD_STEP), true);
+		var response = reward.achievable(get_point(), get_rewardStep(), true);
 		if( response != MessageTypes.RESPONSE_SUCCEED )
 			return response;
 
-		trace("reward.step " + reward.step + " lastRewardStep " + getResource(ResourceType.R25_REWARD_STEP));
+		trace("reward.step " + reward.step + " lastRewardStep " + get_rewardStep());
 		resources.set(ResourceType.R25_REWARD_STEP, reward.step);
 		#if java
 		if( ResourceType.isBook(reward.key) )

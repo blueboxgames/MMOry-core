@@ -47,7 +47,7 @@ class Unit extends Colleague
 		if( card.game.player.isBot() && battleField.games[0].player.get_battleswins() < 7 )
 			h = (0.2 + Math.min(0.8, (battleField.games[0].player.get_battleswins() + 1) / 10)) * h;
 		this.cardHealth = h;
-		this.setHealth(h);
+		this.setHealth(this.side == -1 ? 0.01 : h);
 		
 		this.bulletId = id * 10000;
 		this.defaultTargetIndex = CardTypes.isHero(card.type) ? id : 1 - this.side;
@@ -58,39 +58,47 @@ class Unit extends Colleague
 		if( this.isDump || this.disposed() )
 			return;
 		
-		if( this.summonTime > this.battleField.now )
-			return;
-		
-		if( this.card.selfDammage != 0 )
-			this.setHealth(this.health - this.card.selfDammage * this.battleField.deltaTime);
-		this.finalizeDeployment();
+		this.finalizeSummonary();
 		this.finalizeImmortal();
 		this.decide();
 	}
 
-	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= deploy -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-	private function finalizeDeployment() : Void
+	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= summon -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+	private function finalizeSummonary() : Void
 	{
-		if( this.summonTime == 0 )
+		if( this.summonTime == 0 || this.summonTime > this.battleField.now )
 			return;
+		
 		this.summonTime = 0;
-		this.setState(GameObject.STATE_1_DIPLOYED);
+		this.state = GameObject.STATE_1_DIPLOYED;
 	}
+	
 	private function finalizeImmortal() : Void
 	{
-		if( this.immortalTime == 0 )
+		if( this.immortalTime == 0 || this.immortalTime > this.battleField.now )
 			return;
-		if( this.immortalTime < this.battleField.now )
-		{
-			this.setState(GameObject.STATE_2_MORTAL);
-			this.immortalTime = 0;
-			if( card.z < 0 )
-				this.battleField.field.air.add(this);
-			else
-				this.battleField.field.ground.add(this);
-			if( card.speed <= 0 )
-				this.setStatic();
-		}
+		
+		if( card.z < 0 || side < 0 )
+			this.battleField.field.air.add(this);
+		else
+			this.battleField.field.ground.add(this);
+		
+		if( card.speed <= 0 )
+			this.setStatic();
+
+		this.immortalTime = 0;
+		this.state = GameObject.STATE_2_MORTAL;
+	}
+	
+	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= healing -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+	private function healing() 
+	{
+		if( this.card.selfDammage == 0 )
+			return;
+		if( this.side != -1 && this.side > -4 )
+			this.setHealth(this.health - this.card.selfDammage * this.battleField.deltaTime);// auto heal or damag
+		else
+			this.setHealth(Math.max(0.01, this.health + this.card.selfDammage * this.battleField.deltaTime));// return to initial health
 	}
 	
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= decide -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -98,6 +106,8 @@ class Unit extends Colleague
 	{
 		if( this.state < GameObject.STATE_2_MORTAL )
 			return;
+		this.healing();
+		this.capture();
 		var enemy = this.getNearestEnemy();
 		if( enemy != null )
 		{
@@ -118,13 +128,13 @@ class Unit extends Colleague
 			else
 			{
 				// if( id == 6)trace("wait " + enemyId);
-				this.setState(GameObject.STATE_3_WAITING);
+				this.state = GameObject.STATE_3_WAITING;
 				return;
 			}
 			
 			// follow enemy
 			if( this.card.speed <= 0 )
-				return;
+				return;// building units
 			if( newEnemyFound )
 			{
 				// if( id == 6)trace("move " + enemyId);
@@ -138,12 +148,13 @@ class Unit extends Colleague
 
 		// move to target
 		if( this.card.speed <= 0 )
-			return;
+			return;// building units
 		if( this.targetIndex == 100 )
 			this.targetIndex = -1;
 		this.findTarget();
 		this.move();
 	}
+
 	private function findTarget():Void
 	{
 		if( this.targetIndex > -1 )
@@ -207,14 +218,14 @@ class Unit extends Colleague
 		return angle;
 	}
 
-	private function move() : Void
+	private function move() : Bool
 	{
 		if( this.deltaX == 0 && this.deltaY == 0 )
 		{
 			#if flash
-			this.setState(GameObject.STATE_3_WAITING);
+			this.state = GameObject.STATE_6_IDLE;
 			#end
-			return;
+			return false;
 		}
 
 		// turn to new target
@@ -224,23 +235,63 @@ class Unit extends Colleague
 			if( this.targetIndex == this.defaultTargetIndex )
 			{
 				this.deltaX = this.deltaY = 0;
-				return;
+				return false;
 			}
 			// if( id == 6) trace("new target");
 			this.targetIndex = -1;
 			this.findTarget();
 		}
 
+		this.state = GameObject.STATE_4_MOVING;
 		var cx:Float = this.deltaX * this.battleField.deltaTime;
 		var cy:Float = this.deltaY * this.battleField.deltaTime;
 		this.setPosition(x + cx, y + cy, GameObject.NaN);
+		return true;
+	}
+
+	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= capture -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+	private function capture() : Void
+	{
+		if( this.side > -1 )
+			return;
+		maxDistanseSkip ++;
+		if( maxDistanseSkip < 10 )
+			return;
+		maxDistanseSkip = 0;
+		var hasSide_0 = false;
+		var hasSide_1 = false;
+		for( u in this.battleField.units )
+		{
+			if( u == null || u.disposed() || u.summonTime != 0 )
+				continue;
+			if( CoreUtils.getDistance(this.x, this.y, u.x, u.y) > this.card.focusRange )
+				continue;
+			if( u.side == 0 )
+				hasSide_0 = true;
+			else if( u.side == 1 )
+				hasSide_1 = true;
+		}
+
+		if( hasSide_0 && hasSide_1 )
+			this.side = -4;
+		else if( hasSide_0 )
+			this.side = -3;
+		else if( hasSide_1 )
+			this.side = -2;
+		else
+			this.side = -1;
 	}
 
 	// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= attack -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	private function getNearestEnemy() : Unit
 	{
+		// none defensive units
+		if( this.card.bulletDamage == 0 )
+			return null;
+
+		var distance:Float = this.card.focusRange + this.card.sizeH;
 		if( this.cachedEnemy != null && !this.cachedEnemy.disposed() )
-			if( CoreUtils.getDistance(this.x, this.y, this.cachedEnemy.x, this.cachedEnemy.y) <= this.card.focusRange )
+			if( CoreUtils.getDistance(this.x, this.y, this.cachedEnemy.x, this.cachedEnemy.y) <= distance + this.cachedEnemy.card.sizeH)
 				return this.cachedEnemy;
 		
 		maxDistanseSkip ++;
@@ -248,14 +299,13 @@ class Unit extends Colleague
 			return null;
 		maxDistanseSkip = 0;
 		var ret:Unit = null;
-		var distance:Float = this.card.focusRange;
 		for( u in this.battleField.units )
 		{
 			// prevent disposed and deploying units
-			if( u == null || u.disposed() || u.summonTime != 0 )
+			if( u == null || u.state < GameObject.STATE_2_MORTAL || u.state > GameObject.STATE_6_IDLE || u.side < 0 )
 				continue;
 			// prevent team-mates attack
-			if( this.card.bulletDamage >= 0 && this.side == u.side )
+			if( this.card.bulletDamage > 0 && this.side == u.side )
 				continue;
 			// prevent axis units for building target cards 
 			if( !this.card.focusUnit && u.card.speed > 0 && CardTypes.isTroop(u.card.type) )
@@ -266,7 +316,7 @@ class Unit extends Colleague
 			// prevent healing of enemy, buildings, self and full-health
 			if( this.card.bulletDamage < 0 && (this.side != u.side || u.card.speed <= 0 || u.id == this.id || u.health >= u.cardHealth) )
 				continue;			
-			var dis = CoreUtils.getDistance(this.x, this.y, u.x, u.y);
+			var dis = CoreUtils.getDistance(this.x, this.y, u.x, u.y) - u.card.sizeH;
 			if( dis <= distance )
 			{
 				distance = dis;
@@ -278,11 +328,11 @@ class Unit extends Colleague
 	
 	private function attack(enemy:Unit) : Void
 	{
-		this.setState(GameObject.STATE_5_SHOOTING);
 #if java
 		this.battleField.addBullet(this, side, x, y, enemy);
 #end
 		this.attackTime = this.battleField.now + this.card.bulletShootGap;
+		this.state = GameObject.STATE_5_SHOOTING;
 	}
 	
 	public function hit(damage:Float) : Void
@@ -293,7 +343,7 @@ class Unit extends Colleague
 		this.setHealth(this.health - damage);
 	}
 
-	private function setHealth(health:Float) : Float
+	public function setHealth(health:Float) : Float
 	{
 		if( health > this.cardHealth )
 			health = this.cardHealth;

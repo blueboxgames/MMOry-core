@@ -84,7 +84,7 @@ class Quest
 			case 0 :	ResourceType.R1_XP;
 			case 1 :	ResourceType.R2_POINT;
 			//case 2 :	ResourceType.OPERATIONS;
-			case 3 :	ResourceType.R12_BATTLES;
+			case 3 :	ResourceType.R12_BATTLES_NUMS;
 			case 4 :	ResourceType.R13_BATTLES_WINS;
 			case 5 :	ResourceType.R15_BATTLES_FRIENDLY;
 			case 6 :	Challenge.getlowestJoint(player);

@@ -25,7 +25,7 @@ class BattleFieldTest extends Sprite {
 	}
 
 	private var playerId:Int = 10002;
-	private var challengeIndex:Int = 1;
+	private var challengeIndex:Int = 0;
 
 	private var skipDrawing:Bool;
 	private var challengeMode:Int;
@@ -53,7 +53,7 @@ class BattleFieldTest extends Sprite {
 	}
 
 	private function map_completeHandler(event:Event):Void {
-		var t = flash.Lib.getTimer();
+		var t = flash.Lib.getTimer() + 0.0;
 		var field = new FieldData(this.challengeMode, event.currentTarget.data);
 		var data = new InitData();
 		data.id = playerId;
@@ -71,22 +71,19 @@ class BattleFieldTest extends Sprite {
 		bot.init(data);
 
 		this.battleField = new BattleField();
-		this.battleField.initialize(player, bot, field, 0, t / 1000, t, false, 0);
+		this.battleField.create(player, bot, field, 0, t, false, 0);
 
-		// add heros
-		var len = field.mode == Challenge.MODE_0_HQ ? 6 : 2;
-		if (field.mode != Challenge.MODE_1_TOUCHDOWN) {
-			while (unitId < len) {
-				var side = unitId % 2;
-				var hqType = 201;
-				if (field.mode == Challenge.MODE_1_TOUCHDOWN)
-					hqType = 221;
-				else if (field.mode == Challenge.MODE_2_BAZAAR)
-					hqType = 202;
-				var heroType = field.mode == Challenge.MODE_0_HQ ? 222 : 223;
-				var card = new Card(battleField.games[side], unitId > 1 ? heroType : hqType,
-					battleField.friendlyMode > 0 ? 9 : battleField.games[side].player.get_level(0));
-				this.addUnit(card, side, Math.ffloor(field.targets[unitId * 2]), Math.ffloor(field.targets[unitId * 2 + 1]), card.z);
+		// add inital units
+		for(i in 0...6)
+		{
+			var data:Array<Int> = ScriptEngine.get(ScriptEngine.T54_CHALLENGE_INITIAL_UNITS, field.mode, i);
+			var cardType = data[0];
+			var side = cast(Math.max(data[1], 0), Int);
+			// trace(i, field.mode, data);
+			if( cardType > -1 )
+			{
+				var card = new com.gerantech.mmory.core.battle.units.Card(this.battleField.games[side], cardType, this.battleField.friendlyMode > 0 ? 9 : this.battleField.games[side].player.get_level(0));
+				this.addUnit(card, data[1], Math.ffloor(field.targets[unitId * 2]), Math.ffloor(field.targets[unitId * 2 + 1]), card.z, t);
 			}
 		}
 
@@ -96,7 +93,7 @@ class BattleFieldTest extends Sprite {
 			BattleField.getDeckCards(battleField.games[0], battleField.games[0].player.getSelectedDeck().toArray(true), battleField.friendlyMode));
 		this.battleField.decks.set(1,
 			BattleField.getDeckCards(battleField.games[1], battleField.games[1].player.getSelectedDeck().toArray(true), battleField.friendlyMode));
-		this.battleField.state = BattleField.STATE_2_STARTED;
+		this.battleField.start(t, t);
 
 		// draw obstacles
 		for (c in this.battleField.field.ground.colleagues)
@@ -126,16 +123,16 @@ class BattleFieldTest extends Sprite {
 		var card = this.battleField.decks.get(0).get(cards[cast(cards.length * Math.random(), Int)]);
 		for (i in 0...card.quantity)
 			this.addUnit(card, event.stageY > BattleField.HEIGHT * 0.5 * scaleY ? 0 : 1, CoreUtils.getXPosition(card.quantity, i, event.stageX / scaleX),
-				CoreUtils.getYPosition(card.quantity, i, event.stageY / scaleY), card.z);
+				CoreUtils.getYPosition(card.quantity, i, event.stageY / scaleY), card.z, this.battleField.now);
 	}
 
-	private function addUnit(card:Card, side:Int, x:Float, y:Float, z:Float):Void {
-		var u = new UnitView(this, unitId, this.battleField, card, side, x, y, z);
+	private function addUnit(card:Card, side:Int, x:Float, y:Float, z:Float, t:Float):Void {
+		var u = new UnitView(this, unitId, this.battleField, card, side, x, y, z, t);
 		if (card.z < 0)
 			this.battleField.field.air.add(u);
 		else
 			this.battleField.field.ground.add(u);
-		this.battleField.units.set(unitId, u);
+		this.battleField.units.push(u);
 		unitId++;
 	}
 

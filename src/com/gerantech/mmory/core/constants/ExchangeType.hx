@@ -1,5 +1,7 @@
 package com.gerantech.mmory.core.constants;
 
+import com.gerantech.mmory.core.scripts.ScriptEngine;
+
 /**
  * ...
  * @author Mansour Djawadi
@@ -82,87 +84,7 @@ class ExchangeType
 	{
 		return Math.floor(type / 10) * 10;
 	}
-
-	public static function getCooldown(type:Int):Int
-	{
-		return switch ( type )
-		{
-			case 41		: 24	* 3600;
-			case 43		: 2		* 3600;
-			case 51		: 5				  ;
-			case 52		: 3		* 3600;
-			case 53		: 8		* 3600;
-			case 54		: 12	* 3600;
-			case 57		: 24	* 3600;
-			case 59		: 24	* 3600;
-			case 101	: 3		* 3600;
-			case 104	: 24	* 3600;
-			default 	: 0					;
-		}
-	}
-
-	public static function getNumSlots(type:Int):Int
-	{
-		return switch ( type )
-		{
-			case 51 : 2;
-			case 52 : 3;
-			case 53 : 4;
-			case 54 : 5;
-			case 55 : 5;
-			case 56 : 6;
-			case 57 : 6;
-			case 58 : 7;
-			case 59 : 7;
-			default : 0;
-		}
-	}
-
-	public static function getNumTotalCards(type:Int, arena:Int, coef:Float, rarity:Int):Int
-	{
-		var ret:Int = switch ( type )
-		{
-			case 51 : 3		+ 1		* arena;
-			case 52 : 4		+ 1		* arena;
-			case 53 : 10	+ 3		* arena;
-			case 54 : 20	+ 6		* arena;
-			case 55 : 35	+ 12	* arena;
-			case 56 : 70	+ 24	* arena;
-			case 57 : 80	+ 28	* arena;
-			case 58 : 120	+ 36	* arena;
-			case 59 : 150	+ 40	* arena;
-			default : 0;
-		}
-		ret = Math.ceil(ret * coef * 0.8);
-		
-		if( rarity >= 1 )
-		{
-			ret = switch ( type )
-			{
-/*				case 51 : Math.round(ret * 0.09);
-				case 52 : Math.round(ret * 0.15);
-				case 53 : Math.round(ret * 0.49);
-				case 54 : Math.round(Math.pow(ret * 0.065, 1.4));
-*/				case 55 : Math.round(2.5 + Math.pow(ret * 0.065, 1.35));
-				case 56 : Math.round(3.0 + Math.pow(ret * 0.065, 1.35));
-				case 57 : Math.round(3.2 + Math.pow(ret * 0.065, 1.35));
-				case 58 : Math.round(3.4 + Math.pow(ret * 0.065, 1.35));
-				case 59 : Math.round(3.6 + Math.pow(ret * 0.065, 1.35));
-				default : Math.round(Math.pow(ret * 0.065, 1.4));
-			}
-		}
-		if( rarity >= 2 )
-		{
-			ret = type < 56 ? 0 : Math.round(ret * 0.08);//0.18
-		}
-		return ret;
-	}
-
-	public static function getNumSofts(type:Int, arena:Int, coef:Float):Int
-	{
-		return Math.round(Math.pow(getNumTotalCards(type, arena, coef, 0), 1.5) * 0.6);
-	}
-
+	
 	public static function isMagic(type:Int) : Bool
 	{
 		return type == BOOK_55_PIRATE || type == BOOK_56_JUNGLE || type == BOOK_58_AMBER ;

@@ -63,6 +63,14 @@ class ScriptEngine
 	static public var T81_TROPHY_ROAD:Int = 81;
 	static public var T82_BUDDY_ROAD:Int = 82;
 
+	static public var T91_PACK_DELAY:Int = 91;
+	static public var T92_PACK_SLOTS:Int = 92;
+	static public var T93_PACK_CARDS:Int = 93;
+	static public var T94_PACK_SOFTS:Int = 94;
+	static public var T95_PACK_HARDS:Int = 95;
+	static public var T97_PACK_FREE_TYPE:Int = 97;
+	static public var T98_PACK_BATTLE_TYPE:Int = 98;
+
 	static var script:String;
 	static var version:Float;
 	static var program:Dynamic;

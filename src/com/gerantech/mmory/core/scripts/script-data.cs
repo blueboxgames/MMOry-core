@@ -464,7 +464,7 @@ if( __type == 22 )
 		case	107	:	0.50	;
 		case	108	:	0.08	;
 		case	109	:	-0.1	;
-		case	110	:	0.17	;
+		case	110	:	0.15	;
 		case	111	:	0.24	;
 		case	112	:	0.20	;
 		case	113	:	0.30	;
@@ -509,7 +509,7 @@ if( __type == 23 )
 		case	107	:	1.0	;
 		case	108	:	1.2	;
 		case	109	:	1.2	;
-		case	110	:	1.2	;
+		case	110	:	1.3	;
 		case	111	:	1.3	;
 		case	112	:	2.1	;
 		case	113	:	1.2	;
@@ -539,14 +539,10 @@ if( __type == 24 )
 {
 	var ret = switch( __arg0 )
 	{
-		case	101	:	0.0	;
-		case	102	:	1.5	;
 		case	103	:	0.7	;
 		case	104	:	1.2	;
 		case	105	:	0.8	;
 		case	106	:	0.5	;
-		case	107	:	0.0	;
-		case	108	:	0.0	;
 		case	109	:	0.5	;
 		case	110	:	0.7	;
 		case	111	:	0.5	;
@@ -556,7 +552,6 @@ if( __type == 24 )
 		case	115	:	0.2	;
 		case	116	:	0.6	;	
 		case	117	: 0.2 ;
-		case	118	: 0.0 ;
 		case	119	: 0.6 ;
 		case	120	: 0.2 ;
 		case	121	:	0.7	;
@@ -589,7 +584,7 @@ if( __type == 26 )
 {
 	var ret =  switch( __arg0 )
 	{
-		case	101	:	1.8 	;
+		case	101	:	1.6 	;
 		case	102	:	0.2		;
 		case	103	:	0.2		;
 		case	104	:	0.9		;
@@ -600,7 +595,7 @@ if( __type == 26 )
 		case	109	:	1.0		;
 		case	110	:	0.9		;
 		case	111	:	0.9		;
-		case	112	:	0.3 	;
+		case	112	:	0.2 	;
 		case	113	:	0.4 	;
 		case	114	:	0.4		;
 		case	115	:	0.5		;
@@ -657,7 +652,7 @@ if( __type == 15 )
 		case	223	:	1.6	;
 		case	224	: 1.6	;
 		
-		case	241	: 1.0	;
+		case	241	: 0.9	;
 		
 		default		:	1.0	;
 	}
@@ -772,39 +767,8 @@ if( __type == 30 )
 // getMode(index:Int) : Int
 if( __type == 41 )
 {
-	var split = __arg1 % 3;
-
-	if( split == 0 )
-	return switch( __arg0 )
-	{
-		case 0:		0;
-		case 1:		2;
-		case 2:		1;
-		case 3:		3;
-		default:	0;
-	}
-
-	if( split == 1 )
-	return switch( __arg0 )
-	{
-		case 0:		2;
-		case 1:		0;
-		case 2:		1;
-		case 3:		3;
-		default:	0;
-	}
-
-	if( split == 2 )
-	return switch( __arg0 )
-	{
-		case 0:		1;
-		case 1:		0;
-		case 2:		2;
-		case 3:		3;
-		default:	0;
-	}
-
-	return __arg0;
+	var split = (__arg1) % 4;
+	return (__arg0 + split) % 4;
 }
 
 // getType(index:Int) : Int
@@ -944,13 +908,15 @@ if( __type == 62 )
 		default	: 1;
 	}
 
-	// mode 1
+	if( __arg0 == 3 ) // mode 3
 	return switch( __arg1 )
 	{
-		case 0	: 2;
-		case 2	: 2;
-		default	: 1;
+		case 0	: 0;
+		default	: 3;
 	}
+
+	// else
+	return 1;
 }
 
 //numRound(mode:Int, battleWins:Int) : Int
@@ -964,12 +930,17 @@ if( __type == 63 )
 		default	:	2;
 	}
 
-	// mode 1
+	// mode 3
+	if( __arg0 == 3 )
 	return switch( __arg1 )
 	{
-		case 0	: 2;
-		default	:	2;
+		case 0	: 3;
+		case 1	: 3;
+		default	:	1;
 	}
+
+	// else
+	return 2;
 }
 
 // getPauseTime(mode:Int, battleWins:Int, numSummonedUnits:Int) : Int
@@ -977,12 +948,12 @@ if( __type == 64 )
 {
 	if( __arg0 != 0 || __arg1 != 1 ) // only second battle in boss-car
 		return -1;
-
+	
 	if( __arg2 == 1 ) // pause
 		return 200000;
 
 	if( __arg2 == 2 ) // resume
-	return 0;
+		return 0;
 	
 	return -1;
 }
@@ -1007,6 +978,33 @@ if( __type == 66 )
 		{
 			case 1	: 	[3, 780, 1200, 500, false];
 			case 2	: 	[1, 300, 1050, 500, false];
+			case 11	:		[1, 335, 1200, 500, false];
+			case 21	: 	[3, 610, 1200, 500, false];
+			default:	null;
+		}
+
+		if( __arg1 == "newround" )
+		return switch( __arg2 )
+		{
+			case 0	: [1, 540, 1200, 3000, false];
+			default:	null;
+		}
+	}
+
+	// mode 3
+	if( __arg0 == 3 )
+	{
+		if( __arg1 == "start" )
+		return switch( __arg2 )
+		{
+			case 0	: 	[2, 750, 1300, 500, false];
+			case 10	: 	[2, 750, 1300, 500, false];
+			default:	null;
+		}
+
+		if( __arg1 == "cover" )
+		return switch( __arg2 )
+		{
 			case 11	:		[1, 335, 1200, 500, false];
 			case 21	: 	[3, 610, 1200, 500, false];
 			default:	null;
@@ -1122,11 +1120,12 @@ if( __type == 69 )
 	}
 }
 
+// trophy road
 if( __type == 81 )
 {
 	return [
 		[-1,	 	  0,			"-8:101,-7:102:,-6:121,-5:104,-4:105,-3:120,-2:107,-1:108"],
-		[35,	 	  0,			"8:53:10,						20:3:10,																										35:152:1"],
+		[35,	 	  0,			"8:53:1,						20:3:10,																										35:152:1"],
 		[100,	 	  0, 			"55:6:5,						75:3:10,																										100:112:1"],
 		[300,	 	  0,	 		"160:6:5,						225:119:1,																									300:31:0"],
 		[525,	 	  0, 			"375:4:10,					450:53:1,																										525:119:1"],
@@ -1150,7 +1149,143 @@ if( __type == 81 )
 	];
 }
 
+// friendly road
 if( __type == 82 )
 	return [2000,	  0, 	"0:4:10,	100:4:30,	250:4:50,	500:4:80,	1000:4:100,	3000:1:1"];
+
+// =================== PACKS ====================== 
+
+// getCooldown(type:Int):Int
+if( __type == 91 )
+{
+	return switch ( __arg0 )
+	{
+		case 41		: 24	* 3600;
+		case 43		: 2		* 3600;
+		case 51		: 5				  ;
+		case 52		: 3		* 3600;
+		case 53		: 8		* 3600;
+		case 54		: 12	* 3600;
+		case 57		: 24	* 3600;
+		case 59		: 24	* 3600;
+		case 101	: 3		* 3600;
+		case 104	: 24	* 3600;
+		default 	: 0					;
+	}
+}
+
+// getNumSlots(type:Int):Int
+if( __type == 92 )
+{
+	return switch ( __arg0 )
+	{
+		case 51 : 2;
+		case 52 : 3;
+		case 53 : 4;
+		case 54 : 5;
+		case 55 : 5;
+		case 56 : 6;
+		case 57 : 6;
+		case 58 : 6;
+		case 59 : 6;
+		default : 0;
+	}
+}
+
+// getTotalCards(type:Int, arena:Int, rarity:Int, coef:Float):Int
+if( __type == 93 )
+{
+	var ret = switch ( __arg0 )
+	{
+		case 51 : 3		+ 1		* __arg1;
+		case 52 : 4		+ 1		* __arg1;
+		case 53 : 10	+ 3		* __arg1;
+		case 54 : 20	+ 6		* __arg1;
+		case 55 : 35	+ 12	* __arg1;
+		case 56 : 70	+ 24	* __arg1;
+		case 57 : 80	+ 28	* __arg1;
+		case 58 : 120	+ 36	* __arg1;
+		case 59 : 150	+ 40	* __arg1;
+		default : 0;
+	}
+	ret = Math.ceil(ret);
+	
+	if( __arg2 >= 1 ) // rar
+	{
+		var init = switch ( __arg0 )
+		{
+			/*case 51 : ret * 0.09);
+			case 52 : ret * 0.15);
+			case 53 : ret * 0.49);
+			case 54 : Math.pow(ret * 0.065, 1.4));*/
+			case 55 : 2.5;
+			case 56 : 3.0;
+			case 57 : 3.2;
+			case 58 : 3.4;
+			case 59 : 3.6;
+			default : 0.0;
+		}
+		init += Math.pow(ret * 0.065, 1.35);
+		ret = init - init % 1;//floor
+	}
+
+	return ret;
+	
+	if( __arg2 >= 2 ) // epic
+	{
+		if( __arg0 < 56 )
+			return 0;
+
+		ret *= 0.08;//0.18
+		return ret - ret % 1;//floor
+	}
+}
+
+// packSofts(cards:Int):Int
+if( __type == 94 )
+{
+	var ret = Math.pow(__arg0, 1.5);
+	return ret - ret % 1;//floor
+}
+
+// packHards(type:Int):Int
+if( __type == 95 )
+	return __arg0 - 50;
+		
+// getFreeBookType(earnedBooks:Int) : Int
+if( __type == 97 )
+{
+	__arg0 %= 240; 
+	if( __arg0 == 89 || __arg0 == 157 || __arg0 == 199 || __arg0 == 229)
+		return 54;
+	if( __arg0 == 53 || __arg0 == 127 || __arg0 == 211)
+		return 55;
+	if( __arg0 == 89 || __arg0 == 173)
+		return 56;
+	if ( __arg0 == 19 )
+		return 57;
+	if ( __arg0 == 97 )
+		return 58;
+	if ( __arg0 == 167 )
+		return 59;
+	return 53;
+}
+
+// getBattleBookType(earnedBooks:Int) : Int
+if( __type == 98 )
+{
+	if( __arg0 < 4 ) // in tutorial
+		return 51;
+	__arg0 %= 240; 
+	if( __arg0 == 89 || __arg0 == 157 || __arg0 == 199 || __arg0 == 229)
+		return 54;
+	if( __arg0 == 53 || __arg0 == 127 || __arg0 == 211)
+		return 57;
+	if( __arg0 == 89 || __arg0 == 173)
+		return 59;
+	if( (__arg0 * 0.2 % 1) < 0.20 )
+		return 53;
+	return 52;
+}
 
 return 0;

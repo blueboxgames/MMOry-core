@@ -270,7 +270,7 @@ class BattleField
 			{
 				this.resetTime = now + ptoffset; // resume
 				if( ptoffset > 0 )
-					this.state = STATE_3_PAUSED; // pause
+				this.state = STATE_3_PAUSED; // pause
 			}
 		}
 
@@ -467,7 +467,7 @@ class BattleField
 
 	private function fireEvent(dispatcherId:Int, type:String, data:Any) : Void
 	{
-		trace("fireEvent => id:" + dispatcherId + ", type:" + type + ", data:" + data);
+		// trace("fireEvent => id:" + dispatcherId + ", type:" + type + ", data:" + data);
 		#if java
 		// if( eventCallback != null )
 		// 	eventCallback.dispatch(dispatcherId, type, data);

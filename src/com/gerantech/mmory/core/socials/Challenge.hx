@@ -182,7 +182,7 @@ class Challenge
 
 	static public function getlowestJoint(player:Player) : Int
 	{
-		var ret = ResourceType.R30_CHALLENGES + 1;
+		var ret = ResourceType.R30_CHALLENGE_NUMS + 1;
 		return ret;
 		/*
 		var i = 0;
@@ -228,7 +228,7 @@ class Challenge
 	
 	static public function getExchangeItem(mode:Int, requirements:IntIntMap, arena:Int) : ExchangeItem
 	{
-		var ret:ExchangeItem = new ExchangeItem(ResourceType.R30_CHALLENGES + mode + 1);
+		var ret:ExchangeItem = new ExchangeItem(ResourceType.R30_CHALLENGE_NUMS + mode + 1);
 		ret.outcomes = new IntIntMap(ResourceType.R1_XP + ":" + 2 * arena);
 		ret.requirements = requirements;
 		return ret;

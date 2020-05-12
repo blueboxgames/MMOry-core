@@ -70,9 +70,6 @@ class IntIntMap extends flash.events.EventDispatcher
 		#end
 		
 		dispatchChangeEvent(key, from, get(key), exists);
-		
-		if( key == ResourceType.R2_POINT && value > get(ResourceType.R7_MAX_POINT) )
-			set(ResourceType.R7_MAX_POINT, value);
 	}
 
 	/**
@@ -245,10 +242,9 @@ class IntIntMap extends flash.events.EventDispatcher
 		var keis = keys();
 		return keis[ Math.floor( Math.random() * keis.length ) ];
 	}
-	
 	private function dispatchChangeEvent (key:Int, from:Int, to:Int, exists) : Void
 	{
-		if( from == to )
+		if( exists && from == to )
 			return;
 		
 	#if java
